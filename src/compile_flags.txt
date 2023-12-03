@@ -9,4 +9,6 @@
 -I.
 -I../../raylib/src
 -I../../raylib/src/external
+-I./xxd_resources
+-I./xxd_resources/img
 -DPLATFORM_DESKTOP

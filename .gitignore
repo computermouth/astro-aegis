@@ -64,3 +64,4 @@ dkms.conf
 [Bb]uild
 
 src/astro-aegis*
+src/xxd_resources/*/*.h

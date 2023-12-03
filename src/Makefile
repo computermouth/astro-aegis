@@ -159,7 +159,7 @@ endif
 
 # Define include paths for required headers: INCLUDE_PATHS
 #------------------------------------------------------------------------------------------------
-INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external
+INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external -I./xxd_resources/ -I./xxd_resources/img/
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_DRM)
@@ -294,20 +294,33 @@ endif
 
 # Define source code files required
 #------------------------------------------------------------------------------------------------
-PROJECT_SOURCE_FILES ?= main.c
+PROJECT_SOURCE_FILES ?= main.c xxd_resources/assets.c resource.c
 
 # Define all object files from source files
 OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))
+
+XXD_IMG = $(wildcard xxd_resources/img/*.png)
+IMG_SRC = $(XXD_IMG:.png=.h)
+XXD_RES = $(IMG_SRC)
 
 # Define processes to execute
 #------------------------------------------------------------------------------------------------
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target
 all: $(PROJECT_NAME)
+# all:
+# 	echo $(XXD_RES)
+
+%.h: %.png
+	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
 
 # Project target defined by PROJECT_NAME
-$(PROJECT_NAME): $(OBJS)
+$(PROJECT_NAME): $(XXD_RES) $(OBJS)
 	$(CC) -o $(PROJECT_BUILD_PATH)/$(PROJECT_NAME)$(EXT) $(OBJS) $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(LDLIBS) -D$(PLATFORM)
+
+# special rule to rebuild on new assets
+xxd_resources/assets.o: $(XXD_RES) xxd_resources/assets.c
+	$(CC) -c xxd_resources/assets.c -o $@ $(CFLAGS) $(INCLUDE_PATHS) -D$(PLATFORM)
 
 # Compile source files
 # NOTE: This pattern will compile every module defined on $(OBJS)

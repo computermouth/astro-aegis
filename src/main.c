@@ -11,6 +11,7 @@
 *
 ********************************************************************************************/
 
+// ray includes
 #include "raylib.h"
 #include "raymath.h"
 
@@ -19,9 +20,13 @@
     #include <emscripten/emscripten.h>      // Emscripten library - LLVM to JavaScript compiler
 #endif
 
+// stdlib includes
 #include <stdio.h>                          // Required for: printf()
 #include <stdlib.h>                         // Required for: 
 #include <string.h>                         // Required for: 
+
+// local includes
+#include "resource.h"
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -73,7 +78,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     InitWindow(screenWidth, screenHeight, "raylib gamejam template");
     
-    // TODO: Load resources / Initialize variables at this point
+    resource_init();
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
@@ -90,6 +95,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    resource_quit();
 
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
@@ -118,14 +124,6 @@ void UpdateDrawFrame(void)
 
     float delta = GetFrameTime();
 
-    Mesh cube = GenMeshCube(4, 4, 4);
-    Image cube_img = GenImageGradientLinear(10, 10, 1, DARKPURPLE, MAGENTA);
-    Texture cube_tex = LoadTextureFromImage(cube_img);
-    Model cube_model = LoadModelFromMesh(cube);
-    cube_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = cube_tex;
-    // Material cube_mat = { 0 };
-    // SetMaterialTexture(&cube_mat, MATERIAL_MAP_DIFFUSE, cube_tex);
-
     angle += delta;
     angle = fmodf(angle, 2 * PI);
 
@@ -141,12 +139,7 @@ void UpdateDrawFrame(void)
 
         BeginMode3D(camera);
 
-        // DrawCube((Vector3){1.0f,1.0f,1.0f}, 1, 1, 1, DARKGREEN);
-        // DrawCubeWires((Vector3){1.0f,1.0f,1.0f}, 1, 1, 1, GREEN);
-
-        DrawMesh(cube, cube_model.materials[0], rot);
-        // DrawModel(cube_model, (Vector3){3.0f,3.0f,1.0f}, 1, WHITE);
-        // DrawModelWires(cube_model, (Vector3){3.0f,3.0f,1.0f}, 1, RED);
+        DrawMesh(globe_mesh, globe_mat, rot);
         
         EndMode3D();
 

@@ -24,11 +24,17 @@ Keyboard:
 
 _TODO: Show your game to the world, animated GIFs recommended!._
 
+### Build Requirements
+ - c compiler (native)
+ - emcc (web)
+ - make
+ - xxd and sed (resource embedding)
+
 ### Building
+
  1. checkout raylib @ tag `5.0` to ../raylib (from this file)
- 2.
-  a. native builds, build raylib, and `sudo make install`
-  b. web builds   , build raylib with `make PLATFORM=PLATFORM_WEB -B`
+ 2a. native builds, build raylib, and `sudo make install`
+ 2b. web builds   , build raylib with `make PLATFORM=PLATFORM_WEB -B`
 
 Note1: this project's `Makefile` will use the system installed library for native builds, and ../raylib/src/libraylib.a for `PLATFORM_WEB`
 Note2: builds default to `BUILD_MODE=DEBUG`, which will include debug symbols and asan where possible
