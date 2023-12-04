@@ -28,6 +28,7 @@
 // local includes
 #include "resource.h"
 #include "tool.h"
+#include "game.h"
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -51,16 +52,6 @@ typedef enum {
     SCREEN_ENDING
 } GameScreen;
 
-// TODO: Define your custom data types here
-
-//----------------------------------------------------------------------------------
-// Global Variables Definition
-//----------------------------------------------------------------------------------
-static const int screenWidth = 1280;
-static const int screenHeight = 720;
-
-// TODO: Define global variables here, recommended to make them static
-
 //----------------------------------------------------------------------------------
 // Module Functions Declaration
 //----------------------------------------------------------------------------------
@@ -69,15 +60,14 @@ static void UpdateDrawFrame(void);      // Update and Draw one frame
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int main(void)
-{
+int main(void) {
 #if !defined(_DEBUG)
     SetTraceLogLevel(LOG_NONE);         // Disable raylib trace log messsages
 #endif
 
     // Initialization
     //--------------------------------------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "raylib gamejam template");
+    InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
     
     resource_init();
 
@@ -88,7 +78,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button
+    while (!WindowShouldClose() && !game_get_should_quit())    // Detect window close button
     {
         UpdateDrawFrame();
     }
@@ -109,47 +99,6 @@ int main(void)
 //--------------------------------------------------------------------------------------------
 // Update and draw frame
 
-float game_time = 0.0f;
-float angle = 0;
-
-void UpdateDrawFrame(void)
-{
-
-    Camera3D camera = {
-        .position = tool_vec3_world_pos((Vector3){10.0f, 0.0f, 10.0f}),
-        .target = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f}),
-        .up = (Vector3){0.0f,1.0f,0.0f},
-        .fovy = 45.0f,
-        .projection = CAMERA_PERSPECTIVE,
-    };
-
-    float delta = GetFrameTime();
-
-    angle += delta;
-    angle = fmodf(angle, 2 * PI);
-
-    Quaternion qx = QuaternionFromAxisAngle((Vector3){0.97, 0, 0}, angle);
-    Quaternion qy = QuaternionFromAxisAngle((Vector3){0, 0.71, 0}, angle);
-    Quaternion qz = QuaternionFromAxisAngle((Vector3){0, 0, 0.53}, angle);
-    Quaternion qxyz = QuaternionMultiply(qx, QuaternionMultiply(qy, qz));
-    Matrix rot = QuaternionToMatrix(QuaternionNormalize(qxyz));
-
-    Vector3 wp = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
-    Matrix wp_matrix = MatrixTranslate(wp.x, wp.y, wp.z);
-    Matrix globe_transform = MatrixMultiply(rot, wp_matrix);
-    
-    // Render to screen (main framebuffer)
-    BeginDrawing();
-        ClearBackground(BLACK);
-
-        BeginMode3D(camera);
-
-        DrawMesh(globe_mesh, globe_mat, globe_transform);
-        
-        EndMode3D();
-
-		DrawFPS(10, 10);
-
-    EndDrawing();
-    //----------------------------------------------------------------------------------  
+void UpdateDrawFrame(void) {
+    game_update();
 }
