@@ -27,6 +27,7 @@
 
 // local includes
 #include "resource.h"
+#include "tool.h"
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -115,8 +116,8 @@ void UpdateDrawFrame(void)
 {
 
     Camera3D camera = {
-        .position = (Vector3){10.0f, 10.0f, 10.0f},
-        .target = (Vector3){0.0f,0.0f,0.0f},
+        .position = tool_vec3_world_pos((Vector3){10.0f, 0.0f, 10.0f}),
+        .target = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f}),
         .up = (Vector3){0.0f,1.0f,0.0f},
         .fovy = 45.0f,
         .projection = CAMERA_PERSPECTIVE,
@@ -132,6 +133,10 @@ void UpdateDrawFrame(void)
     Quaternion qz = QuaternionFromAxisAngle((Vector3){0, 0, 0.53}, angle);
     Quaternion qxyz = QuaternionMultiply(qx, QuaternionMultiply(qy, qz));
     Matrix rot = QuaternionToMatrix(QuaternionNormalize(qxyz));
+
+    Vector3 wp = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
+    Matrix wp_matrix = MatrixTranslate(wp.x, wp.y, wp.z);
+    Matrix globe_transform = MatrixMultiply(rot, wp_matrix);
     
     // Render to screen (main framebuffer)
     BeginDrawing();
@@ -139,7 +144,7 @@ void UpdateDrawFrame(void)
 
         BeginMode3D(camera);
 
-        DrawMesh(globe_mesh, globe_mat, rot);
+        DrawMesh(globe_mesh, globe_mat, globe_transform);
         
         EndMode3D();
 
