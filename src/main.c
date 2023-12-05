@@ -29,6 +29,7 @@
 #include "resource.h"
 #include "tool.h"
 #include "game.h"
+#include "entity.h"
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -86,6 +87,7 @@ int main(void) {
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    game_quit();
     resource_quit();
 
     CloseWindow();        // Close window and OpenGL context
