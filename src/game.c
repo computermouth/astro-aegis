@@ -149,9 +149,13 @@ void game_update_play(){
     if(game.game_play_state == GAME_PLAY_STATE_INIT){
         if(game.game_entities.others)
             vector_free(game.game_entities.others);
-        game.game_entities.globe = entity_globe_spawn();
-        game.game_entities.player = entity_player_spawn();
-        game.game_entities.others = vector_init(sizeof(Entity));
+
+        game.game_entities = (GameEntities){
+            .globe = entity_globe_spawn(),
+            .player = entity_player_spawn(),
+            .others = vector_init(sizeof(Entity)),
+        };
+        
     }
 
     entity_player_update(&game.game_entities.player);
@@ -179,7 +183,7 @@ void game_update_play(){
 
         // draw special entities
         DrawMesh(game.game_entities.player.mesh, game.game_entities.player.material, game.game_entities.player.transform);
-        // DrawMesh(game.game_entities.globe.mesh, game.game_entities.globe.material, game.game_entities.globe.transform);
+        DrawMesh(game.game_entities.globe.mesh, game.game_entities.globe.material, game.game_entities.globe.transform);
 
         // draw all entities
         e_len = vector_size(game.game_entities.others);
