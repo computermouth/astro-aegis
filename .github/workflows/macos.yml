@@ -83,11 +83,16 @@ jobs:
         # Join x86_64 and arm64 static
         lipo -create -output libraylib.a libraylib_x86_64.a libraylib_arm64.a
         lipo libraylib.a -detailed_info
+
+        pwd
         cd ../..
 
     - name: Build Product
       run: |
         cd ${{ env.PROJECT_NAME }}/src
+
+        pwd
+        ls ../../raylib/src/
         
         # Build project x86_64 binary
         # TODO: Link with x86_64 raylib library: libraylib_x86_64.a
