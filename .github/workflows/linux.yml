@@ -50,7 +50,7 @@ jobs:
         cd raylib/src
         gcc --version
         make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE RAYLIB_LIBTYPE=STATIC RAYLIB_PROJECT_RELEASE_PATH=. -B
-        make install
+        sudo make install
 
     - name: Build Product
       run: |
