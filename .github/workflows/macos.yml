@@ -66,6 +66,9 @@ jobs:
         cd raylib/src
         clang --version
         
+        # Vim for xxd
+        brew install vim
+        
         # Extract version numbers from Makefile
         brew install grep
         RAYLIB_API_VERSION=`ggrep -Po 'RAYLIB_API_VERSION\s*=\s\K(.*)' Makefile`
