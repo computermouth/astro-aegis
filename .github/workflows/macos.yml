@@ -37,7 +37,7 @@ jobs:
       with:
         repository: raysan5/raylib
         path: raylib
-        ref: 5.0
+        ref: "5.0"
         
     - name: Setup Release Paths
       run: |

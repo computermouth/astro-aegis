@@ -30,7 +30,7 @@ jobs:
       with:
         repository: raysan5/raylib
         path: raylib
-        ref: 5.0
+        ref: "5.0"
         
     # NOTE: Visual Studio project build configuration already defines all required directories where project is generated:
     # $(SolutionDir)\build\$(ProjectName)\bin\$(Platform)\$(Configuration)\
