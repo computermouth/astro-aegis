@@ -97,7 +97,7 @@ jobs:
         
         # Build project arm64 binary
         # TODO: Link with arm64 raylib library: libraylib_arm.a
-        make BUILD_MAC_ARM=TRUE PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target arm64-apple-macos11"
+        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target arm64-apple-macos11"
         mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_arm64
         make clean
         
