@@ -275,7 +275,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),BSD)
         # Libraries for FreeBSD, OpenBSD, NetBSD, DragonFly desktop compiling
         # NOTE: Required packages: mesa-libs
-        LDLIBS = -lraylib -lGL -lpthread -lm
+        LDLIBS = -lraylib_x86_64 -lGL -lpthread -lm
+        # LDLIBS = -lraylib_arm64 -lGL -lpthread -lm
 
         # On XWindow requires also below libraries
         LDLIBS += -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor
