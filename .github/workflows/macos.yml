@@ -93,6 +93,7 @@ jobs:
 
         pwd
         ls ../../raylib/src/
+        ls ../../raylib/src/libraylib.a
         
         # Build project x86_64 binary
         # TODO: Link with x86_64 raylib library: libraylib_x86_64.a
