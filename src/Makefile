@@ -47,6 +47,8 @@ BUILD_WEB_HEAP_SIZE   ?= 128MB
 BUILD_WEB_RESOURCES   ?= TRUE
 BUILD_WEB_RESOURCES_PATH  ?= resources
 
+BUILD_MAC_ARM         ?= FALSE
+
 # Determine PLATFORM_OS in case PLATFORM_DESKTOP selected
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     # No uname.exe on MinGW!, but OS=Windows_NT on Windows!
@@ -270,13 +272,16 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),OSX)
         # Libraries for OSX 10.9 desktop compiling
         # NOTE: Required packages: libopenal-dev libegl1-mesa-dev
-        LDLIBS = -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+        ifeq ($(BUILD_MAC_ARM),FALSE)
+            LDLIBS = -lraylib_x86_64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+        else
+            LDLIBS = -lraylib_arm64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+        endif
     endif
     ifeq ($(PLATFORM_OS),BSD)
         # Libraries for FreeBSD, OpenBSD, NetBSD, DragonFly desktop compiling
         # NOTE: Required packages: mesa-libs
-        LDLIBS = -lraylib_x86_64 -lGL -lpthread -lm
-        # LDLIBS = -lraylib_arm64 -lGL -lpthread -lm
+        LDLIBS = -lraylib -lGL -lpthread -lm
 
         # On XWindow requires also below libraries
         LDLIBS += -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor
