@@ -12,22 +12,23 @@ typedef enum {
 } EntityType;
 
 typedef struct {
-
-} GlobeEntity;
+} GlobeStorage;
 
 typedef struct {
     float dir_x;
     float dir_z;
-} PlayerEntity;
+    Quaternion frame_rotation;
+} PlayerStorage;
 
 typedef struct {
     EntityType type;
     union {
-        GlobeEntity globe_entity;
-        PlayerEntity player_entity;
+        GlobeStorage globe_storage;
+        PlayerStorage player_storage;
     };
     Mesh mesh;
     Material material;
+    Quaternion rotation;
     Matrix transform;
 } Entity;
 

@@ -98,7 +98,6 @@ void game_update_menu(){
         BeginMode3D(game.game_camera);
 
         DrawMesh(globe_mesh, globe_mat, globe_transform);
-        DrawMesh(atmosphere_mesh, atmosphere_mat, globe_transform);
         for(int i = 0; i < atmosphere_mesh.vertexCount; i += 12) {
             DrawSphereEx(
                 Vector3Transform((Vector3){
@@ -107,11 +106,12 @@ void game_update_menu(){
                     atmosphere_mesh.vertices[i * 3 + 2],
                 }, globe_transform),
                 0.01,
-                3,
-                3,
+                5,
+                5,
                 (Color){.r = 192, .g = 192, .b = 0, .a = 192}
             );
         }
+        DrawMesh(atmosphere_mesh, atmosphere_mat, globe_transform);
 
         DrawMesh(player_mesh, player_mat, pp_matrix);
         
@@ -155,7 +155,8 @@ void game_update_play(){
             .player = entity_player_spawn(),
             .others = vector_init(sizeof(Entity)),
         };
-        
+
+        game.game_play_state = GAME_PLAY_STATE_PLAY;
     }
 
     entity_player_update(&game.game_entities.player);
@@ -193,6 +194,16 @@ void game_update_play(){
         }
 
         EndMode3D();
+
+        char pdir_x[100];
+        sprintf(pdir_x, "pdir_x: %f", game.game_entities.player.player_storage.dir_x);
+        char pdir_z[100];
+        sprintf(pdir_z, "pdir_z: %f", game.game_entities.player.player_storage.dir_z);
+        DrawText(pdir_x, 32, 32, 32, RAYWHITE);
+        DrawText(pdir_z, 32, 64, 32, RAYWHITE);
+
+		DrawFPS(10, 10);
+
     EndDrawing();
 
 }

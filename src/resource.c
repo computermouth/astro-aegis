@@ -21,7 +21,7 @@ Material player_mat = { 0 };
 void resource_init(){
 
     { // globe
-        globe_mesh = GenMeshSphere(4, 32, 32);
+        globe_mesh = GenMeshSphere(3.5, 32, 32);
         globe_img = LoadImageFromMemory(".png", globetex_png, globetex_png_len);
         ImageRotateCW(&globe_img);
         globe_tex = LoadTextureFromImage(globe_img);
@@ -30,7 +30,7 @@ void resource_init(){
     }
 
     { // atmosphere
-        atmosphere_mesh = GenMeshSphere(4.1, 32, 32);
+        atmosphere_mesh = GenMeshSphere(4, 32, 32);
         atmosphere_img = GenImageColor(1, 1, YELLOW);
         atmosphere_tex = LoadTextureFromImage(atmosphere_img);
         atmosphere_mat = LoadMaterialDefault();
@@ -40,15 +40,11 @@ void resource_init(){
 
     { // player
         player_mesh = GenMeshCone(.05, .125, 4);
-        // player_img = GenImageColor(1, 1, YELLOW);
+        // player_mesh = GenMeshSphere(.05, 3, 3);
         player_img = GenImageGradientSquare(5, 5, 0, YELLOW, RED);
-        // player_img = GenImageGradientRadial(5, 5, 1, YELLOW, RED);
         player_tex = LoadTextureFromImage(player_img);
         player_mat = LoadMaterialDefault();
         player_mat.maps[MATERIAL_MAP_DIFFUSE].texture = player_tex;
-        // glow??
-        // player_mat.maps[MATERIAL_MAP_EMISSION].texture = player_tex;
-        // player_mat.maps[MATERIAL_MAP_EMISSION].color = WHITE;
     }
 
 }
