@@ -273,9 +273,9 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         # Libraries for OSX 10.9 desktop compiling
         # NOTE: Required packages: libopenal-dev libegl1-mesa-dev
         ifeq ($(BUILD_MAC_ARM),FALSE)
-            LDLIBS = -lraylib_x86_64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+            LDLIBS = -L../../raylib/src -lraylib_x86_64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
         else
-            LDLIBS = -lraylib_arm64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+            LDLIBS = -L../../raylib/src -lraylib_arm64 -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
         endif
     endif
     ifeq ($(PLATFORM_OS),BSD)
