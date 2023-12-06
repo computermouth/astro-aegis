@@ -5,6 +5,6 @@
 #include "entity.h"
 
 Entity entity_globe_spawn();
-void entity_globe_update(Entity * globe, const Entity player);
+void entity_globe_update(Entity * globe);
 
 #endif

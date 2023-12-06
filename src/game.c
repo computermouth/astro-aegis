@@ -4,6 +4,11 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
+#if defined(PLATFORM_WEB)
+    #define CUSTOM_MODAL_DIALOGS            // Force custom modal dialogs usage
+    #include <emscripten/emscripten.h>      // Emscripten library - LLVM to JavaScript compiler
+#endif
+
 #include "game.h"
 
 #include "resource.h"
@@ -50,7 +55,7 @@ bool game_get_should_quit(){
     return game_should_quit;
 }
 
-static float angle = 0.0f;
+float dirchange = 0.0f;
 
 void game_update_menu(){
 
@@ -58,6 +63,8 @@ void game_update_menu(){
     game.game_time += game.game_delta;
 
     if (game.game_menu_state == GAME_MENU_STATE_INIT){
+        dirchange = 0.0f;
+
         game.game_camera = (Camera3D) {
             .position = tool_vec3_world_pos((Vector3){8.0f, 0.0f, 0.0f}),
             .target = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f}),
@@ -65,55 +72,44 @@ void game_update_menu(){
             .fovy = 45.0f,
             .projection = CAMERA_PERSPECTIVE,
         };
+
         game.game_menu_state = GAME_MENU_STATE_MENU;
+
+        game.game_entities = (GameEntities){
+            .globe = entity_globe_spawn(),
+            .player = entity_player_spawn(),
+            .others = NULL,
+        };
+
+        game.game_entities.player.player_storage.menu_input_x = 0;
+        game.game_entities.player.player_storage.menu_input_z = 1;
     }
 
-    angle += game.game_delta / 8;
-    angle = fmodf(angle, 2 * PI);
+    // every 5s change player's direction at random
+    dirchange += game.game_delta;
+    if (dirchange > 5.0f){
+        int r = GetRandomValue(0, 3);
+        float menu_input_x = -1;
+        float menu_input_z = -1;
+        if (r & 0x01)
+            menu_input_x = 1;
+        if (r & 0x10)
+            menu_input_z = 1;
+        game.game_entities.player.player_storage.menu_input_x = menu_input_x;
+        game.game_entities.player.player_storage.menu_input_z = menu_input_z;
+        dirchange = fmodf(dirchange, 1.0f);
+    }
 
-    Quaternion qx = QuaternionFromAxisAngle((Vector3){-0.97, 0, 0}, angle);
-    Quaternion qy = QuaternionFromAxisAngle((Vector3){0, -0.71, 0}, angle);
-    Quaternion qz = QuaternionFromAxisAngle((Vector3){0, 0, -0.53}, angle);
-    Quaternion qxyz = QuaternionMultiply(qx, QuaternionMultiply(qy, qz));
-    Matrix rot = QuaternionToMatrix(QuaternionNormalize(qxyz));
-
-    Vector3 wp = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
-    Matrix wp_matrix = MatrixTranslate(wp.x, wp.y, wp.z);
-    Matrix globe_transform = MatrixMultiply(rot, wp_matrix);
-
-    // player pos + rot
-    Vector3 pp = tool_vec3_world_pos((Vector3){4.5f, 0.0f, 0.0f});
-    // track planet
-    Quaternion px = QuaternionFromAxisAngle((Vector3){0.97, 0, 0}, PI / 2 + angle);
-    // barrel roll
-    Quaternion pz = QuaternionFromAxisAngle((Vector3){0, 1, 0}, angle * 2);
-    Quaternion pxz = QuaternionMultiply(px, pz);
-    Matrix pp_rot = QuaternionToMatrix(QuaternionNormalize(pxz));
-    Matrix pp_matrix = MatrixTranslate(pp.x, pp.y, pp.z);
-    // Matrix pp_transform = MatrixMultiply(pp_rot, pp_matrix);
+    entity_player_update(&game.game_entities.player);
+    entity_globe_update(&game.game_entities.globe);
     
     BeginDrawing();
         ClearBackground(BLACK);
 
         BeginMode3D(game.game_camera);
 
-        DrawMesh(globe_mesh, globe_mat, globe_transform);
-        for(int i = 0; i < atmosphere_mesh.vertexCount; i += 12) {
-            DrawSphereEx(
-                Vector3Transform((Vector3){
-                    atmosphere_mesh.vertices[i * 3 + 0],
-                    atmosphere_mesh.vertices[i * 3 + 1],
-                    atmosphere_mesh.vertices[i * 3 + 2],
-                }, globe_transform),
-                0.01,
-                5,
-                5,
-                (Color){.r = 192, .g = 192, .b = 0, .a = 192}
-            );
-        }
-        DrawMesh(atmosphere_mesh, atmosphere_mat, globe_transform);
-
-        DrawMesh(player_mesh, player_mat, pp_matrix);
+        game.game_entities.player.draw_3d_fn(&game.game_entities.player);
+        game.game_entities.globe.draw_3d_fn(&game.game_entities.globe);
         
         EndMode3D();
 
@@ -150,17 +146,13 @@ void game_update_play(){
         if(game.game_entities.others)
             vector_free(game.game_entities.others);
 
-        game.game_entities = (GameEntities){
-            .globe = entity_globe_spawn(),
-            .player = entity_player_spawn(),
-            .others = vector_init(sizeof(Entity)),
-        };
+        game.game_entities.others = vector_init(sizeof(Entity));
 
         game.game_play_state = GAME_PLAY_STATE_PLAY;
     }
 
     entity_player_update(&game.game_entities.player);
-    entity_globe_update(&game.game_entities.globe, game.game_entities.player);
+    entity_globe_update(&game.game_entities.globe);
 
     // update all entities
     size_t e_len = vector_size(game.game_entities.others);
@@ -177,32 +169,37 @@ void game_update_play(){
     }
 
     // TODO: cleanup dead entities
+
     BeginDrawing();
         ClearBackground(BLACK);
 
         BeginMode3D(game.game_camera);
 
-        // draw special entities
-        DrawMesh(game.game_entities.player.mesh, game.game_entities.player.material, game.game_entities.player.transform);
-        DrawMesh(game.game_entities.globe.mesh, game.game_entities.globe.material, game.game_entities.globe.transform);
+        // draw special 3d entities
+        game.game_entities.globe.draw_3d_fn(&game.game_entities.globe);
+        game.game_entities.player.draw_3d_fn(&game.game_entities.player);
 
-        // draw all entities
+        // draw all 3d entities
         e_len = vector_size(game.game_entities.others);
         entities = vector_begin(game.game_entities.others);
         for(size_t i = 0; i < e_len; i++){
-            DrawMesh(entities[i].mesh, entities[i].material, entities[i].transform);
+            if (entities[i].draw_3d_fn)
+                entities[i].draw_3d_fn(&entities[i]);
         }
 
         EndMode3D();
 
-        char pdir_x[100];
-        sprintf(pdir_x, "pdir_x: %f", game.game_entities.player.player_storage.dir_x);
-        char pdir_z[100];
-        sprintf(pdir_z, "pdir_z: %f", game.game_entities.player.player_storage.dir_z);
-        DrawText(pdir_x, 32, 32, 32, RAYWHITE);
-        DrawText(pdir_z, 32, 64, 32, RAYWHITE);
+        // draw special 2d entities
+        game.game_entities.globe.draw_2d_fn(&game.game_entities.globe);
+        game.game_entities.player.draw_2d_fn(&game.game_entities.player);
 
-		DrawFPS(10, 10);
+        // draw all 2d entities
+        e_len = vector_size(game.game_entities.others);
+        entities = vector_begin(game.game_entities.others);
+        for(size_t i = 0; i < e_len; i++){
+            if (entities[i].draw_2d_fn)
+                entities[i].draw_2d_fn(&entities[i]);
+        }
 
     EndDrawing();
 
@@ -241,4 +238,16 @@ GamePlayState game_get_play_state(){
 void game_quit(){
     if(game.game_entities.others)
         vector_free(game.game_entities.others);
+}
+
+Entity * game_get_player_entity(){
+    return &game.game_entities.player;
+}
+
+Entity * game_get_globe_entity(){
+    return &game.game_entities.globe;
+}
+
+vector * game_get_other_entities(){
+    return game.game_entities.others;
 }

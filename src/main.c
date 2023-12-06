@@ -69,7 +69,6 @@ int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
-    
     resource_init();
 
 #if defined(PLATFORM_WEB)
@@ -77,6 +76,8 @@ int main(void) {
 #else
     SetTargetFPS(60);     // Set our game frames-per-second
     //--------------------------------------------------------------------------------------
+
+    SetRandomSeed(GetTime() * 5417 + GetFrameTime() * 7919);
 
     // Main game loop
     while (!WindowShouldClose() && !game_get_should_quit())    // Detect window close button

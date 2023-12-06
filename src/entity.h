@@ -17,10 +17,12 @@ typedef struct {
 typedef struct {
     float dir_x;
     float dir_z;
+    float menu_input_x;
+    float menu_input_z;
     Quaternion frame_rotation;
 } PlayerStorage;
 
-typedef struct {
+typedef struct entity{
     EntityType type;
     union {
         GlobeStorage globe_storage;
@@ -30,6 +32,8 @@ typedef struct {
     Material material;
     Quaternion rotation;
     Matrix transform;
+    void (*draw_2d_fn)(struct entity *);
+    void (*draw_3d_fn)(struct entity *);
 } Entity;
 
 #endif

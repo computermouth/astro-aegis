@@ -41,9 +41,16 @@ extern int GAME_SCREEN_HEIGHT;
 float game_get_time();
 float game_get_delta();
 void game_update();
-void game_set_state(GameMenuState);
+void game_set_should_quit();
 bool game_get_should_quit();
-GameMenuState game_get_state();
+
+void game_set_menu_state(GameMenuState new_gs);
+GameMenuState game_get_menu_state();
+void game_set_play_state(GamePlayState new_gs);
+GamePlayState game_get_play_state();
 void game_quit();
+Entity * game_get_player_entity();
+Entity * game_get_globe_entity();
+vector * game_get_other_entities();
 
 #endif
