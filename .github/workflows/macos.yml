@@ -73,17 +73,17 @@ jobs:
         
         # Build raylib x86_64 static
         make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=STATIC CUSTOM_CFLAGS="-target x86_64-apple-macos10.12 -DGL_SILENCE_DEPRECATION"
-        mv -v -f libraylib.a libraylib_x86_64.a
-        make clean
+        # mv -v -f libraylib.a libraylib_x86_64.a
+        # make clean
         
         # Build raylib arm64 static
-        make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=STATIC CUSTOM_CFLAGS="-target arm64-apple-macos11 -DGL_SILENCE_DEPRECATION" -B
-        mv -v -f libraylib.a libraylib_arm64.a
-        make clean
+        # make PLATFORM=PLATFORM_DESKTOP RAYLIB_LIBTYPE=STATIC CUSTOM_CFLAGS="-target arm64-apple-macos11 -DGL_SILENCE_DEPRECATION" -B
+        # mv -v -f libraylib.a libraylib_arm64.a
+        # make clean
         
         # Join x86_64 and arm64 static
-        lipo -create -output libraylib.a libraylib_x86_64.a libraylib_arm64.a
-        lipo libraylib.a -detailed_info
+        # lipo -create -output libraylib.a libraylib_x86_64.a libraylib_arm64.a
+        # lipo libraylib.a -detailed_info
 
         pwd
         cd ../..
@@ -99,19 +99,19 @@ jobs:
         # Build project x86_64 binary
         # TODO: Link with x86_64 raylib library: libraylib_x86_64.a
         make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target x86_64-apple-macos10.12"
-        mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_x86_64
-        make clean
+        # mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_x86_64
+        # make clean
         
         # Build project arm64 binary
         # TODO: Link with arm64 raylib library: libraylib_arm.a
-        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target arm64-apple-macos11"
-        mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_arm64
-        make clean
+        # make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target arm64-apple-macos11"
+        # mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_arm64
+        # make clean
         
         # Join x86_64 and arm64 binaries
-        lipo -create -output ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_x86_64 ${{ env.PROJECT_FILE_NAME }}_arm64
-        lipo ${{ env.PROJECT_FILE_NAME }} -detailed_info
-        cd ..
+        # lipo -create -output ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_x86_64 ${{ env.PROJECT_FILE_NAME }}_arm64
+        # lipo ${{ env.PROJECT_FILE_NAME }} -detailed_info
+        # cd ..
 
     - name: Generate Artifacts
       run: |
