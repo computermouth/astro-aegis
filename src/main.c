@@ -69,6 +69,7 @@ int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
+    SetLoadFileDataCallback(resource_load_file_callback);
     resource_init();
 
 #if defined(PLATFORM_WEB)

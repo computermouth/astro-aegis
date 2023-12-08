@@ -22,15 +22,34 @@ typedef struct {
     Quaternion frame_rotation;
 } PlayerStorage;
 
+typedef enum {
+    ASTEROID_COLOR_BLUE,
+    ASTEROID_COLOR_RED,
+    ASTEROID_COLOR_GREEN,
+} AsteroidColor;
+
+typedef enum {
+    ASTEROID_LG,
+    ASTEROID_MD,
+    ASTEROID_SM,
+} AsteroidSize;
+
+typedef struct {
+    AsteroidColor color;
+    AsteroidSize size;
+    float dir_x;
+    float dir_z;
+} AsteroidStorage;
+
 typedef struct entity{
     EntityType type;
     union {
         GlobeStorage globe_storage;
         PlayerStorage player_storage;
+        AsteroidStorage asteroid_storage;
     };
     Mesh mesh;
     Material material;
-    Quaternion rotation;
     Matrix transform;
     void (*draw_2d_fn)(struct entity *);
     void (*draw_3d_fn)(struct entity *);

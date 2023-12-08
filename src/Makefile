@@ -159,7 +159,7 @@ endif
 
 # Define include paths for required headers: INCLUDE_PATHS
 #------------------------------------------------------------------------------------------------
-INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external -I./xxd_resources/ -I./xxd_resources/img/
+INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external -I./xxd_resources/ -I./xxd_resources/img/ -I./xxd_resources/mdl/
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_DRM)
@@ -301,7 +301,9 @@ OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))
 
 XXD_IMG = $(wildcard xxd_resources/img/*.png)
 IMG_SRC = $(XXD_IMG:.png=.h)
-XXD_RES = $(IMG_SRC)
+XXD_MDL = $(wildcard xxd_resources/mdl/*.glb)
+MDL_SRC = $(XXD_MDL:.glb=.h)
+XXD_RES = $(IMG_SRC) $(MDL_SRC)
 
 # Define processes to execute
 #------------------------------------------------------------------------------------------------
@@ -312,6 +314,9 @@ all: $(PROJECT_NAME)
 # 	echo $(XXD_RES)
 
 %.h: %.png
+	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
+
+%.h: %.glb
 	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
 
 # Project target defined by PROJECT_NAME

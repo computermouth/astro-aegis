@@ -11,9 +11,9 @@
 #include <stddef.h>
 #include <stdio.h>
 
-const float ENTITY_PLAYER_FRAME_SPEED = 0.015 / 2;
-const float ENTITY_PLAYER_FRICTION = 0.0075 / 2;
-const float ENTITY_PLAYER_MAX_SPEED = .01 / 2;
+const float ENTITY_PLAYER_FRAME_SPEED = 0.0125;
+const float ENTITY_PLAYER_FRICTION = 0.025;
+const float ENTITY_PLAYER_MAX_SPEED = .0075;
 
 void entity_player_draw_2d(Entity * player);
 void entity_player_draw_3d(Entity * player);
@@ -21,7 +21,7 @@ void entity_player_draw_3d(Entity * player);
 Entity entity_player_spawn(){
 
     // player pos + rot
-    Vector3 pp = tool_vec3_world_pos((Vector3){4.5f, 0.0f, 0.0f});
+    Vector3 pp = tool_vec3_world_pos((Vector3){3.5f, 0.0f, 0.0f});
     Matrix pp_matrix = MatrixTranslate(pp.x, pp.y, pp.z);
 
     return (Entity) {
@@ -87,13 +87,13 @@ void entity_player_update(Entity * player){
 
     // dead stop turn (spend 4 frames turning around)
     if ( xdir == -1 && old_x >= 0 && player->player_storage.dir_x <=0 && player->player_storage.dir_z == 0 ){
-        player->player_storage.dir_z = frame_friction_decrease * 4 ;
+        player->player_storage.dir_z = frame_friction_decrease * 2 ;
     } else if ( xdir == 1 && old_x <= 0 && player->player_storage.dir_x >=0 && player->player_storage.dir_z == 0 ){
-        player->player_storage.dir_z = frame_friction_decrease * -4 ;
+        player->player_storage.dir_z = frame_friction_decrease * -2 ;
     } else if ( zdir == -1 && old_z >= 0 && player->player_storage.dir_z <=0 && player->player_storage.dir_x == 0){
-        player->player_storage.dir_x = frame_friction_decrease * 4 ;
+        player->player_storage.dir_x = frame_friction_decrease * 2 ;
     } else if ( zdir == 1 && old_z <= 0 && player->player_storage.dir_z >=0 && player->player_storage.dir_x == 0){
-        player->player_storage.dir_x = frame_friction_decrease * -4 ;
+        player->player_storage.dir_x = frame_friction_decrease * -2 ;
     }
 
     Vector2 dir_norm = Vector2Normalize((Vector2){player->player_storage.dir_x, player->player_storage.dir_z});
