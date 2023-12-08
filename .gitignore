@@ -65,4 +65,4 @@ dkms.conf
 
 src/astro-aegis*
 src/xxd_resources/*/*.h
-asset_src/asteroids.blend*
+asset_src/*.blend*

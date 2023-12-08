@@ -46,6 +46,10 @@ void entity_globe_draw_2d(Entity * globe){
 }
 
 void entity_globe_draw_3d(Entity * globe){
+    
+    // skybox
+    DrawMesh(skybox_model.meshes[0], skybox_model.materials[1], globe->transform);
+
     DrawMesh(globe->mesh, globe->material, globe->transform);
 
     // dots

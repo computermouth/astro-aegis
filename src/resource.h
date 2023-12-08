@@ -21,6 +21,13 @@ extern Image globe_img;
 extern Texture globe_tex;
 extern Material globe_mat;
 
+extern Model skybox_model;
+
+extern Mesh atmosphere_mesh;
+extern Image atmosphere_img;
+extern Texture atmosphere_tex;
+extern Material atmosphere_mat;
+
 extern Image    bluetex1_img;
 extern Texture  bluetex1_tex;
 extern Material bluetex1_mat;
@@ -56,11 +63,6 @@ extern Material redtex2_mat;
 extern Image    redtex3_img;
 extern Texture  redtex3_tex;
 extern Material redtex3_mat;
-
-extern Mesh atmosphere_mesh;
-extern Image atmosphere_img;
-extern Texture atmosphere_tex;
-extern Material atmosphere_mat;
 
 extern Mesh player_mesh;
 extern Image player_img;

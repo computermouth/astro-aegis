@@ -1,6 +1,11 @@
 
 #include "assets.h"
 
+#include "skybox.h"
+const char * skybox_filename = "skybox.glb";
+const uint8_t * skybox_glb = xxd_resources_mdl_skybox_glb;
+const uint32_t skybox_glb_len = xxd_resources_mdl_skybox_glb_len;
+
 #include "globetex.h"
 const uint8_t * globetex_png = xxd_resources_img_globetex_png;
 const uint32_t globetex_png_len = xxd_resources_img_globetex_png_len;

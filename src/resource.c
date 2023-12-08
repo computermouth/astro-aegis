@@ -10,6 +10,13 @@ Image globe_img = { 0 };
 Texture globe_tex = { 0 };
 Material globe_mat = { 0 };
 
+Mesh atmosphere_mesh = { 0 };
+Image atmosphere_img = { 0 };
+Texture atmosphere_tex = { 0 };
+Material atmosphere_mat = { 0 };
+
+Model skybox_model = { 0 };
+
 Image    bluetex1_img = { 0 };
 Texture  bluetex1_tex = { 0 };
 Material bluetex1_mat = { 0 };
@@ -45,11 +52,6 @@ Material redtex2_mat = { 0 };
 Image    redtex3_img = { 0 };
 Texture  redtex3_tex = { 0 };
 Material redtex3_mat = { 0 };
-
-Mesh atmosphere_mesh = { 0 };
-Image atmosphere_img = { 0 };
-Texture atmosphere_tex = { 0 };
-Material atmosphere_mat = { 0 };
 
 Mesh player_mesh = { 0 };
 Image player_img = { 0 };
@@ -112,6 +114,16 @@ void resource_init(){
         atmosphere_mat = LoadMaterialDefault();
         atmosphere_mat.maps[MATERIAL_MAP_DIFFUSE].texture = atmosphere_tex;
         atmosphere_mat.maps[MATERIAL_MAP_DIFFUSE].color.a = 255 / 10;
+    }
+
+    { // asteroid_b000
+        resource_load_stats r = {
+            // .filename = char[100]{0},
+            .data = skybox_glb,
+            .len = skybox_glb_len,
+        };
+        strcpy(r.filename, skybox_filename);
+        skybox_model = LoadModel(r.filename);
     }
 
     { // player
