@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 const float ENTITY_PLAYER_FRAME_SPEED = 0.0125;
-const float ENTITY_PLAYER_FRICTION = 0.025;
+const float ENTITY_PLAYER_FRICTION = 0.0125;
 const float ENTITY_PLAYER_MAX_SPEED = .0075;
 
 void entity_player_draw_2d(Entity * player);
@@ -45,8 +45,8 @@ void entity_player_update(Entity * player){
     if (max_xy_speed == 0)
         max_xy_speed = Vector2Length((Vector2){max_speed, max_speed});
 
-    float old_x = player->player_storage.dir_x;
-    float old_z = player->player_storage.dir_z;
+    // float old_x = player->player_storage.dir_x;
+    // float old_z = player->player_storage.dir_z;
 
     float xdir = 0;
     float zdir = 0;
@@ -85,22 +85,32 @@ void entity_player_update(Entity * player){
     player->player_storage.dir_x = Clamp(player->player_storage.dir_x + xdir * frame_speed_increase, -max_speed, max_speed);
     player->player_storage.dir_z = Clamp(player->player_storage.dir_z + zdir * frame_speed_increase, -max_speed, max_speed);
 
-    // dead stop turn (spend 4 frames turning around)
-    if ( xdir == -1 && old_x >= 0 && player->player_storage.dir_x <=0 && player->player_storage.dir_z == 0 ){
-        player->player_storage.dir_z = frame_friction_decrease * 2 ;
-    } else if ( xdir == 1 && old_x <= 0 && player->player_storage.dir_x >=0 && player->player_storage.dir_z == 0 ){
-        player->player_storage.dir_z = frame_friction_decrease * -2 ;
-    } else if ( zdir == -1 && old_z >= 0 && player->player_storage.dir_z <=0 && player->player_storage.dir_x == 0){
-        player->player_storage.dir_x = frame_friction_decrease * 2 ;
-    } else if ( zdir == 1 && old_z <= 0 && player->player_storage.dir_z >=0 && player->player_storage.dir_x == 0){
-        player->player_storage.dir_x = frame_friction_decrease * -2 ;
-    }
+    // dead stop turn (spend 2 frames turning around)
+    // if ( xdir == -1 && old_x >= 0 && player->player_storage.dir_x <=0 && player->player_storage.dir_z == 0 ){
+    //     player->player_storage.dir_z = frame_friction_decrease * 2 ;
+    // } else if ( xdir == 1 && old_x <= 0 && player->player_storage.dir_x >=0 && player->player_storage.dir_z == 0 ){
+    //     player->player_storage.dir_z = frame_friction_decrease * -2 ;
+    // } else if ( zdir == -1 && old_z >= 0 && player->player_storage.dir_z <=0 && player->player_storage.dir_x == 0){
+    //     player->player_storage.dir_x = frame_friction_decrease * 2 ;
+    // } else if ( zdir == 1 && old_z <= 0 && player->player_storage.dir_z >=0 && player->player_storage.dir_x == 0){
+    //     player->player_storage.dir_x = frame_friction_decrease * -2 ;
+    // }
 
-    Vector2 dir_norm = Vector2Normalize((Vector2){player->player_storage.dir_x, player->player_storage.dir_z});
     // clamp diagonal speed
     if ( (fabs(player->player_storage.dir_x) + fabs(player->player_storage.dir_z)) > max_xy_speed ){
-        player->player_storage.dir_x = dir_norm.x * max_speed;
-        player->player_storage.dir_z = dir_norm.y * max_speed;
+
+        // stick on diagonal
+        if (fabs(fabs(player->player_storage.dir_x) - fabs(player->player_storage.dir_z)) < frame_speed_increase){
+            player->player_storage.dir_x = xdir * max_xy_speed / 2;
+            player->player_storage.dir_z = zdir * max_xy_speed / 2;
+        // steal speed from the other axis
+        } else {
+            if (fabs(player->player_storage.dir_x) > max_xy_speed / 2) {
+                player->player_storage.dir_x -= xdir * frame_speed_increase * 2;
+            } else if (fabs(player->player_storage.dir_z) > max_xy_speed / 2) {
+                player->player_storage.dir_z -= zdir * frame_speed_increase * 2;
+            }
+        }
     }
 
     player->player_storage.frame_rotation = QuaternionMultiply(
@@ -108,6 +118,7 @@ void entity_player_update(Entity * player){
         QuaternionFromAxisAngle((Vector3){0,0,1}, player->player_storage.dir_z)
     );
 
+    Vector2 dir_norm = Vector2Normalize((Vector2){player->player_storage.dir_x, player->player_storage.dir_z});
     if (xdir != 0 || zdir != 0){
         // player rot
         float rads = atan2f(-dir_norm.x, dir_norm.y);

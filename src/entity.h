@@ -12,6 +12,7 @@ typedef enum {
 } EntityType;
 
 typedef struct {
+    Quaternion net_rotation;
 } GlobeStorage;
 
 typedef struct {
@@ -37,8 +38,11 @@ typedef enum {
 typedef struct {
     AsteroidColor color;
     AsteroidSize size;
-    float dir_x;
-    float dir_z;
+    Vector2 speed;
+    Vector3 rotation_direction;
+    float rotation_speed;
+    Quaternion origin_rotation;
+    float origin_time;
 } AsteroidStorage;
 
 typedef struct entity{

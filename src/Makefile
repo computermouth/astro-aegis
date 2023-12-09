@@ -294,7 +294,7 @@ endif
 
 # Define source code files required
 #------------------------------------------------------------------------------------------------
-PROJECT_SOURCE_FILES ?= main.c xxd_resources/assets.c resource.c tool.c game.c entity_player.c entity_globe.c vector.c
+PROJECT_SOURCE_FILES ?= main.c xxd_resources/assets.c resource.c tool.c game.c entity_player.c entity_globe.c vector.c entity_asteroid.c
 
 # Define all object files from source files
 OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))

@@ -17,7 +17,7 @@
 #include "vector.h"
 #include "entity_globe.h"
 #include "entity_player.h"
-
+#include "entity_asteroid.h"
 
 int GAME_SCREEN_WIDTH = 1280;
 int GAME_SCREEN_HEIGHT = 720;
@@ -59,9 +59,6 @@ float dirchange = 0.0f;
 
 void game_update_menu(){
 
-    game.game_delta = GetFrameTime();
-    game.game_time += game.game_delta;
-
     if (game.game_menu_state == GAME_MENU_STATE_INIT){
         dirchange = 0.0f;
 
@@ -102,6 +99,12 @@ void game_update_menu(){
 
     entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
+
+    // dynamic camera
+    float dirx = game.game_entities.player.player_storage.dir_x;
+    float dirz = game.game_entities.player.player_storage.dir_z;
+    game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
+    game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     
     BeginDrawing();
         ClearBackground(BLACK);
@@ -156,13 +159,25 @@ void game_update_play(){
     entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
 
+    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
+        Entity a = entity_asteroid_spawn();
+        vector_push(game.game_entities.others, &a);
+        fprintf(stderr, "ok: %lu\n", vector_size(game.game_entities.others));
+    }
+
+    // dynamic camera
+    float dirx = game.game_entities.player.player_storage.dir_x;
+    float dirz = game.game_entities.player.player_storage.dir_z;
+    game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
+    game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
+
     // update all entities
     size_t e_len = vector_size(game.game_entities.others);
     Entity * entities = vector_begin(game.game_entities.others);
     for(size_t i = 0; i < e_len; i++){
         switch (entities[i].type) {
             case ENTITY_TYPE_ASTEROID:
-                // entity_asteroid_update();
+                entity_asteroid_update(&entities[i]);
                 break;
             default:
                 printf("E: encountered unknown entity type: %d\n", entities[i].type);
@@ -177,23 +192,24 @@ void game_update_play(){
 
         BeginMode3D(game.game_camera);
 
-        // draw special 3d entities
-        game.game_entities.globe.draw_3d_fn(&game.game_entities.globe);
-        game.game_entities.player.draw_3d_fn(&game.game_entities.player);
-
         // draw all 3d entities
         e_len = vector_size(game.game_entities.others);
         entities = vector_begin(game.game_entities.others);
         for(size_t i = 0; i < e_len; i++){
-            if (entities[i].draw_3d_fn)
+            if (entities[i].draw_3d_fn){
                 entities[i].draw_3d_fn(&entities[i]);
+            }
         }
+
+        // draw special 3d entities
+        game.game_entities.player.draw_3d_fn(&game.game_entities.player);
+        game.game_entities.globe.draw_3d_fn(&game.game_entities.globe);
 
         EndMode3D();
 
         // draw special 2d entities
-        game.game_entities.globe.draw_2d_fn(&game.game_entities.globe);
         game.game_entities.player.draw_2d_fn(&game.game_entities.player);
+        game.game_entities.globe.draw_2d_fn(&game.game_entities.globe);
 
         // draw all 2d entities
         e_len = vector_size(game.game_entities.others);
@@ -208,6 +224,10 @@ void game_update_play(){
 }
 
 void game_update() {
+
+    game.game_delta = GetFrameTime();
+    game.game_time += game.game_delta;
+
     switch (game.game_menu_state) {
         case GAME_MENU_STATE_INIT:
             game_update_menu();
