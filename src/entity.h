@@ -25,24 +25,27 @@ typedef struct {
 
 typedef enum {
     ASTEROID_COLOR_BLUE,
-    ASTEROID_COLOR_RED,
     ASTEROID_COLOR_GREEN,
+    ASTEROID_COLOR_RED,
+    __ASTEROID_COLOR_END,
 } AsteroidColor;
 
 typedef enum {
-    ASTEROID_LG,
-    ASTEROID_MD,
-    ASTEROID_SM,
+    ASTEROID_SIZE_LG,
+    ASTEROID_SIZE_MD,
+    ASTEROID_SIZE_SM,
+    __ASTEROID_SIZE_END
 } AsteroidSize;
 
 typedef struct {
     AsteroidColor color;
-    AsteroidSize size;
-    Vector2 speed;
-    Vector3 rotation_direction;
-    float rotation_speed;
-    Quaternion origin_rotation;
-    float origin_time;
+    AsteroidSize  size;
+    float         traversal_speed;
+    Vector3       traversal_direction;
+    float         rotation_speed;
+    Vector3       rotation_direction;
+    Quaternion    origin_rotation;
+    float         origin_time;
 } AsteroidStorage;
 
 typedef struct entity{

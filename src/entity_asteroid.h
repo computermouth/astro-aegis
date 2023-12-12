@@ -4,7 +4,7 @@
 
 #include "entity.h"
 
-Entity entity_asteroid_spawn();
+Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color);
 void entity_asteroid_update(Entity * asteroid);
 
 #endif

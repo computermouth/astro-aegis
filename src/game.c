@@ -160,9 +160,8 @@ void game_update_play(){
     entity_globe_update(&game.game_entities.globe);
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
-        Entity a = entity_asteroid_spawn();
+        Entity a = entity_asteroid_spawn(ASTEROID_SIZE_LG, GetRandomValue(ASTEROID_COLOR_BLUE, ASTEROID_COLOR_RED));
         vector_push(game.game_entities.others, &a);
-        fprintf(stderr, "ok: %lu\n", vector_size(game.game_entities.others));
     }
 
     // dynamic camera
