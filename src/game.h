@@ -26,11 +26,21 @@ typedef struct {
     vector * others;
 } GameEntities;
 
+// maybe this should be a static
+// global in level.c
+// with an init and deinit thing
+typedef struct {
+    size_t level;
+    size_t wave;
+    float level_start_time;
+} GameLevelState;
+
 typedef struct {
     float game_time;
     float game_delta;
     GameMenuState game_menu_state;
     GamePlayState game_play_state;
+    GameLevelState game_level_state;
     GameEntities game_entities;
     Camera3D game_camera;
 } Game;

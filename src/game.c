@@ -1,4 +1,5 @@
 
+#include "level.h"
 #include "raylib.h"
 #include "raymath.h"
 #define RAYGUI_IMPLEMENTATION
@@ -18,6 +19,7 @@
 #include "entity_globe.h"
 #include "entity_player.h"
 #include "entity_asteroid.h"
+#include "level.h"
 
 int GAME_SCREEN_WIDTH = 1280;
 int GAME_SCREEN_HEIGHT = 720;
@@ -154,10 +156,17 @@ void game_update_play(){
         game.game_entities.others = vector_init(sizeof(Entity));
 
         game.game_play_state = GAME_PLAY_STATE_PLAY;
+
+        game.game_level_state = (GameLevelState){
+            .level = 0,
+            .wave = 0,
+            .level_start_time = game.game_time
+        };
     }
 
     entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
+    level_update(game.game_entities.others, &game.game_level_state);
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
         Entity a = entity_asteroid_spawn(ASTEROID_SIZE_LG, GetRandomValue(ASTEROID_COLOR_BLUE, ASTEROID_COLOR_RED));
@@ -217,6 +226,8 @@ void game_update_play(){
             if (entities[i].draw_2d_fn)
                 entities[i].draw_2d_fn(&entities[i]);
         }
+
+        level_draw_2d(game.game_level_state);
 
     EndDrawing();
 
