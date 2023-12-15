@@ -69,6 +69,8 @@ int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
+    InitAudioDevice();
+    SetMasterVolume(.5);
     SetLoadFileDataCallback(resource_load_file_callback);
     resource_init();
 

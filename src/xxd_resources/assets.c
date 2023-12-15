@@ -203,3 +203,11 @@ const uint32_t asteroid_s008_glb_len = xxd_resources_mdl_asteroid_s008_glb_len;
 const char * asteroid_s009_filename = "asteroid_s009.glb";
 const uint8_t * asteroid_s009_glb = xxd_resources_mdl_asteroid_s009_glb;
 const uint32_t asteroid_s009_glb_len = xxd_resources_mdl_asteroid_s009_glb_len;
+
+#include "cyber_spider_open.h"
+const uint8_t * cyber_spider_open_xm = xxd_resources_mus_cyber_spider_open_xm;
+const uint32_t cyber_spider_open_xm_len = xxd_resources_mus_cyber_spider_open_xm_len;
+
+#include "cyber_spider_rest.h"
+const uint8_t * cyber_spider_rest_xm = xxd_resources_mus_cyber_spider_rest_xm;
+const uint32_t cyber_spider_rest_xm_len = xxd_resources_mus_cyber_spider_rest_xm_len;

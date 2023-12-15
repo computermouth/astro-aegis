@@ -94,6 +94,9 @@ Model asteroid_s009_model = { 0 };
 Model asteroid_models[30] = {0};
 Material asteroid_materials[9] = {0};
 
+Music cyber_spider_open_music = { 0 };
+Music cyber_spider_rest_music = { 0 };
+
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init(){
@@ -539,6 +542,14 @@ void resource_init(){
         asteroid_materials[6] = redtex1_mat;
         asteroid_materials[7] = redtex2_mat;
         asteroid_materials[8] = redtex3_mat;
+    }
+
+    // music
+    {
+        #include <stdio.h>
+        fprintf(stderr, "csl: %lu\n", cyber_spider_open_xm_len);
+        cyber_spider_open_music = LoadMusicStreamFromMemory(".xm", cyber_spider_open_xm, cyber_spider_open_xm_len);
+        cyber_spider_rest_music = LoadMusicStreamFromMemory(".xm", cyber_spider_rest_xm, cyber_spider_rest_xm_len);
     }
 
 }

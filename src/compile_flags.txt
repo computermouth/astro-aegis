@@ -12,4 +12,5 @@
 -I./xxd_resources
 -I./xxd_resources/img
 -I./xxd_resources/mdl
+-I./xxd_resources/mus
 -DPLATFORM_DESKTOP

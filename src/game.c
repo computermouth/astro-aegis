@@ -58,6 +58,8 @@ bool game_get_should_quit(){
 }
 
 float dirchange = 0.0f;
+float last_playtime = 0.0f;
+float curr_playtime = 0.0f;
 
 void game_update_menu(){
 
@@ -82,7 +84,21 @@ void game_update_menu(){
 
         game.game_entities.player.player_storage.menu_input_x = 0;
         game.game_entities.player.player_storage.menu_input_z = 1;
+
+        game.game_music = cyber_spider_open_music;
+        PlayMusicStream(game.game_music);
     }
+
+    UpdateMusicStream(game.game_music);
+
+    curr_playtime = GetMusicTimePlayed(game.game_music)/GetMusicTimeLength(game.game_music);
+    float playdiff = curr_playtime - last_playtime;
+    if (game.game_music.ctxData == cyber_spider_open_music.ctxData && curr_playtime + playdiff >= 1.0){
+        StopMusicStream(game.game_music);
+        game.game_music = cyber_spider_rest_music;
+        PlayMusicStream(game.game_music);
+    }
+    last_playtime = curr_playtime;
 
     // every 5s change player's direction at random
     dirchange += game.game_delta;

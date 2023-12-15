@@ -105,4 +105,7 @@ extern Model asteroid_s009_model;
 extern Model asteroid_models[30];
 extern Material asteroid_materials[9];
 
+extern Music cyber_spider_open_music;
+extern Music cyber_spider_rest_music;
+
 #endif

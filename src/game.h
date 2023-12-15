@@ -38,6 +38,7 @@ typedef struct {
 typedef struct {
     float game_time;
     float game_delta;
+    Music game_music;
     GameMenuState game_menu_state;
     GamePlayState game_play_state;
     GameLevelState game_level_state;

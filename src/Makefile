@@ -159,7 +159,11 @@ endif
 
 # Define include paths for required headers: INCLUDE_PATHS
 #------------------------------------------------------------------------------------------------
-INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external -I./xxd_resources/ -I./xxd_resources/img/ -I./xxd_resources/mdl/
+INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external
+INCLUDE_PATHS += -I./xxd_resources/
+INCLUDE_PATHS += -I./xxd_resources/img/
+INCLUDE_PATHS += -I./xxd_resources/mdl/
+INCLUDE_PATHS += -I./xxd_resources/mus/
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_DRM)
@@ -303,20 +307,23 @@ XXD_IMG = $(wildcard xxd_resources/img/*.png)
 IMG_SRC = $(XXD_IMG:.png=.h)
 XXD_MDL = $(wildcard xxd_resources/mdl/*.glb)
 MDL_SRC = $(XXD_MDL:.glb=.h)
-XXD_RES = $(IMG_SRC) $(MDL_SRC)
+XXD_MUS = $(wildcard xxd_resources/mus/*.xm)
+MUS_SRC = $(XXD_MUS:.xm=.h)
+XXD_RES = $(IMG_SRC) $(MDL_SRC) $(MUS_SRC)
 
 # Define processes to execute
 #------------------------------------------------------------------------------------------------
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target
 all: $(PROJECT_NAME)
-# all:
-# 	echo $(XXD_RES)
 
 %.h: %.png
 	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
 
 %.h: %.glb
+	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
+
+%.h: %.xm
 	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
 
 # Project target defined by PROJECT_NAME
