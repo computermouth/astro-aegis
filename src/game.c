@@ -180,6 +180,17 @@ void game_update_play(){
         };
     }
 
+    UpdateMusicStream(game.game_music);
+
+    curr_playtime = GetMusicTimePlayed(game.game_music)/GetMusicTimeLength(game.game_music);
+    float playdiff = curr_playtime - last_playtime;
+    if (game.game_music.ctxData == cyber_spider_open_music.ctxData && curr_playtime + playdiff >= 1.0){
+        StopMusicStream(game.game_music);
+        game.game_music = cyber_spider_rest_music;
+        PlayMusicStream(game.game_music);
+    }
+    last_playtime = curr_playtime;
+
     entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
     level_update(game.game_entities.others, &game.game_level_state);
