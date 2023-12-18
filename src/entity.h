@@ -21,6 +21,7 @@ typedef struct {
     float menu_input_x;
     float menu_input_z;
     Quaternion frame_rotation;
+    Vector2 mouse_aim_dir;
 } PlayerStorage;
 
 typedef enum {

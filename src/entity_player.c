@@ -40,6 +40,9 @@ void entity_player_update(Entity * player){
     float frame_friction_decrease = ENTITY_PLAYER_FRICTION * game_get_delta();
     float max_speed = ENTITY_PLAYER_MAX_SPEED;
 
+    player->player_storage.mouse_aim_dir = Vector2Negate(Vector2Normalize(Vector2Subtract((Vector2){(float)GAME_SCREEN_WIDTH / 2,(float)GAME_SCREEN_HEIGHT / 2}, GetMousePosition())));
+    // float ang = Vector2LineAngle((Vector2){0,0}, player->player_storage.mouse_aim_dir);
+    
     // dumb hack to calculate once
     static float max_xy_speed = 0;
     if (max_xy_speed == 0)
@@ -141,12 +144,19 @@ void entity_player_update(Entity * player){
 
 char pdir_x[100];
 char pdir_z[100];
+char mouse_dir_z[100];
+char mouse_dir_z[100];
 
 void entity_player_draw_2d(Entity * player){
     sprintf(pdir_x, "pdir_x: %f", player->player_storage.dir_x);
     sprintf(pdir_z, "pdir_z: %f", player->player_storage.dir_z);
-    DrawText(pdir_x, 32, 32, 32, RAYWHITE);
-    DrawText(pdir_z, 32, 64, 32, RAYWHITE);
+    DrawText(pdir_x, 1000, 32, 32, RAYWHITE);
+    DrawText(pdir_z, 1000, 64, 32, RAYWHITE);
+
+    sprintf(pdir_x, "mdir_x: %f", player->player_storage.mouse_aim_dir.x);
+    sprintf(pdir_z, "mdir_y: %f", player->player_storage.mouse_aim_dir.y);
+    DrawText(pdir_x, 1000, 96, 32, RAYWHITE);
+    DrawText(pdir_z, 1000, 128, 32, RAYWHITE);
 
     DrawFPS(10, 10);
 }

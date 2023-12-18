@@ -180,6 +180,7 @@ void game_update_play(){
         };
     }
 
+    // music
     UpdateMusicStream(game.game_music);
 
     curr_playtime = GetMusicTimePlayed(game.game_music)/GetMusicTimeLength(game.game_music);
@@ -191,6 +192,7 @@ void game_update_play(){
     }
     last_playtime = curr_playtime;
 
+    // updates
     entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
     level_update(game.game_entities.others, &game.game_level_state);

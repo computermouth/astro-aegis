@@ -74,7 +74,7 @@ void level_draw_2d(GameLevelState gls){
     sprintf(time__label, "time : %.2f", game_get_time() - gls.level_start_time);
     sprintf(level_label, "level: %lu", gls.level);
     sprintf(wave__label, "wave : %lu", gls.wave);
-    DrawText(time__label, 32,  96, 32, RAYWHITE);
-    DrawText(level_label, 32, 128, 32, RAYWHITE);
-    DrawText(wave__label, 32, 160, 32, RAYWHITE);
+    DrawText(time__label, 32,  32, 32, RAYWHITE);
+    DrawText(level_label, 32, 64, 32, RAYWHITE);
+    DrawText(wave__label, 32, 96, 32, RAYWHITE);
 }
