@@ -41,11 +41,11 @@ level_spawnset levels[2][6] = {
     },
 };
 
-void level_update(vector * v, GameLevelState * gls){
-
+void level_update(vector * entities, GameLevelState * gls){
+    return;
     // watch for level change
     if (gls->wave == 6) {
-        if (vector_size(v) == 0) {
+        if (vector_size(entities) == 0) {
             gls->level++;
             gls->wave = 0;
             gls->level_start_time = game_get_time();
@@ -58,7 +58,7 @@ void level_update(vector * v, GameLevelState * gls){
         for(size_t i = 0; i < ls.count; i++){
             fprintf(stderr, "spawn: %d %d\n", ls.size, ls.color);
             Entity e = entity_asteroid_spawn(ls.size, ls.color);
-            vector_push(v, &e);
+            vector_push(entities, &e);
         }
         gls->wave++;
         if (gls->wave == 6)

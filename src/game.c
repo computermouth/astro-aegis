@@ -115,7 +115,7 @@ void game_update_menu(){
         dirchange = fmodf(dirchange, 1.0f);
     }
 
-    entity_player_update(&game.game_entities.player);
+    entity_player_update(game.game_entities.others, &game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
 
     // dynamic camera
@@ -193,14 +193,9 @@ void game_update_play(){
     last_playtime = curr_playtime;
 
     // updates
-    entity_player_update(&game.game_entities.player);
+    entity_player_update(game.game_entities.others, &game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
     level_update(game.game_entities.others, &game.game_level_state);
-
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
-        Entity a = entity_asteroid_spawn(ASTEROID_SIZE_LG, GetRandomValue(ASTEROID_COLOR_BLUE, ASTEROID_COLOR_RED));
-        vector_push(game.game_entities.others, &a);
-    }
 
     // dynamic camera
     float dirx = game.game_entities.player.player_storage.dir_x;
@@ -215,6 +210,9 @@ void game_update_play(){
         switch (entities[i].type) {
             case ENTITY_TYPE_ASTEROID:
                 entity_asteroid_update(&entities[i]);
+                break;
+            case ENTITY_TYPE_BULLET:
+                entity_bullet_update(&entities[i]);
                 break;
             default:
                 printf("E: encountered unknown entity type: %d\n", entities[i].type);

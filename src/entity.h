@@ -4,11 +4,13 @@
 
 #include "raylib.h"
 #include "vector.h"
+#include "weapon.h"
 
 typedef enum {
     ENTITY_TYPE_PLAYER,
     ENTITY_TYPE_GLOBE,
     ENTITY_TYPE_ASTEROID,
+    ENTITY_TYPE_BULLET,
 } EntityType;
 
 typedef struct {
@@ -16,12 +18,14 @@ typedef struct {
 } GlobeStorage;
 
 typedef struct {
-    float dir_x;
-    float dir_z;
-    float menu_input_x;
-    float menu_input_z;
+    float      dir_x;
+    float      dir_z;
+    float      menu_input_x;
+    float      menu_input_z;
     Quaternion frame_rotation;
-    Vector2 mouse_aim_dir;
+    Vector2    shoot_dir;
+    WeaponType weapon_index;
+    Weapon     weapons[__WEAPON_END];
 } PlayerStorage;
 
 typedef enum {
@@ -49,18 +53,27 @@ typedef struct {
     float         origin_time;
 } AsteroidStorage;
 
+typedef struct {
+    Vector2    dir;
+    float      speed;
+    WeaponType w;
+    Quaternion origin_rotation;
+    float      origin_time;
+} BulletStorage;
+
 typedef struct entity{
     EntityType type;
     union {
-        GlobeStorage globe_storage;
-        PlayerStorage player_storage;
+        GlobeStorage    globe_storage;
+        PlayerStorage   player_storage;
         AsteroidStorage asteroid_storage;
+        BulletStorage  bullet_storage;
     };
-    Mesh mesh;
+    Mesh     mesh;
     Material material;
-    Matrix transform;
-    void (*draw_2d_fn)(struct entity *);
-    void (*draw_3d_fn)(struct entity *);
+    Matrix   transform;
+    void     (*draw_2d_fn)(struct entity *);
+    void     (*draw_3d_fn)(struct entity *);
 } Entity;
 
 #endif

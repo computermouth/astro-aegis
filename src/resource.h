@@ -105,6 +105,21 @@ extern Model asteroid_s009_model;
 extern Model asteroid_models[30];
 extern Material asteroid_materials[9];
 
+extern Image    red_bullet_img;
+extern Texture  red_bullet_tex;
+extern Material red_bullet_mat;
+extern Mesh     red_bullet_msh;
+
+extern Image    grn_bullet_img;
+extern Texture  grn_bullet_tex;
+extern Material grn_bullet_mat;
+extern Mesh     grn_bullet_msh;
+
+extern Image    blu_bullet_img;
+extern Texture  blu_bullet_tex;
+extern Material blu_bullet_mat;
+extern Mesh     blu_bullet_msh;
+
 extern Music cyber_spider_open_music;
 extern Music cyber_spider_rest_music;
 

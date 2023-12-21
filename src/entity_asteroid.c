@@ -110,7 +110,7 @@ Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color){
 void entity_asteroid_update(Entity * asteroid){
 
     AsteroidStorage s = asteroid->asteroid_storage;
-    // todo, make -3.5f
+
     Matrix scale = MatrixScale(0.4f, 0.4f, 0.4f);
     Matrix asteroid_rotation = QuaternionToMatrix(QuaternionFromAxisAngle(s.rotation_direction, fmodf(s.rotation_speed * game_get_time(), PI * 2)));
     Vector3 offset_in = Vector3Transform((Vector3){-3.5, 0, 0}, QuaternionToMatrix(QuaternionInvert(s.origin_rotation)));

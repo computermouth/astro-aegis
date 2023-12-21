@@ -7,6 +7,7 @@
 #include "resource.h"
 #include "entity_player.h"
 #include "entity.h"
+#include "weapon.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -34,15 +35,14 @@ Entity entity_player_spawn(){
     };
 }
 
-void entity_player_update(Entity * player){
+void entity_player_update(vector * entities, Entity * player){
+
+    PlayerStorage * ps = &player->player_storage;
 
     float frame_speed_increase = ENTITY_PLAYER_FRAME_SPEED * game_get_delta();
     float frame_friction_decrease = ENTITY_PLAYER_FRICTION * game_get_delta();
     float max_speed = ENTITY_PLAYER_MAX_SPEED;
 
-    player->player_storage.mouse_aim_dir = Vector2Negate(Vector2Normalize(Vector2Subtract((Vector2){(float)GAME_SCREEN_WIDTH / 2,(float)GAME_SCREEN_HEIGHT / 2}, GetMousePosition())));
-    // float ang = Vector2LineAngle((Vector2){0,0}, player->player_storage.mouse_aim_dir);
-    
     // dumb hack to calculate once
     static float max_xy_speed = 0;
     if (max_xy_speed == 0)
@@ -67,26 +67,49 @@ void entity_player_update(Entity * player){
         } else if (IsKeyDown(KEY_S)) {
             zdir = -1;
         }
+
+        // todo -- weapon switch here
+
+        ps->shoot_dir.x = 0;
+        if (IsKeyDown(KEY_LEFT)) {
+            ps->shoot_dir.x = -1;
+        } else if (IsKeyDown(KEY_RIGHT)) {
+            ps->shoot_dir.x = 1;
+        }
+        ps->shoot_dir.y = 0;
+        if (IsKeyDown(KEY_UP)) {
+            ps->shoot_dir.y = -1;
+        } else if (IsKeyDown(KEY_DOWN)) {
+            ps->shoot_dir.y = 1;
+        }
+
+        // bool was_firing = ps->weapons[ps->weapon_index].is_firing;
+        // ps->weapons[ps->weapon_index].is_firing = (ps->shoot_dir.x != 0 || ps->shoot_dir.y != 0);
+        // if (!was_firing && ps->weapons[ps->weapon_index].is_firing){
+        //     ps->weapons[ps->weapon_index].time_last_fired = game_get_time();
+        //     ps->weapons[ps->weapon_index].fire_start_time = game_get_time();
+        // }
+
     } else {
-        xdir = player->player_storage.menu_input_x;
-        zdir = player->player_storage.menu_input_z;
+        xdir = ps->menu_input_x;
+        zdir = ps->menu_input_z;
     }
 
     // apply x friction
-    if (player->player_storage.dir_x < 0  && xdir == 0)
-        player->player_storage.dir_x = fmin(player->player_storage.dir_x + frame_friction_decrease, 0);
-    else if (player->player_storage.dir_x > 0 && xdir == 0)
-        player->player_storage.dir_x = fmax(player->player_storage.dir_x - frame_friction_decrease, 0);
+    if (ps->dir_x < 0  && xdir == 0)
+        ps->dir_x = fmin(ps->dir_x + frame_friction_decrease, 0);
+    else if (ps->dir_x > 0 && xdir == 0)
+        ps->dir_x = fmax(ps->dir_x - frame_friction_decrease, 0);
 
     // apply z friction
-    if (player->player_storage.dir_z < 0 && zdir == 0)
-        player->player_storage.dir_z = fmin(player->player_storage.dir_z + frame_friction_decrease, 0);
-    else if (player->player_storage.dir_z > 0 && zdir == 0)
-        player->player_storage.dir_z = fmax(player->player_storage.dir_z - frame_friction_decrease, 0);
+    if (ps->dir_z < 0 && zdir == 0)
+        ps->dir_z = fmin(ps->dir_z + frame_friction_decrease, 0);
+    else if (ps->dir_z > 0 && zdir == 0)
+        ps->dir_z = fmax(ps->dir_z - frame_friction_decrease, 0);
 
     // calculate velocity
-    player->player_storage.dir_x = Clamp(player->player_storage.dir_x + xdir * frame_speed_increase, -max_speed, max_speed);
-    player->player_storage.dir_z = Clamp(player->player_storage.dir_z + zdir * frame_speed_increase, -max_speed, max_speed);
+    ps->dir_x = Clamp(ps->dir_x + xdir * frame_speed_increase, -max_speed, max_speed);
+    ps->dir_z = Clamp(ps->dir_z + zdir * frame_speed_increase, -max_speed, max_speed);
 
     // dead stop turn (spend 2 frames turning around)
     // if ( xdir == -1 && old_x >= 0 && player->player_storage.dir_x <=0 && player->player_storage.dir_z == 0 ){
@@ -100,28 +123,28 @@ void entity_player_update(Entity * player){
     // }
 
     // clamp diagonal speed
-    if ( (fabs(player->player_storage.dir_x) + fabs(player->player_storage.dir_z)) > max_xy_speed ){
+    if ( (fabs(ps->dir_x) + fabs(ps->dir_z)) > max_xy_speed ){
 
         // stick on diagonal
-        if (fabs(fabs(player->player_storage.dir_x) - fabs(player->player_storage.dir_z)) < frame_speed_increase){
-            player->player_storage.dir_x = xdir * max_xy_speed / 2;
-            player->player_storage.dir_z = zdir * max_xy_speed / 2;
+        if (fabs(fabs(ps->dir_x) - fabs(ps->dir_z)) < frame_speed_increase){
+            ps->dir_x = xdir * max_xy_speed / 2;
+            ps->dir_z = zdir * max_xy_speed / 2;
         // steal speed from the other axis
         } else {
-            if (fabs(player->player_storage.dir_x) > max_xy_speed / 2) {
-                player->player_storage.dir_x -= xdir * frame_speed_increase * 2;
-            } else if (fabs(player->player_storage.dir_z) > max_xy_speed / 2) {
-                player->player_storage.dir_z -= zdir * frame_speed_increase * 2;
+            if (fabs(ps->dir_x) > max_xy_speed / 2) {
+                ps->dir_x -= xdir * frame_speed_increase * 2;
+            } else if (fabs(ps->dir_z) > max_xy_speed / 2) {
+                ps->dir_z -= zdir * frame_speed_increase * 2;
             }
         }
     }
 
-    player->player_storage.frame_rotation = QuaternionMultiply(
-        QuaternionFromAxisAngle((Vector3){0,1,0}, player->player_storage.dir_x),
-        QuaternionFromAxisAngle((Vector3){0,0,1}, player->player_storage.dir_z)
+    ps->frame_rotation = QuaternionMultiply(
+        QuaternionFromAxisAngle((Vector3){0,1,0}, ps->dir_x),
+        QuaternionFromAxisAngle((Vector3){0,0,1}, ps->dir_z)
     );
 
-    Vector2 dir_norm = Vector2Normalize((Vector2){player->player_storage.dir_x, player->player_storage.dir_z});
+    Vector2 dir_norm = Vector2Normalize((Vector2){ps->dir_x, ps->dir_z});
     if (xdir != 0 || zdir != 0){
         // player rot
         float rads = atan2f(-dir_norm.x, dir_norm.y);
@@ -140,6 +163,11 @@ void entity_player_update(Entity * player){
         player->transform = pp_transform;
     }
 
+    if (ps->shoot_dir.x || ps->shoot_dir.y){
+        ps->shoot_dir = Vector2Normalize(ps->shoot_dir);
+        weapon_fire(ps->weapon_index, &ps->weapons[ps->weapon_index], ps->shoot_dir, entities);
+    }
+
 }
 
 char pdir_x[100];
@@ -153,8 +181,8 @@ void entity_player_draw_2d(Entity * player){
     DrawText(pdir_x, 1000, 32, 32, RAYWHITE);
     DrawText(pdir_z, 1000, 64, 32, RAYWHITE);
 
-    sprintf(pdir_x, "mdir_x: %f", player->player_storage.mouse_aim_dir.x);
-    sprintf(pdir_z, "mdir_y: %f", player->player_storage.mouse_aim_dir.y);
+    sprintf(pdir_x, "mdir_x: %f", player->player_storage.shoot_dir.x);
+    sprintf(pdir_z, "mdir_y: %f", player->player_storage.shoot_dir.y);
     DrawText(pdir_x, 1000, 96, 32, RAYWHITE);
     DrawText(pdir_z, 1000, 128, 32, RAYWHITE);
 

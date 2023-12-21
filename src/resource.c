@@ -97,6 +97,21 @@ Material asteroid_materials[9] = {0};
 Music cyber_spider_open_music = { 0 };
 Music cyber_spider_rest_music = { 0 };
 
+Image    red_bullet_img = { 0 };
+Texture  red_bullet_tex = { 0 };
+Material red_bullet_mat = { 0 };
+Mesh     red_bullet_msh = { 0 };
+
+Image    grn_bullet_img = { 0 };
+Texture  grn_bullet_tex = { 0 };
+Material grn_bullet_mat = { 0 };
+Mesh     grn_bullet_msh = { 0 };
+
+Image    blu_bullet_img = { 0 };
+Texture  blu_bullet_tex = { 0 };
+Material blu_bullet_mat = { 0 };
+Mesh     blu_bullet_msh = { 0 };
+
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init(){
@@ -544,10 +559,28 @@ void resource_init(){
         asteroid_materials[8] = redtex3_mat;
     }
 
+    { // bullets
+        red_bullet_img = GenImageColor(1, 1, RED);
+        red_bullet_tex = LoadTextureFromImage(red_bullet_img);
+        red_bullet_mat = LoadMaterialDefault();
+        red_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = red_bullet_tex;
+        red_bullet_msh = GenMeshSphere(.1, 7, 7);
+
+        grn_bullet_img = GenImageColor(1, 1, GREEN);
+        grn_bullet_tex = LoadTextureFromImage(grn_bullet_img);
+        grn_bullet_mat = LoadMaterialDefault();
+        grn_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = red_bullet_tex;
+        grn_bullet_msh = GenMeshSphere(.1, 7, 7);
+
+        blu_bullet_img = GenImageColor(1, 1, BLUE);
+        blu_bullet_tex = LoadTextureFromImage(blu_bullet_img);
+        blu_bullet_mat = LoadMaterialDefault();
+        blu_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = blu_bullet_tex;
+        blu_bullet_msh = GenMeshSphere(.1, 7, 7);
+    }
+
     // music
     {
-        #include <stdio.h>
-        fprintf(stderr, "csl: %lu\n", cyber_spider_open_xm_len);
         cyber_spider_open_music = LoadMusicStreamFromMemory(".xm", cyber_spider_open_xm, cyber_spider_open_xm_len);
         cyber_spider_rest_music = LoadMusicStreamFromMemory(".xm", cyber_spider_rest_xm, cyber_spider_rest_xm_len);
     }
