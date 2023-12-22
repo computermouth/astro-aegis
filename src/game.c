@@ -21,6 +21,7 @@
 #include "entity_asteroid.h"
 #include "level.h"
 #include "entity_bullet.h"
+#include "entity_banner.h"
 
 int GAME_SCREEN_WIDTH = 1280;
 int GAME_SCREEN_HEIGHT = 720;
@@ -215,6 +216,9 @@ void game_update_play(){
             case ENTITY_TYPE_BULLET:
                 entity_bullet_update(&entities[i]);
                 break;
+            case ENTITY_TYPE_BANNER:
+                entity_banner_update(&entities[i]);
+                break;
             default:
                 printf("E: encountered unknown entity type: %d\n", entities[i].type);
                 break;
@@ -230,6 +234,7 @@ void game_update_play(){
         if (entities[i].dead){
             vector_erase(game.game_entities.others, i);
             e_len--;
+            i--;
         }
     }
 
@@ -324,4 +329,8 @@ vector * game_get_other_entities(){
 
 Weapon * game_get_weapon(WeaponType w){
     return &game.game_entities.player.player_storage.weapons[w];
+}
+
+Camera game_get_camera(){
+    return game.game_camera;
 }

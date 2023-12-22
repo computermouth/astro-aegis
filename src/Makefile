@@ -310,6 +310,7 @@ PROJECT_SOURCE_FILES += entity_asteroid.c
 PROJECT_SOURCE_FILES += level.c
 PROJECT_SOURCE_FILES += weapon.c
 PROJECT_SOURCE_FILES += entity_bullet.c
+PROJECT_SOURCE_FILES += entity_banner.c
 
 # Define all object files from source files
 OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))

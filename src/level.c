@@ -14,11 +14,11 @@ typedef struct {
     AsteroidColor color;
 } level_spawnset;
 
-level_spawnset levels[2][6] = {
+level_spawnset levels[3][6] = {
     // level 1
     {
         // wave 1
-        { .time = 3.0, .count = 10, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 3.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
         { .time = 3.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         // wave 2
         { .time = 13.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
@@ -28,6 +28,18 @@ level_spawnset levels[2][6] = {
         { .time = 23.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
     },
     // level 2
+    {
+        // wave 1
+        { .time = 3.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_GREEN },
+        { .time = 3.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_GREEN },
+        // wave 2
+        { .time = 13.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_GREEN },
+        { .time = 13.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_GREEN },
+        // wave 3
+        { .time = 23.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_GREEN },
+        { .time = 23.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_GREEN },
+    },
+    // level 3
     {
         // wave 1
         { .time = 3.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
@@ -53,10 +65,9 @@ void level_update(vector * entities, GameLevelState * gls){
         return;
     }
 
-    while (gls->wave == 0 && gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
+    while (gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
         level_spawnset ls = levels[gls->level][gls->wave];
         for(size_t i = 0; i < ls.count; i++){
-            fprintf(stderr, "spawn: %d %d\n", ls.size, ls.color);
             Entity e = entity_asteroid_spawn(ls.size, ls.color);
             vector_push(entities, &e);
         }

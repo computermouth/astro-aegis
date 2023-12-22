@@ -9,6 +9,7 @@
 #include "resource.h"
 #include "game.h"
 #include "vector.h"
+#include "entity_banner.h"
 
 void entity_asteroid_draw_2d(Entity * asteroid);
 void entity_asteroid_draw_3d(Entity * asteroid);
@@ -56,6 +57,7 @@ Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color){
         .transform = MatrixIdentity(),
         .draw_2d_fn = entity_asteroid_draw_2d,
         .draw_3d_fn = entity_asteroid_draw_3d,
+        .dead = false,
     };
 
     float ts = (float)(GetRandomValue(2, 7)) / 10.0f;
@@ -136,21 +138,30 @@ void entity_asteroid_update(Entity * asteroid){
     asteroid->transform = asteroid_transform;
 }
 
+Vector3 entity_asteroid_get_pos(Entity * asteroid){
+    return Vector3Transform((Vector3){0,0,0}, asteroid->transform);
+}
+
 void entity_asteroid_take_damage(Entity * asteroid, WeaponType wt){
     float damage = 1.0;
     if (asteroid->asteroid_storage.color != (AsteroidColor)wt)
         damage = 0.5;
 
     asteroid->asteroid_storage.health -= damage;
-    fprintf(stderr, "h: %f\n", asteroid->asteroid_storage.health);
     if (asteroid->asteroid_storage.health <= 0){
         entity_asteroid_kill(asteroid);
-    }
 
-    Weapon * w = game_get_weapon(wt);
-    // each strong asteroid kill is 1/10 a level
-    w->power += (damage == 1.0) * .1;
-    fprintf(stderr, "wp: %f\n", w->power);
+        if (damage == 1.0){
+            Weapon * w = game_get_weapon(wt);
+            // each strong asteroid kill is 1/10 a level
+            w->power += (damage == 1.0) * .1;
+            Vector3 a_pos = entity_asteroid_get_pos(asteroid);
+            Vector2 screen_a_pos = GetWorldToScreen(a_pos, game_get_camera());
+            Entity e = entity_banner_spawn((BannerType)wt, screen_a_pos);
+            vector * oe = game_get_other_entities();
+            vector_push(oe, &e);
+        }
+    }
 }
 
 void entity_asteroid_kill(Entity * asteroid){

@@ -81,7 +81,6 @@ void entity_player_update(Entity * player){
         // weapon switch
         if (IsKeyReleased(KEY_Q)){
             ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
-            fprintf(stderr, "w: %d\n", ps->weapon_index);
         } else if (IsKeyReleased(KEY_E)){
             ps->weapon_index = ps->weapon_index + 1 % __WEAPON_END;
         }
