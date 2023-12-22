@@ -51,6 +51,7 @@ typedef struct {
     Vector3       rotation_direction;
     Quaternion    origin_rotation;
     float         origin_time;
+    float         health;
 } AsteroidStorage;
 
 typedef struct {

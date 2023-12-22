@@ -79,6 +79,7 @@ Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color){
         .rotation_direction = rd,
         .origin_rotation = game_get_globe_entity()->globe_storage.net_rotation,
         .origin_time = game_get_time(),
+        .health = 7,
     };
     
     Matrix scale = MatrixScale(0.4f, 0.4f, 0.4f);

@@ -8,6 +8,7 @@
 #include "entity_bullet.h"
 #include "raymath.h"
 #include "resource.h"
+#include "vector.h"
 #include "weapon.h"
 #include "entity.h"
 #include "tool.h"
@@ -15,6 +16,7 @@
 void entity_bullet_draw_2d(Entity * bullet);
 void entity_bullet_draw_3d(Entity * bullet);
 void entity_bullet_kill(Entity * bullet);
+void entity_bullet_check_collision(Entity * b, Matrix old_transform);
 
 Entity entity_bullet_spawn(WeaponType w, Vector2 shoot_dir, float speed){
 
@@ -110,7 +112,45 @@ void entity_bullet_update(Entity * bullet){
     bullet_transform = MatrixMultiply(bullet_transform, globe_rot);
     bullet_transform = MatrixMultiply(bullet_transform, trans);
 
+    Matrix old_transform = bullet->transform;
     bullet->transform = bullet_transform;
+
+    entity_bullet_check_collision(bullet, old_transform);
+}
+
+void entity_bullet_check_collision(Entity * b, Matrix old_transform){
+
+    vector * oe = game_get_other_entities();
+    size_t e_len = vector_size(oe);
+    Entity * entities = vector_begin(oe); 
+
+    for (size_t i = 0; i < e_len; i++){
+        Entity * other = &entities[i];
+        if (other->type != ENTITY_TYPE_ASTEROID)
+            continue;
+
+        Vector3 o_pos = Vector3Transform((Vector3){0,0,0}, other->transform);
+
+        Vector3 b_old_pos = Vector3Transform((Vector3){0,0,0}, old_transform);
+        Vector3 b_new_pos = Vector3Transform((Vector3){0,0,0}, b->transform);
+
+        BoundingBox bb = GetMeshBoundingBox(other->mesh);
+        bb.min = Vector3Multiply(bb.min, (Vector3){.4,.4,.4});
+        bb.max = Vector3Multiply(bb.max, (Vector3){.4,.4,.4});
+
+        // get radius of a sphere on which the corners of the bounding
+        // box lie, halve it because it's fuggin huge
+        float bsr = tool_get_bounding_sphere_radius(bb) * .5;
+
+        if ( // .2 is a magic number matching approx bullet size
+            (CheckCollisionSpheres(o_pos, bsr, b_old_pos, .2)) ||
+            (CheckCollisionSpheres(o_pos, bsr, b_new_pos, .2))
+        ){
+            fprintf(stderr, "collides!\n");
+            entity_bullet_kill(b);
+            return;
+        }
+    }
 }
 
 void entity_bullet_kill(Entity * b){

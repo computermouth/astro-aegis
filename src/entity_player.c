@@ -48,9 +48,6 @@ void entity_player_update(Entity * player){
     if (max_xy_speed == 0)
         max_xy_speed = Vector2Length((Vector2){max_speed, max_speed});
 
-    // float old_x = player->player_storage.dir_x;
-    // float old_z = player->player_storage.dir_z;
-
     float xdir = 0;
     float zdir = 0;
 
@@ -68,8 +65,6 @@ void entity_player_update(Entity * player){
             zdir = -1;
         }
 
-        // todo -- weapon switch here
-
         ps->shoot_dir.x = 0;
         if (IsKeyDown(KEY_LEFT)) {
             ps->shoot_dir.x = -1;
@@ -83,6 +78,7 @@ void entity_player_update(Entity * player){
             ps->shoot_dir.y = 1;
         }
 
+        // weapon switch
         if (IsKeyReleased(KEY_Q)){
             ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
             fprintf(stderr, "w: %d\n", ps->weapon_index);
