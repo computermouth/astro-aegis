@@ -88,6 +88,8 @@ void entity_bullet_update(Entity * bullet){
         entity_bullet_kill(bullet);
         return;
     }
+    
+    Matrix bullet_rotation = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){1,0,0}, fmodf(32 * game_get_time(), PI * 2)));
 
     Vector3 offset_in = Vector3Transform((Vector3){3.5, 0, 0}, QuaternionToMatrix(QuaternionInvert(bs->origin_rotation)));
     Matrix offset = MatrixTranslate(offset_in.x, offset_in.y, offset_in.z);
@@ -100,27 +102,6 @@ void entity_bullet_update(Entity * bullet){
     Matrix globe_rot = QuaternionToMatrix(q_globe);
     Vector3 center = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
     Matrix trans = MatrixTranslate(center.x, center.y, center.z);
-
-    // if (bs.w == WEAPON_BLU) {
-    //     for(int i = 0; i < bullet->mesh.vertexCount; i++){
-    //         fprintf(stderr, "fart min: %f max: %f\n",  bullet->mesh.vertices[i],  bullet->mesh.vertices[i] - 100);
-    //          bullet->mesh.vertices[i] -= 100;
-    //     }
-    // }
-
-
-    // fprintf(stderr, "f: %f\n", atan2f(bs.dir.y, bs.dir.x));
-
-
-    // Matrix bullet_rotation = QuaternionToMatrix(
-    //     QuaternionMultiply(
-    //         QuaternionFromAxisAngle((Vector3){1,0,0}, atan2f(bs.dir.y, bs.dir.x)),
-    //         QuaternionInvert(q_globe)
-    //     )
-    // );
-    // Matrix bullet_rotation = MatrixMultiply(QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){1,0,0}, atan2f(bs.dir.y, bs.dir.x))), MatrixInvert(globe_rot));
-    // Matrix bullet_rotation = MatrixInvert(globe_rot);
-    Matrix bullet_rotation = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){1,0,0}, fmodf(32 * game_get_time(), PI * 2)));
 
     Matrix bullet_transform = MatrixIdentity();
     bullet_transform = MatrixMultiply(bullet_transform, bullet_rotation);

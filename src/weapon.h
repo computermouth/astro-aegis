@@ -17,7 +17,7 @@ typedef struct {
     float power;
 } Weapon;
 
-void weapon_fire(WeaponType wt, Weapon * w, Vector2 dir, vector * entities);
+void weapon_fire(WeaponType wt, Weapon * w, Vector2 dir);
 void weapon_powerup(Weapon * w);
 
 #endif

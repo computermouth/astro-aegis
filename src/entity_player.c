@@ -35,7 +35,7 @@ Entity entity_player_spawn(){
     };
 }
 
-void entity_player_update(vector * entities, Entity * player){
+void entity_player_update(Entity * player){
 
     PlayerStorage * ps = &player->player_storage;
 
@@ -172,7 +172,7 @@ void entity_player_update(vector * entities, Entity * player){
 
     if (ps->shoot_dir.x || ps->shoot_dir.y){
         ps->shoot_dir = Vector2Normalize(ps->shoot_dir);
-        weapon_fire(ps->weapon_index, &ps->weapons[ps->weapon_index], ps->shoot_dir, entities);
+        weapon_fire(ps->weapon_index, &ps->weapons[ps->weapon_index], ps->shoot_dir);
     }
 
 }

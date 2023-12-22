@@ -116,7 +116,7 @@ void game_update_menu(){
         dirchange = fmodf(dirchange, 1.0f);
     }
 
-    entity_player_update(game.game_entities.others, &game.game_entities.player);
+    entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
 
     // dynamic camera
@@ -194,7 +194,7 @@ void game_update_play(){
     last_playtime = curr_playtime;
 
     // updates
-    entity_player_update(game.game_entities.others, &game.game_entities.player);
+    entity_player_update(&game.game_entities.player);
     entity_globe_update(&game.game_entities.globe);
     level_update(game.game_entities.others, &game.game_level_state);
 

@@ -75,7 +75,7 @@ typedef struct entity{
     Matrix   transform;
     void     (*draw_2d_fn)(struct entity *);
     void     (*draw_3d_fn)(struct entity *);
-    bool dead;
+    bool     dead;
 } Entity;
 
 #endif
