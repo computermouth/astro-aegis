@@ -83,6 +83,13 @@ void entity_player_update(vector * entities, Entity * player){
             ps->shoot_dir.y = 1;
         }
 
+        if (IsKeyReleased(KEY_Q)){
+            ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
+            fprintf(stderr, "w: %d\n", ps->weapon_index);
+        } else if (IsKeyReleased(KEY_E)){
+            ps->weapon_index = ps->weapon_index + 1 % __WEAPON_END;
+        }
+
         // bool was_firing = ps->weapons[ps->weapon_index].is_firing;
         // ps->weapons[ps->weapon_index].is_firing = (ps->shoot_dir.x != 0 || ps->shoot_dir.y != 0);
         // if (!was_firing && ps->weapons[ps->weapon_index].is_firing){

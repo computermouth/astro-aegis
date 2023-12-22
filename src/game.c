@@ -20,6 +20,7 @@
 #include "entity_player.h"
 #include "entity_asteroid.h"
 #include "level.h"
+#include "entity_bullet.h"
 
 int GAME_SCREEN_WIDTH = 1280;
 int GAME_SCREEN_HEIGHT = 720;
@@ -220,7 +221,17 @@ void game_update_play(){
         }
     }
 
-    // TODO: cleanup dead entities
+    // cleanup dead entities
+    e_len = vector_size(game.game_entities.others);
+    entities = vector_begin(game.game_entities.others);
+    for(size_t i = 0; i < e_len; i++){
+        // might be more efficient to copy all living
+        // to a new vector, hard to say
+        if (entities[i].dead){
+            vector_erase(game.game_entities.others, i);
+            e_len--;
+        }
+    }
 
     BeginDrawing();
         ClearBackground(BLACK);

@@ -42,7 +42,7 @@ level_spawnset levels[2][6] = {
 };
 
 void level_update(vector * entities, GameLevelState * gls){
-    return;
+    
     // watch for level change
     if (gls->wave == 6) {
         if (vector_size(entities) == 0) {

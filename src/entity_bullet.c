@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 
+#include "entity_player.h"
 #include "game.h"
 #include "raylib.h"
 
@@ -13,6 +14,7 @@
 
 void entity_bullet_draw_2d(Entity * bullet);
 void entity_bullet_draw_3d(Entity * bullet);
+void entity_bullet_kill(Entity * bullet);
 
 Entity entity_bullet_spawn(WeaponType w, Vector2 shoot_dir, float speed){
 
@@ -46,8 +48,10 @@ Entity entity_bullet_spawn(WeaponType w, Vector2 shoot_dir, float speed){
     BulletStorage bs = {
         .dir = shoot_dir,
         .speed = speed,
+        .distance_traveled = 0,
         .origin_time = game_get_time(),
         .origin_rotation = game_get_globe_entity()->globe_storage.net_rotation,
+        .w = w,
     };
 
     b.bullet_storage = bs;
@@ -77,27 +81,59 @@ Entity entity_bullet_spawn(WeaponType w, Vector2 shoot_dir, float speed){
 
 void entity_bullet_update(Entity * bullet){
 
-    BulletStorage bs = bullet->bullet_storage;
+    BulletStorage * bs = &bullet->bullet_storage;
 
-    Vector3 offset_in = Vector3Transform((Vector3){3.5, 0, 0}, QuaternionToMatrix(QuaternionInvert(bs.origin_rotation)));
+    bs->distance_traveled += bs->speed * game_get_delta();
+    if (bs->distance_traveled > 1){
+        entity_bullet_kill(bullet);
+        return;
+    }
+
+    Vector3 offset_in = Vector3Transform((Vector3){3.5, 0, 0}, QuaternionToMatrix(QuaternionInvert(bs->origin_rotation)));
     Matrix offset = MatrixTranslate(offset_in.x, offset_in.y, offset_in.z);
     Quaternion q_globe = game_get_globe_entity()->globe_storage.net_rotation;
 
-    Vector3 initial_d = {0, bs.dir.y, bs.dir.x};
-    Vector3 rotated_direction = Vector3Transform(initial_d, QuaternionToMatrix(QuaternionInvert(q_globe)));
+    Vector3 initial_d = {0, bs->dir.y, bs->dir.x};
+    Vector3 rotated_direction = Vector3Transform(initial_d, QuaternionToMatrix(QuaternionInvert(bs->origin_rotation)));
     Vector3 traversal_axis = Vector3Normalize(Vector3CrossProduct(rotated_direction, Vector3Normalize(offset_in)));
-    Matrix traversal_rot = MatrixRotate(traversal_axis, fmodf(bs.speed * (game_get_time() - bs.origin_time), PI * 2) );
+    Matrix traversal_rot = MatrixRotate(traversal_axis, fmodf(bs->speed * (game_get_time() - bs->origin_time), PI * 2) );
     Matrix globe_rot = QuaternionToMatrix(q_globe);
     Vector3 center = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
     Matrix trans = MatrixTranslate(center.x, center.y, center.z);
 
+    // if (bs.w == WEAPON_BLU) {
+    //     for(int i = 0; i < bullet->mesh.vertexCount; i++){
+    //         fprintf(stderr, "fart min: %f max: %f\n",  bullet->mesh.vertices[i],  bullet->mesh.vertices[i] - 100);
+    //          bullet->mesh.vertices[i] -= 100;
+    //     }
+    // }
+
+
+    // fprintf(stderr, "f: %f\n", atan2f(bs.dir.y, bs.dir.x));
+
+
+    // Matrix bullet_rotation = QuaternionToMatrix(
+    //     QuaternionMultiply(
+    //         QuaternionFromAxisAngle((Vector3){1,0,0}, atan2f(bs.dir.y, bs.dir.x)),
+    //         QuaternionInvert(q_globe)
+    //     )
+    // );
+    // Matrix bullet_rotation = MatrixMultiply(QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){1,0,0}, atan2f(bs.dir.y, bs.dir.x))), MatrixInvert(globe_rot));
+    // Matrix bullet_rotation = MatrixInvert(globe_rot);
+    Matrix bullet_rotation = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){1,0,0}, fmodf(32 * game_get_time(), PI * 2)));
+
     Matrix bullet_transform = MatrixIdentity();
+    bullet_transform = MatrixMultiply(bullet_transform, bullet_rotation);
     bullet_transform = MatrixMultiply(bullet_transform, offset);
     bullet_transform = MatrixMultiply(bullet_transform, traversal_rot);
     bullet_transform = MatrixMultiply(bullet_transform, globe_rot);
     bullet_transform = MatrixMultiply(bullet_transform, trans);
 
     bullet->transform = bullet_transform;
+}
+
+void entity_bullet_kill(Entity * b){
+    b->dead = true;
 }
 
 void entity_bullet_draw_2d(Entity * bullet){

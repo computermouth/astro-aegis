@@ -56,6 +56,7 @@ typedef struct {
 typedef struct {
     Vector2    dir;
     float      speed;
+    float      distance_traveled;
     WeaponType w;
     Quaternion origin_rotation;
     float      origin_time;
@@ -74,6 +75,7 @@ typedef struct entity{
     Matrix   transform;
     void     (*draw_2d_fn)(struct entity *);
     void     (*draw_3d_fn)(struct entity *);
+    bool dead;
 } Entity;
 
 #endif

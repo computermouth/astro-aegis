@@ -3,6 +3,9 @@
 #include "assets.h"
 
 #include "raylib.h"
+#include "raymath.h"
+#include <bits/stdint-uintn.h>
+#include <stddef.h>
 #include <string.h>
 
 Mesh globe_mesh = { 0 };
@@ -564,19 +567,34 @@ void resource_init(){
         red_bullet_tex = LoadTextureFromImage(red_bullet_img);
         red_bullet_mat = LoadMaterialDefault();
         red_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = red_bullet_tex;
-        red_bullet_msh = GenMeshSphere(.1, 7, 7);
+        red_bullet_msh = GenMeshCube(.18, .18, .18);
 
         grn_bullet_img = GenImageColor(1, 1, GREEN);
         grn_bullet_tex = LoadTextureFromImage(grn_bullet_img);
         grn_bullet_mat = LoadMaterialDefault();
-        grn_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = red_bullet_tex;
-        grn_bullet_msh = GenMeshSphere(.1, 7, 7);
+        grn_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = grn_bullet_tex;
+        grn_bullet_msh = GenMeshSphere(.13, 7, 7);
+
+        for(int i = 0; i < grn_bullet_msh.vertexCount; i++){
+            grn_bullet_msh.vertices[i] -= 100;
+        }
 
         blu_bullet_img = GenImageColor(1, 1, BLUE);
         blu_bullet_tex = LoadTextureFromImage(blu_bullet_img);
         blu_bullet_mat = LoadMaterialDefault();
         blu_bullet_mat.maps[MATERIAL_MAP_DIFFUSE].texture = blu_bullet_tex;
-        blu_bullet_msh = GenMeshSphere(.1, 7, 7);
+        blu_bullet_msh = GenMeshCylinder(.075, .2, 7);
+
+        // move blue's origin to the center of the cylinder
+        blu_bullet_msh.vaoId = 0;
+        blu_bullet_msh.vboId = 0;
+
+        for(int i = 0; i < blu_bullet_msh.vertexCount * 3; i+=3){
+            blu_bullet_msh.vertices[i + 1] -= .1;
+        }
+        // push the new blu mesh to the gpu
+        UploadMesh(&blu_bullet_msh, false);
+
     }
 
     // music
@@ -596,19 +614,19 @@ unsigned char * resource_load_file_callback(const char *actually_a_resource_load
 
 void resource_quit(){
 
-    UnloadMesh(globe_mesh);
-    UnloadImage(globe_img);
-    UnloadTexture(globe_tex);
-    UnloadMaterial(globe_mat);
+    // UnloadMesh(globe_mesh);
+    // UnloadImage(globe_img);
+    // UnloadTexture(globe_tex);
+    // UnloadMaterial(globe_mat);
 
-    UnloadMesh(atmosphere_mesh);
-    UnloadImage(atmosphere_img);
-    UnloadTexture(atmosphere_tex);
-    UnloadMaterial(atmosphere_mat);
+    // UnloadMesh(atmosphere_mesh);
+    // UnloadImage(atmosphere_img);
+    // UnloadTexture(atmosphere_tex);
+    // UnloadMaterial(atmosphere_mat);
 
-    UnloadMesh(player_mesh);
-    UnloadImage(player_img);
-    UnloadTexture(player_tex);
-    UnloadMaterial(player_mat);
+    // UnloadMesh(player_mesh);
+    // UnloadImage(player_img);
+    // UnloadTexture(player_tex);
+    // UnloadMaterial(player_mat);
 
 }

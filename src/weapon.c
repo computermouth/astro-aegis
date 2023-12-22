@@ -14,7 +14,7 @@ typedef struct {
 
 WeaponPower wp[__WEAPON_END][5] = {
     [WEAPON_RED] = {
-        [0] = {.cooldown = 0.1, .bullet_count = 1, .speed = 1.0},
+        [0] = {.cooldown = 1.0, .bullet_count = 1, .speed = 1.0},
         [1] = {.cooldown = 0.8, .bullet_count = 1, .speed = 1.1},
         [2] = {.cooldown = 0.6, .bullet_count = 1, .speed = 1.2},
         [3] = {.cooldown = 0.4, .bullet_count = 1, .speed = 1.3},

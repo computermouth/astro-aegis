@@ -72,7 +72,20 @@ int main(void) {
     InitAudioDevice();
     SetMasterVolume(.5);
     SetLoadFileDataCallback(resource_load_file_callback);
+
+    char * welcome = "a raylib slo-jam game";
+    int font_size = 64;
+    int text_width = MeasureText(welcome, font_size);
+    float old_t = GetTime();
+    BeginDrawing();
+        ClearBackground(BLACK);
+        DrawText(welcome, GAME_SCREEN_WIDTH / 2 - text_width / 2, GAME_SCREEN_HEIGHT / 3, font_size, RAYWHITE);
+    EndDrawing();
+
     resource_init();
+
+    float new_t = GetTime();
+    WaitTime(2 - (new_t - old_t));
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
