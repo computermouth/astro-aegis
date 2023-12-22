@@ -28,10 +28,11 @@ typedef struct {
     Weapon     weapons[__WEAPON_END];
 } PlayerStorage;
 
+// ordered RGB to match weapon
 typedef enum {
-    ASTEROID_COLOR_BLUE,
-    ASTEROID_COLOR_GREEN,
     ASTEROID_COLOR_RED,
+    ASTEROID_COLOR_GREEN,
+    ASTEROID_COLOR_BLUE,
     __ASTEROID_COLOR_END,
 } AsteroidColor;
 

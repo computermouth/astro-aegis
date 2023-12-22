@@ -321,3 +321,7 @@ Entity * game_get_globe_entity(){
 vector * game_get_other_entities(){
     return game.game_entities.others;
 }
+
+Weapon * game_get_weapon(WeaponType w){
+    return &game.game_entities.player.player_storage.weapons[w];
+}

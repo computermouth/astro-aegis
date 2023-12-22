@@ -8,9 +8,11 @@
 #include "tool.h"
 #include "resource.h"
 #include "game.h"
+#include "vector.h"
 
 void entity_asteroid_draw_2d(Entity * asteroid);
 void entity_asteroid_draw_3d(Entity * asteroid);
+void entity_asteroid_kill(Entity * asteroid);
 
 Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color){
 
@@ -132,6 +134,59 @@ void entity_asteroid_update(Entity * asteroid){
     asteroid_transform = MatrixMultiply(asteroid_transform, trans);
 
     asteroid->transform = asteroid_transform;
+}
+
+void entity_asteroid_take_damage(Entity * asteroid, WeaponType wt){
+    float damage = 1.0;
+    if (asteroid->asteroid_storage.color != (AsteroidColor)wt)
+        damage = 0.5;
+
+    asteroid->asteroid_storage.health -= damage;
+    fprintf(stderr, "h: %f\n", asteroid->asteroid_storage.health);
+    if (asteroid->asteroid_storage.health <= 0){
+        entity_asteroid_kill(asteroid);
+    }
+
+    Weapon * w = game_get_weapon(wt);
+    // each strong asteroid kill is 1/10 a level
+    w->power += (damage == 1.0) * .1;
+    fprintf(stderr, "wp: %f\n", w->power);
+}
+
+void entity_asteroid_kill(Entity * asteroid){
+    // mark for cleanup
+    asteroid->dead = true;
+
+    int count1 = GetRandomValue(2, 3);
+    int count2 = 3 - count1;
+
+    vector * eo = game_get_other_entities();
+
+    // spawn subs
+    switch (asteroid->asteroid_storage.size) {
+        case ASTEROID_SIZE_LG:
+            for(int i = 0; i < count1; i++){
+                Entity e = entity_asteroid_spawn(ASTEROID_SIZE_MD, asteroid->asteroid_storage.color);
+                vector_push(eo, &e);
+            }
+            for(int i = 0; i < count2; i++){
+                Entity e = entity_asteroid_spawn(ASTEROID_SIZE_SM, asteroid->asteroid_storage.color);
+                vector_push(eo, &e);
+            }
+            break;
+        case ASTEROID_SIZE_MD:
+            for(int i = 0; i < count1; i++){
+                Entity e = entity_asteroid_spawn(ASTEROID_SIZE_SM, asteroid->asteroid_storage.color);
+                vector_push(eo, &e);
+            }
+            break;
+        case ASTEROID_SIZE_SM:
+            // nothing, maybe item drops or something
+            break;
+        default:
+            fprintf(stderr, "E: bad asteroid size in kill\n");
+            break;
+    }
 }
 
 void entity_asteroid_draw_2d(Entity * asteroid){

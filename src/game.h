@@ -63,5 +63,6 @@ void game_quit();
 Entity * game_get_player_entity();
 Entity * game_get_globe_entity();
 vector * game_get_other_entities();
+Weapon * game_get_weapon(WeaponType w);
 
 #endif

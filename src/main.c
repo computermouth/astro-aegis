@@ -74,12 +74,19 @@ int main(void) {
     SetLoadFileDataCallback(resource_load_file_callback);
 
     char * welcome = "a raylib slo-jam game";
+    char * by = "by";
+    char * computermouth = "@computermouth";
     int font_size = 64;
-    int text_width = MeasureText(welcome, font_size);
+    int tw_welcome       = MeasureText(welcome, font_size);
+    int tw_by            = MeasureText(by, font_size);
+    int tw_computermouth = MeasureText(computermouth, font_size);
     float old_t = GetTime();
+
     BeginDrawing();
         ClearBackground(BLACK);
-        DrawText(welcome, GAME_SCREEN_WIDTH / 2 - text_width / 2, GAME_SCREEN_HEIGHT / 3, font_size, RAYWHITE);
+        DrawText(welcome,       GAME_SCREEN_WIDTH / 2 - tw_welcome       / 2, GAME_SCREEN_HEIGHT * 1 / 5,   font_size, RAYWHITE);
+        DrawText(by,            GAME_SCREEN_WIDTH / 2 - tw_by            / 2, GAME_SCREEN_HEIGHT * 2.2 / 5, font_size, RAYWHITE);
+        DrawText(computermouth, GAME_SCREEN_WIDTH / 2 - tw_computermouth / 2, GAME_SCREEN_HEIGHT * 3.7 / 5, font_size, RAYWHITE);
     EndDrawing();
 
     resource_init();

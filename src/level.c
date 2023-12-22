@@ -18,26 +18,26 @@ level_spawnset levels[2][6] = {
     // level 1
     {
         // wave 1
-        { .time = 3.0, .count = 2, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
-        { .time = 3.0, .count = 3, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 3.0, .count = 10, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 3.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         // wave 2
-        { .time = 13.0, .count = 4, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 13.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
         { .time = 13.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         // wave 3
-        { .time = 23.0, .count = 4, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
-        { .time = 23.0, .count = 3, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 23.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 23.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
     },
     // level 2
     {
         // wave 1
-        { .time = 3.0, .count = 2, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
-        { .time = 3.0, .count = 3, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
+        { .time = 3.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
+        { .time = 3.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
         // wave 2
-        { .time = 13.0, .count = 4, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
+        { .time = 13.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
         { .time = 13.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
         // wave 3
-        { .time = 23.0, .count = 4, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
-        { .time = 23.0, .count = 3, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
+        { .time = 23.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_BLUE },
+        { .time = 23.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
     },
 };
 
@@ -53,7 +53,7 @@ void level_update(vector * entities, GameLevelState * gls){
         return;
     }
 
-    while (gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
+    while (gls->wave == 0 && gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
         level_spawnset ls = levels[gls->level][gls->wave];
         for(size_t i = 0; i < ls.count; i++){
             fprintf(stderr, "spawn: %d %d\n", ls.size, ls.color);

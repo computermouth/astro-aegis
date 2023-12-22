@@ -6,6 +6,7 @@
 #include "raylib.h"
 
 #include "entity_bullet.h"
+#include "entity_asteroid.h"
 #include "raymath.h"
 #include "resource.h"
 #include "vector.h"
@@ -146,9 +147,11 @@ void entity_bullet_check_collision(Entity * b, Matrix old_transform){
             (CheckCollisionSpheres(o_pos, bsr, b_old_pos, .2)) ||
             (CheckCollisionSpheres(o_pos, bsr, b_new_pos, .2))
         ){
-            fprintf(stderr, "collides!\n");
-            entity_bullet_kill(b);
-            return;
+            if(!other->dead){
+                entity_asteroid_take_damage(other, b->bullet_storage.w);
+                entity_bullet_kill(b);
+                return;
+            }
         }
     }
 }
