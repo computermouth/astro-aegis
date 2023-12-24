@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "entity_asteroid.h"
 #include "game.h"
+#include "raylib.h"
 #include "vector.h"
 
 typedef struct {
@@ -18,14 +19,14 @@ level_spawnset levels[3][6] = {
     // level 1
     {
         // wave 1
-        { .time = 3.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 3.0, .count = 2, ASTEROID_SIZE_SM, ASTEROID_COLOR_RED },
         { .time = 3.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         // wave 2
-        { .time = 13.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
-        { .time = 13.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 23.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 23.0, .count = 0, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         // wave 3
-        { .time = 23.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
-        { .time = 23.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 43.0, .count = 0, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 43.0, .count = 0, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
     },
     // level 2
     {
@@ -68,7 +69,7 @@ void level_update(vector * entities, GameLevelState * gls){
     while (gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
         level_spawnset ls = levels[gls->level][gls->wave];
         for(size_t i = 0; i < ls.count; i++){
-            Entity e = entity_asteroid_spawn(ls.size, ls.color);
+            Entity e = entity_asteroid_spawn(ls.size, ls.color, (Vector3){-3.5,0,0});
             vector_push(entities, &e);
         }
         gls->wave++;

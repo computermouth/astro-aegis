@@ -58,6 +58,7 @@ typedef struct {
     Vector3       traversal_direction;
     float         rotation_speed;
     Vector3       rotation_direction;
+    Vector3       origin_position;
     Quaternion    origin_rotation;
     float         origin_time;
     float         health;

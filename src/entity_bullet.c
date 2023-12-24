@@ -92,7 +92,7 @@ void entity_bullet_update(Entity * bullet){
         return;
     }
     
-    Matrix bullet_rotation = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){1,0,0}, fmodf(32 * game_get_time(), PI * 2)));
+    Matrix bullet_rotation = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){.97,.53,.23}, fmodf(32 * game_get_time(), PI * 2)));
 
     Vector3 offset_in = Vector3Transform((Vector3){3.5, 0, 0}, QuaternionToMatrix(QuaternionInvert(bs->origin_rotation)));
     Matrix offset = MatrixTranslate(offset_in.x, offset_in.y, offset_in.z);
