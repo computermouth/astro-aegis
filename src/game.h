@@ -54,6 +54,7 @@ float game_get_delta();
 void game_update();
 void game_set_should_quit();
 bool game_get_should_quit();
+void game_reset();
 
 void game_set_menu_state(GameMenuState new_gs);
 GameMenuState game_get_menu_state();

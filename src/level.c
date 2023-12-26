@@ -25,8 +25,8 @@ level_spawnset levels[3][6] = {
         { .time = 23.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         { .time = 23.0, .count = 0, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
         // wave 3
-        { .time = 43.0, .count = 0, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
-        { .time = 43.0, .count = 0, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 23.0, .count = 0, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 23.0, .count = 0, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
     },
     // level 2
     {
@@ -58,7 +58,19 @@ void level_update(vector * entities, GameLevelState * gls){
     
     // watch for level change
     if (gls->wave == 6) {
-        if (vector_size(entities) == 0) {
+        bool no_asteroids = true;
+        size_t elen = vector_size(entities);
+        Entity * es = vector_begin(entities);
+        for(size_t i = 0; i < elen; i++){
+            if (es[i].type == ENTITY_TYPE_ASTEROID)
+                no_asteroids = false;
+        }
+
+        // if level > levels
+        // either finish
+        // or engage infinite mode
+
+        if (no_asteroids && gls->level != 2) {
             gls->level++;
             gls->wave = 0;
             gls->level_start_time = game_get_time();

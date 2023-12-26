@@ -18,6 +18,7 @@ const float ENTITY_PLAYER_MAX_SPEED = .0075;
 
 void entity_player_draw_2d(Entity * player);
 void entity_player_draw_3d(Entity * player);
+void entity_player_check_collision(Entity * player);
 
 Entity entity_player_spawn(){
 
@@ -176,6 +177,68 @@ void entity_player_update(Entity * player){
         weapon_fire(ps->weapon_index, &ps->weapons[ps->weapon_index], ps->shoot_dir);
     }
 
+    if (
+        game_get_menu_state() == GAME_MENU_STATE_PLAY && 
+        player->player_storage.invincible_until < game_get_time()
+    )
+        entity_player_check_collision(player);
+}
+
+void entity_player_kill(){
+    game_reset();
+}
+
+void entity_player_take_damage(Entity * player){
+    player->player_storage.streak = 0;
+    player->player_storage.multi = 0;
+    player->player_storage.health--;
+
+    fprintf(stderr, "ouch!\n");
+
+    if (player->player_storage.health <= 0){
+        entity_player_kill();
+    }
+
+    // invincible for 1s
+    player->player_storage.invincible_until = game_get_time() + 1.0;
+}
+
+void entity_player_check_collision(Entity * player){
+
+    vector * oe = game_get_other_entities();
+    size_t e_len = vector_size(oe);
+    Entity * entities = vector_begin(oe); 
+
+    for (size_t i = 0; i < e_len; i++){
+        Entity * other = &entities[i];
+        if (other->type != ENTITY_TYPE_ASTEROID)
+            continue;
+
+        Vector3 o_pos = Vector3Transform((Vector3){0,0,0}, other->transform);
+
+        Vector3 p_pos = tool_vec3_world_pos((Vector3){3.5,0,0});
+
+        BoundingBox bb = GetMeshBoundingBox(other->mesh);
+        bb.min = Vector3Multiply(bb.min, (Vector3){.4,.4,.4});
+        bb.max = Vector3Multiply(bb.max, (Vector3){.4,.4,.4});
+
+        // get radius of a sphere on which the corners of the bounding
+        // box lie, halve it because it's fuggin huge
+        float bsr = tool_get_bounding_sphere_radius(bb) * .5;
+
+        // .05 is a magic number, ship looks about 1/4 the size of a bullet
+        if (CheckCollisionSpheres(o_pos, bsr, p_pos, .05)) {
+            if(!other->dead){
+                
+                // boost smash
+                // if (player.is_boosting)
+                //  //do entity_asteroid_take_damage(other, b->bullet_storage.w);
+                // else
+                entity_player_take_damage(player);
+                return;
+            }
+        }
+    }
 }
 
 char pdir_x[100];
@@ -211,6 +274,14 @@ void entity_player_draw_2d(Entity * player){
 }
 
 void entity_player_draw_3d(Entity * player){
+    
+    float gt = game_get_time();
+    // blink if invis
+    if (
+        player->player_storage.invincible_until > gt && 
+        fmodf(gt, .2) < 0.1
+    ){ return; }
+
     DrawMesh(player->mesh, player->material, player->transform);
 }
 

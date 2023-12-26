@@ -49,6 +49,7 @@ typedef struct {
     int        multi;
     int        streak;
     int        health;
+    float      invincible_until;
     Quaternion frame_rotation;
     Vector2    shoot_dir;
     WeaponType weapon_index;

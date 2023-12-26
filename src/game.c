@@ -59,6 +59,18 @@ bool game_get_should_quit(){
     return game_should_quit;
 }
 
+void game_reset(){
+    vector_free(game.game_entities.others);
+    game = (Game){
+        .game_time = 0.0f,
+        .game_delta = 0.0f,
+        .game_menu_state = GAME_MENU_STATE_INIT,
+        .game_play_state = GAME_PLAY_STATE_INIT,
+        .game_entities = { 0 },
+        .game_camera = { 0 },
+    };
+}
+
 float dirchange = 0.0f;
 float last_playtime = 0.0f;
 float curr_playtime = 0.0f;
@@ -196,6 +208,10 @@ void game_update_play(){
 
     // updates
     entity_player_update(&game.game_entities.player);
+    // player died, resetting game
+    if (game_get_menu_state() == GAME_MENU_STATE_INIT)
+        return;
+
     entity_globe_update(&game.game_entities.globe);
     level_update(game.game_entities.others, &game.game_level_state);
 
