@@ -25,7 +25,7 @@ Entity entity_player_spawn(){
     Vector3 pp = tool_vec3_world_pos((Vector3){3.5f, 0.0f, 0.0f});
     Matrix pp_matrix = MatrixTranslate(pp.x, pp.y, pp.z);
 
-    return (Entity) {
+    Entity p = {
         .type = ENTITY_TYPE_PLAYER,
         .mesh = player_mesh,
         .material = player_mat,
@@ -33,6 +33,12 @@ Entity entity_player_spawn(){
         .draw_2d_fn = entity_player_draw_2d,
         .draw_3d_fn = entity_player_draw_3d
     };
+
+    p.player_storage = (PlayerStorage){ 0 };
+    p.player_storage.multi = 1;
+    p.player_storage.health = 3;
+
+    return p;
 }
 
 void entity_player_update(Entity * player){
@@ -176,6 +182,10 @@ char pdir_x[100];
 char pdir_z[100];
 char mouse_dir_z[100];
 char mouse_dir_z[100];
+char health[100];
+char streak[100];
+char multi[100];
+char score[100];
 
 void entity_player_draw_2d(Entity * player){
     sprintf(pdir_x, "pdir_x: %f", player->player_storage.dir_x);
@@ -188,9 +198,37 @@ void entity_player_draw_2d(Entity * player){
     DrawText(pdir_x, 1000, 96, 32, RAYWHITE);
     DrawText(pdir_z, 1000, 128, 32, RAYWHITE);
 
+    sprintf(health, "health: %dx", player->player_storage.health);
+    sprintf(streak, "streak: %d",  player->player_storage.streak);
+    sprintf(multi, "multi: %dx", player->player_storage.multi);
+    sprintf(score, "score: %f",  player->player_storage.score);
+    DrawText(health, 1000, 160, 32, RAYWHITE);
+    DrawText(streak, 1000, 192, 32, RAYWHITE);
+    DrawText(multi, 1000, 224, 32, RAYWHITE);
+    DrawText(score, 1000, 256, 32, RAYWHITE);
+
     DrawFPS(10, 10);
 }
 
 void entity_player_draw_3d(Entity * player){
     DrawMesh(player->mesh, player->material, player->transform);
+}
+
+void entity_player_inc_streak(){
+    Entity * p = game_get_player_entity();
+    p->player_storage.streak++;
+    // increase multi
+    if (p->player_storage.streak % 20 == 0){
+        p->player_storage.multi++;
+    }
+    // gain health
+    if (p->player_storage.streak % 100 == 0){
+        p->player_storage.health++;
+    }
+}
+
+void entity_player_add_score(int i){
+    entity_player_inc_streak();
+    Entity * p = game_get_player_entity();
+    p->player_storage.score += i * p->player_storage.multi;
 }

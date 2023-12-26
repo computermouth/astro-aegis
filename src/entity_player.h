@@ -10,5 +10,7 @@ extern const float ENTITY_PLAYER_MAX_SPEED;
 
 Entity entity_player_spawn();
 void entity_player_update(Entity * player);
+void entity_player_add_score(int i);
+void entity_player_inc_streak();
 
 #endif

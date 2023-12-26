@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "entity.h"
+#include "entity_player.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -183,7 +184,7 @@ void entity_asteroid_take_damage(Entity * asteroid, WeaponType wt){
     asteroid->asteroid_storage.health -= damage;
     if (asteroid->asteroid_storage.health <= 0){
         entity_asteroid_kill(asteroid);
-
+        entity_player_add_score(10 * damage);
         if (damage == 1.0){
             Weapon * w = game_get_weapon(wt);
             // each strong asteroid kill is 1/10 a level
@@ -216,6 +217,7 @@ void entity_asteroid_kill(Entity * asteroid){
             for(int i = 0; i < count1; i++){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_MD, asteroid->asteroid_storage.color, origin);
                 // give children similar direction in 90degree fork
+                // todo, doesn't quite work right
                 Vector3 td = asteroid->asteroid_storage.traversal_direction;
                 float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
                 e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(td, (Vector3){1,1,1}, rot);

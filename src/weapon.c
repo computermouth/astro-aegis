@@ -17,11 +17,11 @@ typedef struct {
 
 WeaponPower wp[__WEAPON_END][5] = {
     [WEAPON_RED] = { // 5.1x
-        [0] = {.cooldown = 0.5, .bullet_count = 1, .speed = 1.0},
-        [1] = {.cooldown = 0.4, .bullet_count = 1, .speed = 1.1},
-        [2] = {.cooldown = 0.3, .bullet_count = 1, .speed = 1.2},
-        [3] = {.cooldown = 0.2, .bullet_count = 1, .speed = 1.3},
-        [4] = {.cooldown = 0.1, .bullet_count = 1, .speed = 1.4},
+        [0] = {.cooldown = 0.50, .bullet_count = 1, .speed = 1.0},
+        [1] = {.cooldown = 0.35, .bullet_count = 1, .speed = 1.1},
+        [2] = {.cooldown = 0.20, .bullet_count = 1, .speed = 1.2},
+        [3] = {.cooldown = 0.15, .bullet_count = 1, .speed = 1.3},
+        [4] = {.cooldown = 0.10, .bullet_count = 1, .speed = 1.4},
     },
     [WEAPON_GRN] = { // 7.2x
         [0] = {.cooldown = 0.5, .bullet_count = 1, .speed = 1.0},

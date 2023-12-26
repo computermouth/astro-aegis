@@ -45,6 +45,10 @@ typedef struct {
     float      dir_z;
     float      menu_input_x;
     float      menu_input_z;
+    float      score;
+    int        multi;
+    int        streak;
+    int        health;
     Quaternion frame_rotation;
     Vector2    shoot_dir;
     WeaponType weapon_index;
