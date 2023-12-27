@@ -185,15 +185,13 @@ void entity_player_update(Entity * player){
 }
 
 void entity_player_kill(){
-    game_reset();
+    game_set_play_state(GAME_PLAY_STATE_OVER);
 }
 
 void entity_player_take_damage(Entity * player){
     player->player_storage.streak = 0;
     player->player_storage.multi = 0;
     player->player_storage.health--;
-
-    fprintf(stderr, "ouch!\n");
 
     if (player->player_storage.health <= 0){
         entity_player_kill();
