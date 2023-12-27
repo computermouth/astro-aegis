@@ -37,8 +37,6 @@ extern const uint32_t redtex3_png_len;
 
 // Asteroids by craftpix
 // https://free-game-assets.itch.io/free-stone-3d-low-poly-pack
-// LICENSE:
-// https://craftpix.net/file-licenses/
 
 // big asteroids
 extern const char * asteroid_b000_filename;
@@ -169,3 +167,80 @@ extern const uint32_t cyber_spider_open_xm_len;
 
 extern const uint8_t * cyber_spider_rest_xm;
 extern const uint32_t cyber_spider_rest_xm_len;
+
+// sounds
+extern const uint8_t * asteroid_explosion1_ogg;
+extern const uint32_t asteroid_explosion1_ogg_len;
+
+extern const uint8_t * asteroid_explosion2_ogg;
+extern const uint32_t asteroid_explosion2_ogg_len;
+
+extern const uint8_t * asteroid_explosion3_ogg;
+extern const uint32_t asteroid_explosion3_ogg_len;
+
+extern const uint8_t * asteroid_explosion4_ogg;
+extern const uint32_t asteroid_explosion4_ogg_len;
+
+extern const uint8_t * asteroid_explosion5_ogg;
+extern const uint32_t asteroid_explosion5_ogg_len;
+
+extern const uint8_t * bullet_hit_r_ogg;
+extern const uint32_t bullet_hit_r_ogg_len;
+
+extern const uint8_t * bullet_hit_g_ogg;
+extern const uint32_t bullet_hit_g_ogg_len;
+
+extern const uint8_t * bullet_hit_b_ogg;
+extern const uint32_t bullet_hit_b_ogg_len;
+
+extern const uint8_t * level_1_ogg;
+extern const uint32_t level_1_ogg_len;
+
+extern const uint8_t * level_2_ogg;
+extern const uint32_t level_2_ogg_len;
+
+extern const uint8_t * level_3_ogg;
+extern const uint32_t level_3_ogg_len;
+
+extern const uint8_t * level_4_ogg;
+extern const uint32_t level_4_ogg_len;
+
+extern const uint8_t * level_5_ogg;
+extern const uint32_t level_5_ogg_len;
+
+extern const uint8_t * level_engage_ogg;
+extern const uint32_t level_engage_ogg_len;
+
+extern const uint8_t * level_infinite_mode_ogg;
+extern const uint32_t level_infinite_mode_ogg_len;
+
+extern const uint8_t * multiplier_pu_ogg;
+extern const uint32_t multiplier_pu_ogg_len;
+
+extern const uint8_t * powerup_ogg;
+extern const uint32_t powerup_ogg_len;
+
+extern const uint8_t * sheild_pu_ogg;
+extern const uint32_t sheild_pu_ogg_len;
+
+extern const uint8_t * weapon_pu_ogg;
+extern const uint32_t weapon_pu_ogg_len;
+
+// licenses
+extern const uint8_t * craftpix_license;
+extern const uint32_t craftpix_license_len;
+
+extern const uint8_t * drozerix_license;
+extern const uint32_t drozerix_license_len;
+
+extern const uint8_t * festvox_license;
+extern const uint32_t festvox_license_len;
+
+extern const uint8_t * jsfxr_license;
+extern const uint32_t jsfxr_license_len;
+
+extern const uint8_t * libdsa_license;
+extern const uint32_t libdsa_license_len;
+
+extern const uint8_t * raylib_zlib_license;
+extern const uint32_t raylib_zlib_license_len;

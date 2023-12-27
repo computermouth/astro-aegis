@@ -6,6 +6,7 @@
 #include "entity_asteroid.h"
 #include "game.h"
 #include "raylib.h"
+#include "resource.h"
 #include "vector.h"
 
 typedef struct {
@@ -54,6 +55,14 @@ level_spawnset levels[3][6] = {
     },
 };
 
+Sound * level_announcements[] = {
+    &level_1_snd,
+    &level_2_snd,
+    &level_3_snd,
+    &level_4_snd,
+    &level_5_snd,
+};
+
 void level_update(vector * entities, GameLevelState * gls){
     
     // watch for level change
@@ -72,6 +81,7 @@ void level_update(vector * entities, GameLevelState * gls){
 
         if (no_asteroids && gls->level != 2) {
             gls->level++;
+            PlaySound(*level_announcements[gls->level]);
             gls->wave = 0;
             gls->level_start_time = game_get_time();
         }
@@ -79,6 +89,9 @@ void level_update(vector * entities, GameLevelState * gls){
     }
 
     while (gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
+        if (gls->wave == 0)
+            PlaySound(level_engage_snd);
+
         level_spawnset ls = levels[gls->level][gls->wave];
         for(size_t i = 0; i < ls.count; i++){
             Entity e = entity_asteroid_spawn(ls.size, ls.color, (Vector3){-3.5,0,0});

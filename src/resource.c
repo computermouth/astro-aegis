@@ -115,6 +115,29 @@ Texture  blu_bullet_tex = { 0 };
 Material blu_bullet_mat = { 0 };
 Mesh     blu_bullet_msh = { 0 };
 
+Sound asteroid_explosion1_snd = { 0 };
+Sound asteroid_explosion2_snd = { 0 };
+Sound asteroid_explosion3_snd = { 0 };
+Sound asteroid_explosion4_snd = { 0 };
+Sound asteroid_explosion5_snd = { 0 };
+
+Sound bullet_hit_r_snd = { 0 };
+Sound bullet_hit_g_snd = { 0 };
+Sound bullet_hit_b_snd = { 0 };
+
+Sound level_1_snd = { 0 };
+Sound level_2_snd = { 0 };
+Sound level_3_snd = { 0 };
+Sound level_4_snd = { 0 };
+Sound level_5_snd = { 0 };
+Sound level_engage_snd = { 0 };
+Sound level_infinite_mode_snd = { 0 };
+
+Sound multiplier_pu_snd = { 0 };
+Sound powerup_snd = { 0 };
+Sound sheild_pu_snd = { 0 };
+Sound weapon_pu_snd = { 0 };
+
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init(){
@@ -601,6 +624,47 @@ void resource_init(){
     {
         cyber_spider_open_music = LoadMusicStreamFromMemory(".xm", cyber_spider_open_xm, cyber_spider_open_xm_len);
         cyber_spider_rest_music = LoadMusicStreamFromMemory(".xm", cyber_spider_rest_xm, cyber_spider_rest_xm_len);
+
+        SetMusicVolume(cyber_spider_open_music, 0.3);
+        SetMusicVolume(cyber_spider_rest_music, 0.3);
+    }
+
+    // snd
+    {
+
+        asteroid_explosion1_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion1_ogg, asteroid_explosion1_ogg_len));
+        asteroid_explosion2_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion2_ogg, asteroid_explosion2_ogg_len));
+        asteroid_explosion3_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion3_ogg, asteroid_explosion3_ogg_len));
+        asteroid_explosion4_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion4_ogg, asteroid_explosion4_ogg_len));
+        asteroid_explosion5_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion5_ogg, asteroid_explosion5_ogg_len));
+        SetSoundVolume(asteroid_explosion1_snd, .4);
+        SetSoundVolume(asteroid_explosion2_snd, .4);
+        SetSoundVolume(asteroid_explosion3_snd, .4);
+        SetSoundVolume(asteroid_explosion4_snd, .4);
+        SetSoundVolume(asteroid_explosion5_snd, .4);
+
+        // done
+        bullet_hit_r_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_r_ogg, bullet_hit_r_ogg_len));
+        bullet_hit_g_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_g_ogg, bullet_hit_g_ogg_len));
+        bullet_hit_b_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_b_ogg, bullet_hit_b_ogg_len));
+        SetSoundVolume(bullet_hit_r_snd, .1);
+        SetSoundVolume(bullet_hit_g_snd, .1);
+        SetSoundVolume(bullet_hit_b_snd, .1);
+
+        // done-ish (todo: infinite)
+        level_1_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_1_ogg, level_1_ogg_len));
+        level_2_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_2_ogg, level_2_ogg_len));
+        level_3_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_3_ogg, level_3_ogg_len));
+        level_4_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_4_ogg, level_4_ogg_len));
+        level_5_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_5_ogg, level_5_ogg_len));
+        level_engage_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_engage_ogg, level_engage_ogg_len));
+        level_infinite_mode_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_infinite_mode_ogg, level_infinite_mode_ogg_len));
+
+        multiplier_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", multiplier_pu_ogg, multiplier_pu_ogg_len));
+        powerup_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", powerup_ogg, powerup_ogg_len));
+        SetSoundVolume(powerup_snd, .25);
+        sheild_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", sheild_pu_ogg, sheild_pu_ogg_len));
+        weapon_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", weapon_pu_ogg, weapon_pu_ogg_len));
     }
 
 }

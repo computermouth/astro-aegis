@@ -183,12 +183,14 @@ void entity_asteroid_take_damage(Entity * asteroid, WeaponType wt){
 
     asteroid->asteroid_storage.health -= damage;
     if (asteroid->asteroid_storage.health <= 0){
+        bool critical = damage == 1.0;
         entity_asteroid_kill(asteroid);
         entity_player_add_score(10 * damage);
-        if (damage == 1.0){
-            Weapon * w = game_get_weapon(wt);
-            // each strong asteroid kill is 1/10 a level
-            w->power += (damage == 1.0) * .1;
+
+        weapon_powerup(wt, critical);
+
+        // spawn banner on crit
+        if (critical){
             Vector3 a_pos = entity_asteroid_get_pos(asteroid);
             Vector2 screen_a_pos = GetWorldToScreen(a_pos, game_get_camera());
             Entity e = entity_banner_spawn((BannerType)wt, screen_a_pos);
@@ -198,9 +200,20 @@ void entity_asteroid_take_damage(Entity * asteroid, WeaponType wt){
     }
 }
 
+Sound * asteroid_explosion_snds[] = {
+    &asteroid_explosion1_snd,
+    &asteroid_explosion2_snd,
+    &asteroid_explosion3_snd,
+    &asteroid_explosion4_snd,
+    &asteroid_explosion5_snd,
+};
+
 void entity_asteroid_kill(Entity * asteroid){
     // mark for cleanup
     asteroid->dead = true;
+
+    int kill_snd = GetRandomValue(0, 4);
+    PlaySound(*asteroid_explosion_snds[kill_snd]);
 
     int count1 = GetRandomValue(2, 3);
     int count2 = 3 - count1;

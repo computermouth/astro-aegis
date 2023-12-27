@@ -164,6 +164,8 @@ INCLUDE_PATHS += -I./xxd_resources/
 INCLUDE_PATHS += -I./xxd_resources/img/
 INCLUDE_PATHS += -I./xxd_resources/mdl/
 INCLUDE_PATHS += -I./xxd_resources/mus/
+INCLUDE_PATHS += -I./xxd_resources/snd/
+INCLUDE_PATHS += -I./xxd_resources/lic/
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_DRM)
@@ -321,7 +323,11 @@ XXD_MDL = $(wildcard xxd_resources/mdl/*.glb)
 MDL_SRC = $(XXD_MDL:.glb=.h)
 XXD_MUS = $(wildcard xxd_resources/mus/*.xm)
 MUS_SRC = $(XXD_MUS:.xm=.h)
-XXD_RES = $(IMG_SRC) $(MDL_SRC) $(MUS_SRC)
+XXD_SND = $(wildcard xxd_resources/snd/*.ogg)
+SND_SRC = $(XXD_SND:.ogg=.h)
+XXD_LIC = $(wildcard xxd_resources/lic/*.txt)
+LIC_SRC = $(XXD_LIC:.txt=.h)
+XXD_RES = $(IMG_SRC) $(MDL_SRC) $(MUS_SRC) $(SND_SRC) $(LIC_SRC)
 
 # Define processes to execute
 #------------------------------------------------------------------------------------------------
@@ -336,6 +342,12 @@ all: $(PROJECT_NAME)
 	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
 
 %.h: %.xm
+	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
+
+%.h: %.ogg
+	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
+
+%.h: %.txt
 	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@
 
 # Project target defined by PROJECT_NAME

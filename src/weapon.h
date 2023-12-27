@@ -18,6 +18,6 @@ typedef struct {
 } Weapon;
 
 void weapon_fire(WeaponType wt, Weapon * w, Vector2 dir);
-void weapon_powerup(Weapon * w);
+void weapon_powerup(WeaponType wt, bool critical);
 
 #endif

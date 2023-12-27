@@ -123,4 +123,27 @@ extern Mesh     blu_bullet_msh;
 extern Music cyber_spider_open_music;
 extern Music cyber_spider_rest_music;
 
+extern Sound asteroid_explosion1_snd;
+extern Sound asteroid_explosion2_snd;
+extern Sound asteroid_explosion3_snd;
+extern Sound asteroid_explosion4_snd;
+extern Sound asteroid_explosion5_snd;
+
+extern Sound bullet_hit_r_snd;
+extern Sound bullet_hit_g_snd;
+extern Sound bullet_hit_b_snd;
+
+extern Sound level_1_snd;
+extern Sound level_2_snd;
+extern Sound level_3_snd;
+extern Sound level_4_snd;
+extern Sound level_5_snd;
+extern Sound level_engage_snd;
+extern Sound level_infinite_mode_snd;
+
+extern Sound multiplier_pu_snd;
+extern Sound powerup_snd;
+extern Sound sheild_pu_snd;
+extern Sound weapon_pu_snd;
+
 #endif

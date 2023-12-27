@@ -70,7 +70,7 @@ int main(void) {
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
     InitAudioDevice();
-    SetMasterVolume(.5);
+    SetMasterVolume(.9);
     SetLoadFileDataCallback(resource_load_file_callback);
 
     char * welcome = "a raylib slo-jam game";

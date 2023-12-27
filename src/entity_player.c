@@ -247,6 +247,9 @@ char health[100];
 char streak[100];
 char multi[100];
 char score[100];
+char w_r[100];
+char w_g[100];
+char w_b[100];
 
 void entity_player_draw_2d(Entity * player){
     sprintf(pdir_x, "pdir_x: %f", player->player_storage.dir_x);
@@ -263,10 +266,16 @@ void entity_player_draw_2d(Entity * player){
     sprintf(streak, "streak: %d",  player->player_storage.streak);
     sprintf(multi, "multi: %dx", player->player_storage.multi);
     sprintf(score, "score: %f",  player->player_storage.score);
+    sprintf(w_r, "w_r: %f",  player->player_storage.weapons[WEAPON_RED].power);
+    sprintf(w_g, "w_g: %f", player->player_storage.weapons[WEAPON_GRN].power);
+    sprintf(w_b, "w_b: %f",  player->player_storage.weapons[WEAPON_BLU].power);
     DrawText(health, 1000, 160, 32, RAYWHITE);
     DrawText(streak, 1000, 192, 32, RAYWHITE);
     DrawText(multi, 1000, 224, 32, RAYWHITE);
     DrawText(score, 1000, 256, 32, RAYWHITE);
+    DrawText(w_r, 1000, 288, 32, RAYWHITE);
+    DrawText(w_g, 1000, 320, 32, RAYWHITE);
+    DrawText(w_b, 1000, 352, 32, RAYWHITE);
 
     DrawFPS(10, 10);
 }
@@ -288,10 +297,14 @@ void entity_player_inc_streak(){
     p->player_storage.streak++;
     // increase multi
     if (p->player_storage.streak % 20 == 0){
+        PlaySound(powerup_snd);
+        PlaySound(multiplier_pu_snd);
         p->player_storage.multi++;
     }
     // gain health
     if (p->player_storage.streak % 100 == 0){
+        PlaySound(powerup_snd);
+        PlaySound(sheild_pu_snd);
         p->player_storage.health++;
     }
 }

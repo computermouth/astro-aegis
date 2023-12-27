@@ -8,6 +8,7 @@
 #include "game.h"
 #include "vector.h"
 #include "weapon.h"
+#include "resource.h"
 
 typedef struct {
     float cooldown;
@@ -15,7 +16,9 @@ typedef struct {
     float speed;
 } WeaponPower;
 
-WeaponPower wp[__WEAPON_END][5] = {
+#define MAX_WEAPON_LV 5
+
+WeaponPower wp[__WEAPON_END][MAX_WEAPON_LV] = {
     [WEAPON_RED] = { // 5.1x
         [0] = {.cooldown = 0.50, .bullet_count = 1, .speed = 1.0},
         [1] = {.cooldown = 0.35, .bullet_count = 1, .speed = 1.1},
@@ -87,5 +90,38 @@ void weapon_fire(WeaponType wt, Weapon * w, Vector2 dir){
         }
     }
 }
+        // entity_asteroid_kill(asteroid);
+        // entity_player_add_score(10 * damage);
+        // if (damage == 1.0){
+        //     Weapon * w = game_get_weapon(wt);
+        //     // each strong asteroid kill is 1/10 a level
+        //     float old_power = w->power;
+        //     w->power += (damage == 1.0) * .5;
 
-void weapon_powerup(Weapon * w);
+        //     if ((int)old_power != (int)w->power){
+        //         PlaySound(powerup_snd);
+        //         PlaySound(weapon_pu_snd);
+        //     }
+
+        //     Vector3 a_pos = entity_asteroid_get_pos(asteroid);
+        //     Vector2 screen_a_pos = GetWorldToScreen(a_pos, game_get_camera());
+        //     Entity e = entity_banner_spawn((BannerType)wt, screen_a_pos);
+        //     vector * oe = game_get_other_entities();
+        //     vector_push(oe, &e);
+        // }
+
+void weapon_powerup(WeaponType wt, bool critical){
+    Weapon * w = game_get_weapon(wt);
+
+    // each critical asteroid kill is 1/10 a level
+    // each weak kill is 1/40 a level
+    float old_power = w->power;
+    float inc = .025 + (critical * 3 * .025) ;
+    // w->power = fmodf(w->power + inc, MAX_WEAPON_LV);
+    w->power += inc;
+
+    if ((int)old_power != (int)w->power){
+        PlaySound(powerup_snd);
+        PlaySound(weapon_pu_snd);
+    }
+}

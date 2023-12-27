@@ -192,6 +192,8 @@ void game_update_play(){
             .wave = 0,
             .level_start_time = game.game_time
         };
+
+        PlaySound(level_1_snd);
     }
 
     // music

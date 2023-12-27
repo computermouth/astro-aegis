@@ -204,6 +204,8 @@ const char * asteroid_s009_filename = "asteroid_s009.glb";
 const uint8_t * asteroid_s009_glb = xxd_resources_mdl_asteroid_s009_glb;
 const uint32_t asteroid_s009_glb_len = xxd_resources_mdl_asteroid_s009_glb_len;
 
+// MUSIC
+
 #include "cyber_spider_open.h"
 const uint8_t * cyber_spider_open_xm = xxd_resources_mus_cyber_spider_open_xm;
 const uint32_t cyber_spider_open_xm_len = xxd_resources_mus_cyber_spider_open_xm_len;
@@ -211,3 +213,108 @@ const uint32_t cyber_spider_open_xm_len = xxd_resources_mus_cyber_spider_open_xm
 #include "cyber_spider_rest.h"
 const uint8_t * cyber_spider_rest_xm = xxd_resources_mus_cyber_spider_rest_xm;
 const uint32_t cyber_spider_rest_xm_len = xxd_resources_mus_cyber_spider_rest_xm_len;
+
+// SOUNDS
+
+#include "asteroid_explosion1.h"
+const uint8_t * asteroid_explosion1_ogg = xxd_resources_snd_asteroid_explosion1_ogg;
+const uint32_t asteroid_explosion1_ogg_len = xxd_resources_snd_asteroid_explosion1_ogg_len;
+
+#include "asteroid_explosion2.h"
+const uint8_t * asteroid_explosion2_ogg = xxd_resources_snd_asteroid_explosion2_ogg;
+const uint32_t asteroid_explosion2_ogg_len = xxd_resources_snd_asteroid_explosion2_ogg_len;
+
+#include "asteroid_explosion3.h"
+const uint8_t * asteroid_explosion3_ogg = xxd_resources_snd_asteroid_explosion3_ogg;
+const uint32_t asteroid_explosion3_ogg_len = xxd_resources_snd_asteroid_explosion3_ogg_len;
+
+#include "asteroid_explosion4.h"
+const uint8_t * asteroid_explosion4_ogg = xxd_resources_snd_asteroid_explosion4_ogg;
+const uint32_t asteroid_explosion4_ogg_len = xxd_resources_snd_asteroid_explosion4_ogg_len;
+
+#include "asteroid_explosion5.h"
+const uint8_t * asteroid_explosion5_ogg = xxd_resources_snd_asteroid_explosion5_ogg;
+const uint32_t asteroid_explosion5_ogg_len = xxd_resources_snd_asteroid_explosion5_ogg_len;
+
+#include "bullet_hit_r.h"
+const uint8_t * bullet_hit_r_ogg = xxd_resources_snd_bullet_hit_r_ogg;
+const uint32_t bullet_hit_r_ogg_len = xxd_resources_snd_bullet_hit_r_ogg_len;
+
+#include "bullet_hit_g.h"
+const uint8_t * bullet_hit_g_ogg = xxd_resources_snd_bullet_hit_g_ogg;
+const uint32_t bullet_hit_g_ogg_len = xxd_resources_snd_bullet_hit_g_ogg_len;
+
+#include "bullet_hit_b.h"
+const uint8_t * bullet_hit_b_ogg = xxd_resources_snd_bullet_hit_b_ogg;
+const uint32_t bullet_hit_b_ogg_len = xxd_resources_snd_bullet_hit_b_ogg_len;
+
+#include "level_1.h"
+const uint8_t * level_1_ogg = xxd_resources_snd_level_1_ogg;
+const uint32_t level_1_ogg_len = xxd_resources_snd_level_1_ogg_len;
+
+#include "level_2.h"
+const uint8_t * level_2_ogg = xxd_resources_snd_level_2_ogg;
+const uint32_t level_2_ogg_len = xxd_resources_snd_level_2_ogg_len;
+
+#include "level_3.h"
+const uint8_t * level_3_ogg = xxd_resources_snd_level_3_ogg;
+const uint32_t level_3_ogg_len = xxd_resources_snd_level_3_ogg_len;
+
+#include "level_4.h"
+const uint8_t * level_4_ogg = xxd_resources_snd_level_4_ogg;
+const uint32_t level_4_ogg_len = xxd_resources_snd_level_4_ogg_len;
+
+#include "level_5.h"
+const uint8_t * level_5_ogg = xxd_resources_snd_level_5_ogg;
+const uint32_t level_5_ogg_len = xxd_resources_snd_level_5_ogg_len;
+
+#include "level_engage.h"
+const uint8_t * level_engage_ogg = xxd_resources_snd_level_engage_ogg;
+const uint32_t level_engage_ogg_len = xxd_resources_snd_level_engage_ogg_len;
+
+#include "level_infinite_mode.h"
+const uint8_t * level_infinite_mode_ogg = xxd_resources_snd_level_infinite_mode_ogg;
+const uint32_t level_infinite_mode_ogg_len = xxd_resources_snd_level_infinite_mode_ogg_len;
+
+#include "multiplier_pu.h"
+const uint8_t * multiplier_pu_ogg = xxd_resources_snd_multiplier_pu_ogg;
+const uint32_t multiplier_pu_ogg_len = xxd_resources_snd_multiplier_pu_ogg_len;
+
+#include "powerup.h"
+const uint8_t * powerup_ogg = xxd_resources_snd_powerup_ogg;
+const uint32_t powerup_ogg_len = xxd_resources_snd_powerup_ogg_len;
+
+#include "sheild_pu.h"
+const uint8_t * sheild_pu_ogg = xxd_resources_snd_sheild_pu_ogg;
+const uint32_t sheild_pu_ogg_len = xxd_resources_snd_sheild_pu_ogg_len;
+
+#include "weapon_pu.h"
+const uint8_t * weapon_pu_ogg = xxd_resources_snd_weapon_pu_ogg;
+const uint32_t weapon_pu_ogg_len = xxd_resources_snd_weapon_pu_ogg_len;
+
+// LICENSES
+
+#include "craftpix.h"
+const uint8_t * craftpix_license = xxd_resources_lic_craftpix_txt;
+const uint32_t craftpix_license_len = xxd_resources_lic_craftpix_txt_len;
+
+#include "drozerix_-_cyber_spider.h"
+const uint8_t * drozerix_license = xxd_resources_lic_drozerix___cyber_spider_txt;
+const uint32_t drozerix_license_len = xxd_resources_lic_drozerix___cyber_spider_txt_len;
+
+#include "festvox.h"
+const uint8_t * festvox_license = xxd_resources_lic_festvox_txt;
+const uint32_t festvox_license_len = xxd_resources_lic_festvox_txt_len;
+
+#include "jsfxr.h"
+const uint8_t * jsfxr_license = xxd_resources_lic_jsfxr_txt;
+const uint32_t jsfxr_license_len = xxd_resources_lic_jsfxr_txt_len;
+
+#include "libdsa.h"
+const uint8_t * libdsa_license = xxd_resources_lic_libdsa_txt;
+const uint32_t libdsa_license_len = xxd_resources_lic_libdsa_txt_len;
+
+#include "raylib_zlib.h"
+const uint8_t * raylib_zlib_license = xxd_resources_lic_raylib_zlib_txt;
+const uint32_t raylib_zlib_license_len = xxd_resources_lic_raylib_zlib_txt_len;
+
