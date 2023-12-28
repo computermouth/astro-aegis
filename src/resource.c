@@ -138,6 +138,14 @@ Sound powerup_snd = { 0 };
 Sound sheild_pu_snd = { 0 };
 Sound weapon_pu_snd = { 0 };
 
+// hack to auto loop the accel noise
+Music accel_music = { 0 };
+
+Sound bullet_shoot_r_snd = { 0 };
+Sound bullet_shoot_g_snd = { 0 };
+Sound bullet_shoot_b_snd = { 0 };
+Sound player_hit_snd = { 0 };
+
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init(){
@@ -627,6 +635,9 @@ void resource_init(){
 
         SetMusicVolume(cyber_spider_open_music, 0.3);
         SetMusicVolume(cyber_spider_rest_music, 0.3);
+        
+		accel_music = LoadMusicStreamFromMemory(".ogg", accel_ogg, accel_ogg_len);
+        SetMusicVolume(accel_music, 0);
     }
 
     // snd
@@ -665,6 +676,15 @@ void resource_init(){
         SetSoundVolume(powerup_snd, .25);
         sheild_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", sheild_pu_ogg, sheild_pu_ogg_len));
         weapon_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", weapon_pu_ogg, weapon_pu_ogg_len));
+        
+		bullet_shoot_r_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_r_ogg, bullet_shoot_r_ogg_len));
+		bullet_shoot_g_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_g_ogg, bullet_shoot_g_ogg_len));
+		bullet_shoot_b_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_b_ogg, bullet_shoot_b_ogg_len));
+        SetSoundVolume(bullet_shoot_r_snd, .05);
+        SetSoundVolume(bullet_shoot_g_snd, .05);
+        SetSoundVolume(bullet_shoot_b_snd, .05);
+		player_hit_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", player_hit_ogg, player_hit_ogg_len));
+        SetSoundVolume(player_hit_snd, .5);
     }
 
 }

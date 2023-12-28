@@ -148,6 +148,8 @@ void entity_player_update(Entity * player){
         }
     }
 
+    SetMusicVolume(accel_music, 10 * (fabsf(ps->dir_x) + fabs(ps->dir_z)));
+
     ps->frame_rotation = QuaternionMultiply(
         QuaternionFromAxisAngle((Vector3){0,1,0}, ps->dir_x),
         QuaternionFromAxisAngle((Vector3){0,0,1}, ps->dir_z)
@@ -232,6 +234,7 @@ void entity_player_check_collision(Entity * player){
                 // if (player.is_boosting)
                 //  //do entity_asteroid_take_damage(other, b->bullet_storage.w);
                 // else
+                PlaySound(player_hit_snd);
                 entity_player_take_damage(player);
                 return;
             }

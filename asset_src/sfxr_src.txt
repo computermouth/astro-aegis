@@ -2,6 +2,13 @@ bullet_hit_r.wav        https://sfxr.me/#7BMHBGFkLCR9sZ6UDhjfDJsUFbZtcJM5MKqaPVY
 bullet_hit_g.wav        https://sfxr.me/#7BMHBGK2A8vLSZLxVpgqsSENqgfcFnoKUehKrPAwmu93DRA1njKbgtL9UJcM3BevfTKwpJ57iZ1JFxSeZrQTEGec565wPEGi7eDFhKoX9e48A47F1Do3qfKkB
 bullet_hit_b.wav        https://sfxr.me/#7f4o6Y3fswzoNuA1GsaLrippYuezGToST7GqEhxg4xeaJ9gmdzy3yKt7DVioushqqusRoieLQR2Dn32C1boYuzjK1uiVSARWRnPtFxUEAYJMgYtHcbZmZVBD1
 
+accel.wav               https://sfxr.me/#7BMHBGDnzEV2y7MX8kX6A5bRKdrg2Pj6fJQhzxDfNNkAMPwSM8pnDPeCAa2TearCetsEk5wxJqERsZq43zfRfCA9rJAC25N4dec17WzRTZXncgch2QdPrsETh
+player_hit.wav          https://sfxr.me/#34T6Pkv974md3CvrDkk4KM5HtMdEfR9bd2oRy3M5SUJpxzSkEUaLvJecTezxGSD9KLY2W2YbLmnjo1YvyPNRw9nQzP3z9n4kUfFYEdQHW4kxcBdMBeopLnrxF
+
+bullet_shoot_r.wav      https://sfxr.me/#34T6PkmBRDwjANVLihTE8ukoKDfqCHocHS7GUdXCgdVHUVx3j8SXRNfpbdPEyPMu4Bo3z5E7s6QHXnCqwAmW8vUdi5ip7Y3rZZaPgM2yMzmwR7K4Mtf57r7tK
+bullet_shoot_g.wav      https://sfxr.me/#57uBnWZU9Y45uuswV42NFMrXTU1Q2MNWAHR58bQar1vsWgZT3qRzxK86ey663KToQRnDAvZSLJtLjG5xabjmoEYvJGWmWhSKY9A16Lasz5BwkfXPTAS8VxjtK
+bullet_shoot_b.wav      https://sfxr.me/#57uBnWi9RqAWtPy9FSU2C9dYa2rE1eaHA2z18eo28YWmPmNYRVLmrWCGjS4hX8zNWS3j91UFSPxWcd7WetVWyai9QdcbNzrthJwbQbCU3nsotgaL54gshiE5S
+
 asteroid_explosion1.wav https://sfxr.me/#7BMHBGAwxxkwaHmEbAgoSCKtB3EmmCTS1VifrV1MtqYYjr8XRSPjYRstxro7btz1TZZ3f3xDqnXx81Mqp4hEuRc8n8WR6GFw9GKCtgpvGJkyP27ENGBvtSALw
 asteroid_explosion2.wav https://sfxr.me/#7BMHBGB1H1qVKTzXHE9sR7e9B2cgwwEX42Ne6129YjnJSssTPFLLHZYLRiYdpfY4sHDnV6GzT6kZMcqZoF5Pu29id9KDTipP1PY1Mz3jZ1SoZWoPp9cR1Nd51
 asteroid_explosion3.wav https://sfxr.me/#7BMHBGJHSu1vZ8iGS8wL39SuMqK2u4bedf6EsNPaa7DMKVtgxSVWyatX1SfHQ4sb9BwMawxr2pSUuUj1bLaPEsru2QSoCCNxckbKnGU3DrSSoNvBVgygVDgUc

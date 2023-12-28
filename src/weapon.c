@@ -42,6 +42,12 @@ WeaponPower wp[__WEAPON_END][MAX_WEAPON_LV] = {
     },
 };
 
+Sound * weapon_shoot_noises[] = {
+    &bullet_shoot_r_snd,
+    &bullet_shoot_g_snd,
+    &bullet_shoot_b_snd,
+};
+
 void weapon_fire(WeaponType wt, Weapon * w, Vector2 dir){
 
     int p = w->power;
@@ -51,6 +57,8 @@ void weapon_fire(WeaponType wt, Weapon * w, Vector2 dir){
     if (w->next_shot <= gt){
         // shoot
         w->next_shot = gt + wp[wt][p].cooldown;
+
+        PlaySound(*weapon_shoot_noises[wt]);
 
         vector * entities = game_get_other_entities();
 

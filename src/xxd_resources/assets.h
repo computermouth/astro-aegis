@@ -226,6 +226,21 @@ extern const uint32_t sheild_pu_ogg_len;
 extern const uint8_t * weapon_pu_ogg;
 extern const uint32_t weapon_pu_ogg_len;
 
+extern const uint8_t * accel_ogg;
+extern const uint32_t accel_ogg_len;
+
+extern const uint8_t * bullet_shoot_r_ogg;
+extern const uint32_t bullet_shoot_r_ogg_len;
+
+extern const uint8_t * bullet_shoot_g_ogg;
+extern const uint32_t bullet_shoot_g_ogg_len;
+
+extern const uint8_t * bullet_shoot_b_ogg;
+extern const uint32_t bullet_shoot_b_ogg_len;
+
+extern const uint8_t * player_hit_ogg;
+extern const uint32_t player_hit_ogg_len;
+
 // licenses
 extern const uint8_t * craftpix_license;
 extern const uint32_t craftpix_license_len;

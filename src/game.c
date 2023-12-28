@@ -101,9 +101,11 @@ void game_update_menu(){
 
         game.game_music = cyber_spider_open_music;
         PlayMusicStream(game.game_music);
+        PlayMusicStream(accel_music);
     }
 
     UpdateMusicStream(game.game_music);
+    UpdateMusicStream(accel_music);
 
     curr_playtime = GetMusicTimePlayed(game.game_music)/GetMusicTimeLength(game.game_music);
     float playdiff = curr_playtime - last_playtime;
@@ -198,6 +200,7 @@ void game_update_play(){
 
     // music
     UpdateMusicStream(game.game_music);
+    UpdateMusicStream(accel_music);
 
     curr_playtime = GetMusicTimePlayed(game.game_music)/GetMusicTimeLength(game.game_music);
     float playdiff = curr_playtime - last_playtime;

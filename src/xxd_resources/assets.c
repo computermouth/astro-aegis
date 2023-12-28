@@ -292,6 +292,26 @@ const uint32_t sheild_pu_ogg_len = xxd_resources_snd_sheild_pu_ogg_len;
 const uint8_t * weapon_pu_ogg = xxd_resources_snd_weapon_pu_ogg;
 const uint32_t weapon_pu_ogg_len = xxd_resources_snd_weapon_pu_ogg_len;
 
+#include "accel.h"
+const uint8_t * accel_ogg = xxd_resources_snd_accel_ogg;
+const uint32_t accel_ogg_len = xxd_resources_snd_accel_ogg_len;
+
+#include "bullet_shoot_r.h"
+const uint8_t * bullet_shoot_r_ogg = xxd_resources_snd_bullet_shoot_r_ogg;
+const uint32_t bullet_shoot_r_ogg_len = xxd_resources_snd_bullet_shoot_r_ogg_len;
+
+#include "bullet_shoot_g.h"
+const uint8_t * bullet_shoot_g_ogg = xxd_resources_snd_bullet_shoot_g_ogg;
+const uint32_t bullet_shoot_g_ogg_len = xxd_resources_snd_bullet_shoot_g_ogg_len;
+
+#include "bullet_shoot_b.h"
+const uint8_t * bullet_shoot_b_ogg = xxd_resources_snd_bullet_shoot_b_ogg;
+const uint32_t bullet_shoot_b_ogg_len = xxd_resources_snd_bullet_shoot_b_ogg_len;
+
+#include "player_hit.h"
+const uint8_t * player_hit_ogg = xxd_resources_snd_player_hit_ogg;
+const uint32_t player_hit_ogg_len = xxd_resources_snd_player_hit_ogg_len;
+
 // LICENSES
 
 #include "craftpix.h"

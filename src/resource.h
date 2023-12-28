@@ -146,4 +146,12 @@ extern Sound powerup_snd;
 extern Sound sheild_pu_snd;
 extern Sound weapon_pu_snd;
 
+// hack to auto loop the accel noise
+extern Music accel_music;
+
+extern Sound bullet_shoot_r_snd;
+extern Sound bullet_shoot_g_snd;
+extern Sound bullet_shoot_b_snd;
+extern Sound player_hit_snd;
+
 #endif
