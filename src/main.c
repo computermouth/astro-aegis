@@ -70,7 +70,7 @@ int main(void) {
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
     InitAudioDevice();
-    SetMasterVolume(.7);
+    SetMasterVolume(0);
     SetLoadFileDataCallback(resource_load_file_callback);
 
     char * welcome = "a raylib slo-jam game";
@@ -125,6 +125,13 @@ int main(void) {
 //--------------------------------------------------------------------------------------------
 // Update and draw frame
 
+// master volume fade-in
+float fade_t = 0;
 void UpdateDrawFrame(void) {
+    if (fade_t == 0)
+        fade_t = GetTime();
+
+    if ((GetTime() - fade_t) / 2 < 1)
+        SetMasterVolume(fmodf((GetTime() - fade_t) / 2, 1) * 0.7);
     game_update();
 }

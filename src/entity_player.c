@@ -148,6 +148,7 @@ void entity_player_update(Entity * player){
         }
     }
 
+    // fmod is to make sure the accel fades in at game start
     SetMusicVolume(accel_music, 10 * (fabsf(ps->dir_x) + fabs(ps->dir_z)));
 
     ps->frame_rotation = QuaternionMultiply(
@@ -192,7 +193,7 @@ void entity_player_kill(){
 
 void entity_player_take_damage(Entity * player){
     player->player_storage.streak = 0;
-    player->player_storage.multi = 0;
+    player->player_storage.multi = 1;
     player->player_storage.health--;
 
     if (player->player_storage.health <= 0){
