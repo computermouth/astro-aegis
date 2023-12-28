@@ -103,15 +103,18 @@ void level_update(vector * entities, GameLevelState * gls){
     }
 }
 
-char time__label[100];
-char level_label[100];
-char wave__label[100];
+char game__time_label[100];
+char level_time_label[100];
+char level______label[100];
+char wave_______label[100];
 
 void level_draw_2d(GameLevelState gls){
-    sprintf(time__label, "time : %.2f", game_get_time() - gls.level_start_time);
-    sprintf(level_label, "level: %lu", gls.level);
-    sprintf(wave__label, "wave : %lu", gls.wave);
-    DrawText(time__label, 32,  32, 32, RAYWHITE);
-    DrawText(level_label, 32, 64, 32, RAYWHITE);
-    DrawText(wave__label, 32, 96, 32, RAYWHITE);
+    sprintf(game__time_label, "time: %.2f", game_get_time() - gls.level_start_time);
+    sprintf(level______label, "level: %lu", gls.level + 1);
+    sprintf(level_time_label, "level_time: %.2f", game_get_time() - gls.level_start_time);
+    // sprintf(wave_______label, "wave : %lu", gls.wave);
+    DrawText(game__time_label, 32,  32, 32, RAYWHITE);
+    DrawText(level______label, 32, 64, 32, RAYWHITE);
+    DrawText(level_time_label, 32, 96, 32, RAYWHITE);
+    // DrawText(wave_______label, 32, 128, 32, RAYWHITE);
 }

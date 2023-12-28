@@ -192,6 +192,7 @@ void game_update_play(){
         game.game_level_state = (GameLevelState){
             .level = 0,
             .wave = 0,
+            .game_start_time = game.game_time,
             .level_start_time = game.game_time
         };
 

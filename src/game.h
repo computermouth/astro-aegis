@@ -32,6 +32,7 @@ typedef struct {
 typedef struct {
     size_t level;
     size_t wave;
+    float game_start_time;
     float level_start_time;
 } GameLevelState;
 

@@ -2,6 +2,7 @@
 #include "game.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "raygui.h"
 
 #include "tool.h"
 #include "resource.h"
@@ -88,8 +89,10 @@ void entity_player_update(Entity * player){
         // weapon switch
         if (IsKeyReleased(KEY_Q)){
             ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
+            fprintf(stderr, "w: %d\n", ps->weapon_index);
         } else if (IsKeyReleased(KEY_E)){
-            ps->weapon_index = ps->weapon_index + 1 % __WEAPON_END;
+            ps->weapon_index = (ps->weapon_index + 1) % __WEAPON_END;
+            fprintf(stderr, "w: %d\n", ps->weapon_index);
         }
 
         // bool was_firing = ps->weapons[ps->weapon_index].is_firing;
@@ -256,30 +259,36 @@ char w_g[100];
 char w_b[100];
 
 void entity_player_draw_2d(Entity * player){
-    sprintf(pdir_x, "pdir_x: %f", player->player_storage.dir_x);
-    sprintf(pdir_z, "pdir_z: %f", player->player_storage.dir_z);
-    DrawText(pdir_x, 1000, 32, 32, RAYWHITE);
-    DrawText(pdir_z, 1000, 64, 32, RAYWHITE);
+    // sprintf(pdir_x, "pdir_x: %f", player->player_storage.dir_x);
+    // sprintf(pdir_z, "pdir_z: %f", player->player_storage.dir_z);
+    // DrawText(pdir_x, 1000, 32, 32, RAYWHITE);
+    // DrawText(pdir_z, 1000, 64, 32, RAYWHITE);
 
-    sprintf(pdir_x, "mdir_x: %f", player->player_storage.shoot_dir.x);
-    sprintf(pdir_z, "mdir_y: %f", player->player_storage.shoot_dir.y);
-    DrawText(pdir_x, 1000, 96, 32, RAYWHITE);
-    DrawText(pdir_z, 1000, 128, 32, RAYWHITE);
+    // sprintf(pdir_x, "mdir_x: %f", player->player_storage.shoot_dir.x);
+    // sprintf(pdir_z, "mdir_y: %f", player->player_storage.shoot_dir.y);
+    // DrawText(pdir_x, 1000, 96, 32, RAYWHITE);
+    // DrawText(pdir_z, 1000, 128, 32, RAYWHITE);
 
-    sprintf(health, "health: %dx", player->player_storage.health);
-    sprintf(streak, "streak: %d",  player->player_storage.streak);
+    // sprintf(streak, "streak: %d",  player->player_storage.streak);
     sprintf(multi, "multi: %dx", player->player_storage.multi);
-    sprintf(score, "score: %f",  player->player_storage.score);
-    sprintf(w_r, "w_r: %f",  player->player_storage.weapons[WEAPON_RED].power);
-    sprintf(w_g, "w_g: %f", player->player_storage.weapons[WEAPON_GRN].power);
-    sprintf(w_b, "w_b: %f",  player->player_storage.weapons[WEAPON_BLU].power);
-    DrawText(health, 1000, 160, 32, RAYWHITE);
-    DrawText(streak, 1000, 192, 32, RAYWHITE);
-    DrawText(multi, 1000, 224, 32, RAYWHITE);
-    DrawText(score, 1000, 256, 32, RAYWHITE);
-    DrawText(w_r, 1000, 288, 32, RAYWHITE);
-    DrawText(w_g, 1000, 320, 32, RAYWHITE);
-    DrawText(w_b, 1000, 352, 32, RAYWHITE);
+    sprintf(score, "score: %d",  (int)player->player_storage.score);
+    DrawText(multi, 32, GAME_SCREEN_HEIGHT - 32 * 2, 32, RAYWHITE);
+    DrawText(score, 32, GAME_SCREEN_HEIGHT - 32 * 3, 32, RAYWHITE);
+    // DrawText(score, 1000, 256, 32, RAYWHITE);
+
+    sprintf(health, "shields: %d", player->player_storage.health);
+    sprintf(w_r   , "phaser: %.3f", player->player_storage.weapons[WEAPON_RED].power + 1);
+    sprintf(w_g   , "spread: %.3f", player->player_storage.weapons[WEAPON_GRN].power + 1);
+    sprintf(w_b   , "ngwave: %.3f", player->player_storage.weapons[WEAPON_BLU].power + 1);
+
+
+    DrawText(health,   GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",  32), GAME_SCREEN_HEIGHT - 32 * 6, 32, ORANGE);
+    DrawText(w_r,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 4, 32, RED);
+    DrawText(w_g,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 3, 32, GREEN);
+    DrawText(w_b,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 2, 32, BLUE);
+
+    char * selector = ">";
+    DrawText(selector, GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32) - MeasureText(selector, 32) * 2, GAME_SCREEN_HEIGHT - 32 * 4 + (32 * player->player_storage.weapon_index), 32, RAYWHITE);
 
     DrawFPS(10, 10);
 }
