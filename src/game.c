@@ -166,9 +166,11 @@ void game_update_menu(){
 
         GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 + 100, .width = 200, .height = 64}, "licenses");
 
+#if !defined(PLATFORM_WEB)
         if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 + 200, .width = 200, .height = 64}, "exit")){
             game_set_should_quit();
         }
+#endif
 
 		DrawFPS(10, 10);
 

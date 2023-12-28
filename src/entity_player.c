@@ -89,10 +89,8 @@ void entity_player_update(Entity * player){
         // weapon switch
         if (IsKeyReleased(KEY_Q)){
             ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
-            fprintf(stderr, "w: %d\n", ps->weapon_index);
         } else if (IsKeyReleased(KEY_E)){
             ps->weapon_index = (ps->weapon_index + 1) % __WEAPON_END;
-            fprintf(stderr, "w: %d\n", ps->weapon_index);
         }
 
         // bool was_firing = ps->weapons[ps->weapon_index].is_firing;
@@ -277,10 +275,9 @@ void entity_player_draw_2d(Entity * player){
     // DrawText(score, 1000, 256, 32, RAYWHITE);
 
     sprintf(health, "shields: %d", player->player_storage.health);
-    sprintf(w_r   , "phaser: %.3f", player->player_storage.weapons[WEAPON_RED].power + 1);
-    sprintf(w_g   , "spread: %.3f", player->player_storage.weapons[WEAPON_GRN].power + 1);
-    sprintf(w_b   , "ngwave: %.3f", player->player_storage.weapons[WEAPON_BLU].power + 1);
-
+    sprintf(w_r   , "phaser: %.3f", Clamp( player->player_storage.weapons[WEAPON_RED].power + 1, 0, 5));
+    sprintf(w_g   , "spread: %.3f", Clamp( player->player_storage.weapons[WEAPON_GRN].power + 1, 0, 5));
+    sprintf(w_b   , "ngwave: %.3f", Clamp( player->player_storage.weapons[WEAPON_BLU].power + 1, 0, 5));
 
     DrawText(health,   GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",  32), GAME_SCREEN_HEIGHT - 32 * 6, 32, ORANGE);
     DrawText(w_r,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 4, 32, RED);
