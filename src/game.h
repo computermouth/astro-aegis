@@ -37,12 +37,23 @@ typedef struct {
 } GameLevelState;
 
 typedef struct {
+    float game_over_start_time;
+    Vector2 time_pos_start;
+    Vector2 time_pos_end;
+    Vector2 score_pos_start;
+    Vector2 score_pos_end;
+} GameOverState;
+
+typedef struct {
     float game_time;
     float game_delta;
     Music game_music;
+    float game_music_desired_volume;
+    float game_music_current_volume;
     GameMenuState game_menu_state;
     GamePlayState game_play_state;
     GameLevelState game_level_state;
+    GameOverState game_over_state;
     GameEntities game_entities;
     Camera3D game_camera;
 } Game;
@@ -56,6 +67,7 @@ void game_update();
 void game_set_should_quit();
 bool game_get_should_quit();
 void game_reset();
+void game_init_game_over();
 
 void game_set_menu_state(GameMenuState new_gs);
 GameMenuState game_get_menu_state();

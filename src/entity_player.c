@@ -189,7 +189,7 @@ void entity_player_update(Entity * player){
 }
 
 void entity_player_kill(){
-    game_set_play_state(GAME_PLAY_STATE_OVER);
+    game_init_game_over();
 }
 
 void entity_player_take_damage(Entity * player){

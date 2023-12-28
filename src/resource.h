@@ -64,6 +64,9 @@ extern Image    redtex3_img;
 extern Texture  redtex3_tex;
 extern Material redtex3_mat;
 
+extern Image black_img;
+extern Texture black_tex;
+
 extern Mesh player_mesh;
 extern Image player_img;
 extern Texture player_tex;

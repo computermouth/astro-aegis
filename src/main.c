@@ -69,6 +69,7 @@ int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
+    SetExitKey(KEY_NULL);
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);

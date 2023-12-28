@@ -55,6 +55,9 @@ Image    redtex3_img = { 0 };
 Texture  redtex3_tex = { 0 };
 Material redtex3_mat = { 0 };
 
+Image black_img = { 0 };
+Texture black_tex = { 0 };
+
 Mesh player_mesh = { 0 };
 Image player_img = { 0 };
 Texture player_tex = { 0 };
@@ -627,14 +630,19 @@ void resource_init(){
 
     }
 
+    { // fade out thing
+        black_img = GenImageColor(1, 1, BLACK);
+        black_tex = LoadTextureFromImage(black_img);
+    }
+
     // music
     {
         cyber_spider_open_music = LoadMusicStreamFromMemory(".xm", cyber_spider_open_xm, cyber_spider_open_xm_len);
         cyber_spider_rest_music = LoadMusicStreamFromMemory(".xm", cyber_spider_rest_xm, cyber_spider_rest_xm_len);
-
-        SetMusicVolume(cyber_spider_open_music, 0.3);
-        SetMusicVolume(cyber_spider_rest_music, 0.3);
+        // SetMusicVolume(cyber_spider_open_music, 0.3);
+        // SetMusicVolume(cyber_spider_rest_music, 0.3);
         
+        // .075 max
 		accel_music = LoadMusicStreamFromMemory(".ogg", accel_ogg, accel_ogg_len);
         SetMusicVolume(accel_music, 0);
     }

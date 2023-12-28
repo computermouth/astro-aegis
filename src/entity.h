@@ -98,6 +98,9 @@ typedef struct entity{
     Matrix   transform;
     void     (*draw_2d_fn)(struct entity *);
     void     (*draw_3d_fn)(struct entity *);
+    bool     dying;
+    float     started_dying;
+    float    finishes_dying;
     bool     dead;
 } Entity;
 

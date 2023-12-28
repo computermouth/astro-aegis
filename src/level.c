@@ -109,7 +109,7 @@ char level______label[100];
 char wave_______label[100];
 
 void level_draw_2d(GameLevelState gls){
-    sprintf(game__time_label, "time: %.2f", game_get_time() - gls.level_start_time);
+    sprintf(game__time_label, "time: %.2f", game_get_time() - gls.game_start_time);
     sprintf(level______label, "level: %lu", gls.level + 1);
     sprintf(level_time_label, "level_time: %.2f", game_get_time() - gls.level_start_time);
     // sprintf(wave_______label, "wave : %lu", gls.wave);

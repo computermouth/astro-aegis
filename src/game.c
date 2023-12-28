@@ -99,9 +99,27 @@ void game_update_menu(){
         game.game_entities.player.player_storage.menu_input_x = 0;
         game.game_entities.player.player_storage.menu_input_z = 1;
 
-        game.game_music = cyber_spider_open_music;
-        PlayMusicStream(game.game_music);
+        game.game_music_desired_volume = 0.3;
+        game.game_music_current_volume = 0.1;
+
+        // here because it gets lowered in GAME_OVER
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
+
+        // don't restart the music if the player
+        // is resuming from the last game
+        if (!IsMusicStreamPlaying(game.game_music)){
+            game.game_music = cyber_spider_open_music;
+            PlayMusicStream(game.game_music);
+        }
         PlayMusicStream(accel_music);
+    }
+
+    if(game.game_music_current_volume < game.game_music_desired_volume){
+        game.game_music_current_volume += .2 * game_get_delta();
+        fprintf(stderr, "gmcv: %f\n", game.game_music_current_volume);
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
     }
 
     UpdateMusicStream(game.game_music);
@@ -180,26 +198,25 @@ void game_update_menu(){
 
 }
 
-void game_update_play(){
+void game_update_play_init(){
+    if(game.game_entities.others)
+        vector_free(game.game_entities.others);
 
-    // run start
-    if(game.game_play_state == GAME_PLAY_STATE_INIT){
-        if(game.game_entities.others)
-            vector_free(game.game_entities.others);
+    game.game_entities.others = vector_init(sizeof(Entity));
 
-        game.game_entities.others = vector_init(sizeof(Entity));
+    game.game_play_state = GAME_PLAY_STATE_PLAY;
 
-        game.game_play_state = GAME_PLAY_STATE_PLAY;
+    game.game_level_state = (GameLevelState){
+        .level = 0,
+        .wave = 0,
+        .game_start_time = game.game_time,
+        .level_start_time = game.game_time
+    };
 
-        game.game_level_state = (GameLevelState){
-            .level = 0,
-            .wave = 0,
-            .game_start_time = game.game_time,
-            .level_start_time = game.game_time
-        };
+    PlaySound(level_1_snd);
+}
 
-        PlaySound(level_1_snd);
-    }
+void game_update_play_play(){
 
     // music
     UpdateMusicStream(game.game_music);
@@ -217,7 +234,7 @@ void game_update_play(){
     // updates
     entity_player_update(&game.game_entities.player);
     // player died, resetting game
-    if (game_get_menu_state() == GAME_MENU_STATE_INIT)
+    if (game_get_play_state() == GAME_PLAY_STATE_OVER)
         return;
 
     entity_globe_update(&game.game_entities.globe);
@@ -297,6 +314,145 @@ void game_update_play(){
         level_draw_2d(game.game_level_state);
 
     EndDrawing();
+}
+
+char final_score[100];
+char final_time[100];
+
+void game_update_play_over(){
+
+    if(game.game_music_current_volume > game.game_music_desired_volume){
+        game.game_music_current_volume -= .2 * game_get_delta();
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
+    }
+
+    // music
+    UpdateMusicStream(game.game_music);
+    UpdateMusicStream(accel_music);
+
+    curr_playtime = GetMusicTimePlayed(game.game_music)/GetMusicTimeLength(game.game_music);
+    float playdiff = curr_playtime - last_playtime;
+    if (game.game_music.ctxData == cyber_spider_open_music.ctxData && curr_playtime + playdiff >= 1.0){
+        StopMusicStream(game.game_music);
+        game.game_music = cyber_spider_rest_music;
+        PlayMusicStream(game.game_music);
+    }
+    last_playtime = curr_playtime;
+
+    // updates
+    entity_globe_update(&game.game_entities.globe);
+
+    // float camera back to center
+    game.game_entities.player.player_storage.dir_x += -game.game_entities.player.player_storage.dir_x / 10 * game_get_delta();
+    game.game_entities.player.player_storage.dir_z += -game.game_entities.player.player_storage.dir_z / 10 * game_get_delta();
+
+    // dynamic camera
+    float dirx = game.game_entities.player.player_storage.dir_x;
+    float dirz = game.game_entities.player.player_storage.dir_z;
+    game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
+    game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
+
+    if (game.game_entities.others){
+        // update all entities
+        size_t e_len = vector_size(game.game_entities.others);
+        Entity * entities = vector_begin(game.game_entities.others);
+        for(size_t i = 0; i < e_len; i++){
+            switch (entities[i].type) {
+                case ENTITY_TYPE_ASTEROID:
+                    entity_asteroid_update(&entities[i]);
+                    break;
+                case ENTITY_TYPE_BULLET:
+                    entity_bullet_update(&entities[i]);
+                    break;
+                case ENTITY_TYPE_BANNER:
+                    entity_banner_update(&entities[i]);
+                    break;
+                default:
+                    printf("E: encountered unknown entity type: %d\n", entities[i].type);
+                    break;
+            }
+        }
+
+        // cleanup dead entities
+        e_len = vector_size(game.game_entities.others);
+        entities = vector_begin(game.game_entities.others);
+        for(size_t i = 0; i < e_len; i++){
+            // might be more efficient to copy all living
+            // to a new vector, hard to say
+            if (entities[i].dead){
+                vector_erase(game.game_entities.others, i);
+                e_len--;
+                i--;
+            }
+        }
+    }
+
+    BeginDrawing();
+        ClearBackground(BLACK);
+
+        BeginMode3D(game.game_camera);
+
+        if (game.game_entities.others){
+            // draw all 3d entities
+            size_t e_len = vector_size(game.game_entities.others);
+            Entity * entities = vector_begin(game.game_entities.others);
+            for(size_t i = 0; i < e_len; i++){
+                if (entities[i].draw_3d_fn){
+                    entities[i].draw_3d_fn(&entities[i]);
+                }
+            }
+
+            // draw special 3d entities
+            // game.game_entities.player.draw_3d_fn(&game.game_entities.player);
+            game.game_entities.globe.draw_3d_fn(&game.game_entities.globe);
+        }
+
+        EndMode3D();
+        // void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint);
+        DrawTexturePro(
+            black_tex,
+            (Rectangle){0,0,1,1},
+            (Rectangle){0,0,GAME_SCREEN_WIDTH,GAME_SCREEN_HEIGHT},
+            (Vector2){0,0},
+            0,
+            (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255}
+        );
+
+        char * go_text = "GAME OVER";
+        DrawText(go_text, GAME_SCREEN_WIDTH / 2 - MeasureText(go_text, 64) / 2, 100, 64, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
+
+        DrawText(final_score, GAME_SCREEN_WIDTH / 2 - MeasureText(final_score, 32) / 2, 250, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
+        DrawText(final_time,  GAME_SCREEN_WIDTH / 2 - MeasureText(final_time,  32) / 2, 350, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
+
+        if ( Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 7) == 7 ){
+
+            if (game.game_entities.others != NULL){
+                vector_free(game.game_entities.others);
+                game.game_entities.others = NULL;
+            }
+
+            if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2.0 - 100, .y = 450, .width = 200, .height = 64}, "menu"))
+                game_set_menu_state(GAME_MENU_STATE_INIT);
+
+        }
+
+    EndDrawing();
+}
+
+void game_update_play(){
+
+    switch (game.game_play_state){
+        case GAME_PLAY_STATE_INIT:
+            game_update_play_init();
+            // fallthrough to play_play
+        case GAME_PLAY_STATE_PLAY:
+            game_update_play_play();
+            break;
+        case GAME_PLAY_STATE_OVER:
+            game_update_play_over();
+            break;
+    }
 
 }
 
@@ -332,6 +488,18 @@ void game_set_play_state(GamePlayState new_gs) {
 
 GamePlayState game_get_play_state(){
     return game.game_play_state;
+}
+
+void game_init_game_over(){
+    game.game_play_state = GAME_PLAY_STATE_OVER;
+    game.game_music_desired_volume = 0.1;
+    game.game_music_current_volume = 0.3;
+    SetMusicVolume(accel_music, 0);
+
+    sprintf(final_score, "score: %d", (int)game.game_entities.player.player_storage.score);
+    sprintf(final_time, "time: %.2f",  game_get_time() - game.game_level_state.game_start_time);
+
+    game.game_over_state.game_over_start_time = game_get_time();
 }
 
 void game_quit(){
