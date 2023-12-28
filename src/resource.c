@@ -4,7 +4,6 @@
 
 #include "raylib.h"
 #include "raymath.h"
-#include <bits/stdint-uintn.h>
 #include <stddef.h>
 #include <string.h>
 

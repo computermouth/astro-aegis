@@ -69,38 +69,12 @@ int main(void) {
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
-    InitAudioDevice();
-    SetMasterVolume(0);
-    SetLoadFileDataCallback(resource_load_file_callback);
-
-    char * welcome = "a raylib slo-jam game";
-    char * by = "by";
-    char * computermouth = "@computermouth";
-    int font_size = 64;
-    int tw_welcome       = MeasureText(welcome, font_size);
-    int tw_by            = MeasureText(by, font_size);
-    int tw_computermouth = MeasureText(computermouth, font_size);
-    float old_t = GetTime();
-
-    BeginDrawing();
-        ClearBackground(BLACK);
-        DrawText(welcome,       GAME_SCREEN_WIDTH / 2 - tw_welcome       / 2, GAME_SCREEN_HEIGHT * 1 / 5,   font_size, RAYWHITE);
-        DrawText(by,            GAME_SCREEN_WIDTH / 2 - tw_by            / 2, GAME_SCREEN_HEIGHT * 2.2 / 5, font_size, RAYWHITE);
-        DrawText(computermouth, GAME_SCREEN_WIDTH / 2 - tw_computermouth / 2, GAME_SCREEN_HEIGHT * 3.7 / 5, font_size, RAYWHITE);
-    EndDrawing();
-
-    resource_init();
-
-    float new_t = GetTime();
-    WaitTime(2 - (new_t - old_t));
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
 #else
     SetTargetFPS(60);     // Set our game frames-per-second
     //--------------------------------------------------------------------------------------
-
-    SetRandomSeed(GetTime() * 5417 + GetFrameTime() * 7919);
 
     // Main game loop
     while (!WindowShouldClose() && !game_get_should_quit())    // Detect window close button
@@ -120,6 +94,44 @@ int main(void) {
     return 0;
 }
 
+// emscripten sucks farts
+bool load_started = false;
+bool load_finished = false;
+float old_t = 0;
+
+void load_start(){
+
+    InitAudioDevice();
+    SetMasterVolume(0);
+    SetLoadFileDataCallback(resource_load_file_callback);
+
+    char * welcome = "a raylib slo-jam game";
+    char * by = "by";
+    char * computermouth = "@computermouth";
+    int font_size = 64;
+    int tw_welcome       = MeasureText(welcome, font_size);
+    int tw_by            = MeasureText(by, font_size);
+    int tw_computermouth = MeasureText(computermouth, font_size);
+    old_t = GetTime();
+
+    BeginDrawing();
+        ClearBackground(BLACK);
+        DrawText(welcome,       GAME_SCREEN_WIDTH / 2 - tw_welcome       / 2, GAME_SCREEN_HEIGHT * 1 / 5,   font_size, RAYWHITE);
+        DrawText(by,            GAME_SCREEN_WIDTH / 2 - tw_by            / 2, GAME_SCREEN_HEIGHT * 2.2 / 5, font_size, RAYWHITE);
+        DrawText(computermouth, GAME_SCREEN_WIDTH / 2 - tw_computermouth / 2, GAME_SCREEN_HEIGHT * 3.7 / 5, font_size, RAYWHITE);
+    EndDrawing();
+
+    load_started = true;
+}
+
+void load_finish(){
+    resource_init();
+    float new_t = GetTime();
+    WaitTime(2 - (new_t - old_t));
+    SetRandomSeed(GetTime() * 5417 + GetFrameTime() * 7919);
+    load_finished = true;
+}
+
 //--------------------------------------------------------------------------------------------
 // Module functions definition
 //--------------------------------------------------------------------------------------------
@@ -128,6 +140,16 @@ int main(void) {
 // master volume fade-in
 float fade_t = 0;
 void UpdateDrawFrame(void) {
+
+    // crappy emscripten hacks
+    if (!load_started){
+        load_start();
+        return;
+    } else if (!load_finished){
+        load_finish();
+        return;
+    }
+
     if (fade_t == 0)
         fade_t = GetTime();
 
