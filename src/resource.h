@@ -11,6 +11,16 @@ typedef struct {
     unsigned int len;
 } resource_load_stats;
 
+typedef struct {
+    char * product_name;
+    char * copyright_holder;
+    char * description;
+    char * link;
+    char * license;
+    char * payload;
+    unsigned char payload_len;
+} License;
+
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init();
@@ -156,5 +166,7 @@ extern Sound bullet_shoot_r_snd;
 extern Sound bullet_shoot_g_snd;
 extern Sound bullet_shoot_b_snd;
 extern Sound player_hit_snd;
+
+extern License licenses[6];
 
 #endif

@@ -15,6 +15,12 @@ typedef enum {
 } GameMenuState;
 
 typedef enum {
+    MENU_STATE_IDLE,
+    MENU_STATE_OPTIONS,
+    MENU_STATE_LICENSES,
+} MenuSubstate;
+
+typedef enum {
     GAME_PLAY_STATE_INIT,
     GAME_PLAY_STATE_PLAY,
     GAME_PLAY_STATE_OVER,
@@ -25,6 +31,16 @@ typedef struct {
     Entity globe;
     vector * others;
 } GameEntities;
+
+typedef struct {
+    bool draw_fps;
+} GameOptions;
+
+typedef struct {
+    MenuSubstate state;
+    GameOptions options;
+    int license_shown;
+} MenuData;
 
 // maybe this should be a static
 // global in level.c
@@ -50,6 +66,7 @@ typedef struct {
     Music game_music;
     float game_music_desired_volume;
     float game_music_current_volume;
+    MenuData menu_data;
     GameMenuState game_menu_state;
     GamePlayState game_play_state;
     GameLevelState game_level_state;
@@ -79,5 +96,6 @@ Entity * game_get_globe_entity();
 vector * game_get_other_entities();
 Weapon * game_get_weapon(WeaponType w);
 Camera game_get_camera();
+GameOptions game_get_game_options();
 
 #endif

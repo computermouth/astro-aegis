@@ -46,11 +46,6 @@ const uint32_t redtex2_png_len = xxd_resources_img_redtex2_png_len;
 const uint8_t * redtex3_png = xxd_resources_img_redtex3_png;
 const uint32_t redtex3_png_len = xxd_resources_img_redtex3_png_len;
 
-// Asteroids by craftpix
-// https://free-game-assets.itch.io/free-stone-3d-low-poly-pack
-// LICENSE:
-// https://craftpix.net/file-licenses/
-
 // big asteroids
 #include "asteroid_b000.h"
 const char * asteroid_b000_filename = "asteroid_b000.glb";

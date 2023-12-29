@@ -272,7 +272,6 @@ void entity_player_draw_2d(Entity * player){
     sprintf(score, "score: %d",  (int)player->player_storage.score);
     DrawText(multi, 32, GAME_SCREEN_HEIGHT - 32 * 2, 32, RAYWHITE);
     DrawText(score, 32, GAME_SCREEN_HEIGHT - 32 * 3, 32, RAYWHITE);
-    // DrawText(score, 1000, 256, 32, RAYWHITE);
 
     sprintf(health, "shields: %d", player->player_storage.health);
     sprintf(w_r   , "phaser: %.3f", Clamp( player->player_storage.weapons[WEAPON_RED].power + 1, 0, 5));
@@ -287,7 +286,8 @@ void entity_player_draw_2d(Entity * player){
     char * selector = ">";
     DrawText(selector, GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32) - MeasureText(selector, 32) * 2, GAME_SCREEN_HEIGHT - 32 * 4 + (32 * player->player_storage.weapon_index), 32, RAYWHITE);
 
-    DrawFPS(10, 10);
+    if (game_get_game_options().draw_fps)
+        DrawFPS(10, 10);
 }
 
 void entity_player_draw_3d(Entity * player){

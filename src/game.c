@@ -2,6 +2,7 @@
 #include "level.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <stdio.h>
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
@@ -22,6 +23,7 @@
 #include "level.h"
 #include "entity_bullet.h"
 #include "entity_banner.h"
+#include "assets.h"
 
 int GAME_SCREEN_WIDTH = 1280;
 int GAME_SCREEN_HEIGHT = 720;
@@ -71,6 +73,123 @@ void game_reset(){
     };
 }
 
+void game_update_menu_state_menu_draw_2d(){
+    
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
+
+    DrawText("ASTRO AEGIS", 32, 32, 64, RAYWHITE);
+    DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
+    
+    if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, .width = 200, .height = 64}, "start")){
+        game.game_menu_state = GAME_MENU_STATE_PLAY;
+        game.game_play_state = GAME_PLAY_STATE_INIT;
+    }
+
+    if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32, .width = 200, .height = 64}, "options")){
+        game.menu_data.state = MENU_STATE_OPTIONS;
+    }
+
+    if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 + 100, .width = 200, .height = 64}, "licenses")){
+        game.menu_data.state = MENU_STATE_LICENSES;
+    }
+
+#if !defined(PLATFORM_WEB)
+    if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 + 200, .width = 200, .height = 64}, "exit")){
+        game_set_should_quit();
+    }
+#endif
+
+    if (game_get_game_options().draw_fps)
+        DrawFPS(10, 10);
+}
+
+void game_update_menu_state_options_draw_2d(){
+    
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
+
+    DrawText("OPTIONS", 32, 32, 64, RAYWHITE);
+    DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
+    
+    GuiDrawRectangle((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    GuiCheckBox((Rectangle){.x = 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 - 100, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
+
+    if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 100 - 32, .width = 200, .height = 64}, "menu")){
+        game.menu_data.state = MENU_STATE_IDLE;
+    }
+
+    if (game_get_game_options().draw_fps)
+        DrawFPS(10, 10);
+}
+
+void game_update_menu_state_licenses_draw_2d(){
+    
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
+
+    DrawText("LICENSES", 32, 32, 64, RAYWHITE);
+    DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
+
+    for(int i = 0; i < 6; i++){
+        if (GuiButton((Rectangle){.x = 32, .y = 140 + i * 50, .width = 200, .height = 40}, licenses[i].product_name)){
+            game.menu_data.license_shown = i;
+        }
+    }
+
+    DrawText(
+        licenses[game.menu_data.license_shown].product_name,
+        32 + 200 + 32,
+        140,
+        20,
+        RAYWHITE
+    );
+
+    DrawText(
+        licenses[game.menu_data.license_shown].copyright_holder,
+        32 + 200 + 32,
+        140 + 30,
+        20,
+        RAYWHITE
+    );
+
+    DrawText(
+        licenses[game.menu_data.license_shown].description,
+        32 + 200 + 32,
+        140 + 60,
+        20,
+        RAYWHITE
+    );
+
+    if (GuiButton((Rectangle){.x = 32 + 200 + 32, .y = 140 + 90, .width = 200, .height = 30}, "website")){
+        OpenURL(licenses[game.menu_data.license_shown].link);
+    }
+
+    DrawText(
+        licenses[game.menu_data.license_shown].license,
+        32 + 200 + 32,
+        140 + 130,
+        20,
+        RAYWHITE
+    );
+
+    // char lic[1000] = { 0 };
+    // snprintf(lic, licenses[game.menu_data.license_shown].payload_len, "%s", licenses[game.menu_data.license_shown].payload);
+
+    // GuiTextBox(
+    //     (Rectangle){.x = 32 + 200 + 32, .y = 140 + 130, .width = GAME_SCREEN_WIDTH - (32 + 200 + 32) - 32, .height = GAME_SCREEN_HEIGHT - (140 + 60) - (100 + 32) - 96 },
+    //     lic,
+    //     10,
+    //     false
+    // );
+
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
+
+    if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 100 - 32, .width = 200, .height = 64}, "menu")){
+        game.menu_data.state = MENU_STATE_IDLE;
+    }
+
+    if (game_get_game_options().draw_fps)
+        DrawFPS(10, 10);
+}
+
 float dirchange = 0.0f;
 float last_playtime = 0.0f;
 float curr_playtime = 0.0f;
@@ -89,6 +208,7 @@ void game_update_menu(){
         };
 
         game.game_menu_state = GAME_MENU_STATE_MENU;
+        // game.menu_data.state = MENU_STATE_IDLE;
 
         game.game_entities = (GameEntities){
             .globe = entity_globe_spawn(),
@@ -170,27 +290,17 @@ void game_update_menu(){
 
         // BeginMode2D
 
-        GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
-
-        DrawText("ASTRO AEGIS", 32, 32, 64, RAYWHITE);
-        DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
-        
-        if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, .width = 200, .height = 64}, "start")){
-            game.game_menu_state = GAME_MENU_STATE_PLAY;
-            game.game_play_state = GAME_PLAY_STATE_INIT;
+        switch (game.menu_data.state){
+            case MENU_STATE_IDLE:
+                game_update_menu_state_menu_draw_2d();
+                break;
+            case MENU_STATE_OPTIONS:
+                game_update_menu_state_options_draw_2d();
+                break;
+            case MENU_STATE_LICENSES:
+                game_update_menu_state_licenses_draw_2d();
+                break;
         }
-
-        GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32, .width = 200, .height = 64}, "options");
-
-        GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 + 100, .width = 200, .height = 64}, "licenses");
-
-#if !defined(PLATFORM_WEB)
-        if (GuiButton((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 + 200, .width = 200, .height = 64}, "exit")){
-            game_set_should_quit();
-        }
-#endif
-
-		DrawFPS(10, 10);
 
         // EndMode2D
 
@@ -426,15 +536,13 @@ void game_update_play_over(){
         DrawText(final_time,  GAME_SCREEN_WIDTH / 2 - MeasureText(final_time,  32) / 2, 350, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
 
         if ( Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 7) == 7 ){
-
-            if (game.game_entities.others != NULL){
-                vector_free(game.game_entities.others);
-                game.game_entities.others = NULL;
-            }
-
-            if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2.0 - 100, .y = 450, .width = 200, .height = 64}, "menu"))
+            if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2.0 - 100, .y = 450, .width = 200, .height = 64}, "menu")){
                 game_set_menu_state(GAME_MENU_STATE_INIT);
-
+                if (game.game_entities.others != NULL){
+                    vector_free(game.game_entities.others);
+                    game.game_entities.others = NULL;
+                }
+            }
         }
 
     EndDrawing();
@@ -525,4 +633,8 @@ Weapon * game_get_weapon(WeaponType w){
 
 Camera game_get_camera(){
     return game.game_camera;
+}
+
+GameOptions game_get_game_options(){
+    return game.menu_data.options;
 }

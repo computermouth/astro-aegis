@@ -148,6 +148,8 @@ Sound bullet_shoot_g_snd = { 0 };
 Sound bullet_shoot_b_snd = { 0 };
 Sound player_hit_snd = { 0 };
 
+License licenses[6] = { 0 };
+
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init(){
@@ -692,6 +694,63 @@ void resource_init(){
         SetSoundVolume(bullet_shoot_b_snd, .05);
 		player_hit_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", player_hit_ogg, player_hit_ogg_len));
         SetSoundVolume(player_hit_snd, .5);
+    }
+
+    { // licenses
+        licenses[0] = (License){
+            .product_name = "Asteroid Models",
+            .copyright_holder = "craftpix",
+            .description = "Free Stone 3D Low Poly Pack",
+            .link = "https://free-game-assets.itch.io/free-stone-3d-low-poly-pack",
+            .license = "Custom - (basically CC ND)",
+            .payload = (char *)craftpix_license,
+            .payload_len = craftpix_license_len,
+        };
+        licenses[1] = (License){
+            .product_name = "Music",
+            .copyright_holder = "drozerix",
+            .description = "Cyber Spider - Chiptune Song",
+            .link = "https://modarchive.org/module.php?192354",
+            .license = "Public Domains",
+            .payload = (char *)drozerix_license,
+            .payload_len = drozerix_license_len,
+        };
+        licenses[2] = (License){
+            .product_name = "Voiceover",
+            .copyright_holder = "Carnegie Mellon University",
+            .description = "Voices for use with the TTS software Festival",
+            .link = "http://www.festvox.org/",
+            .license = "BSD-like",
+            .payload = (char *)festvox_license,
+            .payload_len = festvox_license_len,
+        };
+        licenses[3] = (License){
+            .product_name = "Sound Effects",
+            .copyright_holder = "Eric Fredricksen",
+            .description = "jsfxr is an online 8 bit sound maker and sfx generator",
+            .link = "https://sfxr.me",
+            .license = "No license noted for the output, but sfxr is 'Unlicense'",
+            .payload = (char *)jsfxr_license,
+            .payload_len = jsfxr_license_len,
+        };
+        licenses[4] = (License){
+            .product_name = "Vector Library",
+            .copyright_holder = "João Conde",
+            .description = "C data structures and algorithms library",
+            .link = "https://github.com/joao-conde/libdsa",
+            .license = "MIT",
+            .payload = (char *)libdsa_license,
+            .payload_len = libdsa_license_len,
+        };
+        licenses[5] = (License){
+            .product_name = "raylib",
+            .copyright_holder = "Ramon Santamaria",
+            .description = "A simple and easy-to-use library to enjoy videogames programming",
+            .link = "https://www.raylib.com/",
+            .license = "zlib",
+            .payload = (char *)raylib_zlib_license,
+            .payload_len = raylib_zlib_license_len,
+        };
     }
 
 }
