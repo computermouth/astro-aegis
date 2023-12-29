@@ -57,7 +57,7 @@ level_spawnset levels[5][10] = {
         { .time = 23.0, .count = 1, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
         // wave 2
         { .time = 43.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
-        { .time = 43.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_RED },
+        { .time = 43.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
         { 0 },
         { 0 },
         { 0 },
@@ -76,7 +76,7 @@ level_spawnset levels[5][10] = {
         { .time = 43.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
         // wave 3
         { .time = 63.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_GREEN },
-        { .time = 63.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
+        { .time = 63.0, .count = 2, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
         { 0 },
         { 0 },
     },

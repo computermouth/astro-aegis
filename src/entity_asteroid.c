@@ -64,7 +64,7 @@ Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color, Vector3 ori
         .dead = false,
     };
 
-    float ts = (float)(GetRandomValue(2, 7)) / 10.0f;
+    float ts = (float)(GetRandomValue(2, 6)) / 10.0f;
     Vector3 td = Vector3SubtractValue(Vector3Normalize((Vector3){
         .x = (float)(GetRandomValue(0, 100)) / 100.0f,
         .y = (float)(GetRandomValue(0, 100)) / 100.0f,

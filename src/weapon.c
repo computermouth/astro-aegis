@@ -124,11 +124,12 @@ void weapon_powerup(WeaponType wt, bool critical){
     // each critical asteroid kill is 1/10 a level
     // each weak kill is 1/40 a level
     float old_power = w->power;
-    float inc = .025 + (critical * 3 * .025) ;
+    // .00001 is to account for some FP inaccuracy
+    float inc = .025001 + (critical * 3 * .025001) ;
     // w->power = fmodf(w->power + inc, MAX_WEAPON_LV);
     w->power += inc;
 
-    if ((int)old_power != (int)w->power){
+    if (w->power < 5 && (int)old_power != (int)w->power){
         PlaySound(powerup_snd);
         PlaySound(weapon_pu_snd);
     }
