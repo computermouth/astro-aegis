@@ -657,19 +657,19 @@ void resource_init(){
         asteroid_explosion3_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion3_ogg, asteroid_explosion3_ogg_len));
         asteroid_explosion4_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion4_ogg, asteroid_explosion4_ogg_len));
         asteroid_explosion5_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion5_ogg, asteroid_explosion5_ogg_len));
-        SetSoundVolume(asteroid_explosion1_snd, .4);
-        SetSoundVolume(asteroid_explosion2_snd, .4);
-        SetSoundVolume(asteroid_explosion3_snd, .4);
-        SetSoundVolume(asteroid_explosion4_snd, .4);
-        SetSoundVolume(asteroid_explosion5_snd, .4);
+        SetSoundVolume(asteroid_explosion1_snd, .45);
+        SetSoundVolume(asteroid_explosion2_snd, .45);
+        SetSoundVolume(asteroid_explosion3_snd, .45);
+        SetSoundVolume(asteroid_explosion4_snd, .45);
+        SetSoundVolume(asteroid_explosion5_snd, .45);
 
         // done
         bullet_hit_r_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_r_ogg, bullet_hit_r_ogg_len));
         bullet_hit_g_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_g_ogg, bullet_hit_g_ogg_len));
         bullet_hit_b_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_b_ogg, bullet_hit_b_ogg_len));
-        SetSoundVolume(bullet_hit_r_snd, .1);
-        SetSoundVolume(bullet_hit_g_snd, .1);
-        SetSoundVolume(bullet_hit_b_snd, .1);
+        SetSoundVolume(bullet_hit_r_snd, .2);
+        SetSoundVolume(bullet_hit_g_snd, .2);
+        SetSoundVolume(bullet_hit_b_snd, .2);
 
         // done-ish (todo: infinite)
         level_1_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_1_ogg, level_1_ogg_len));
@@ -689,9 +689,9 @@ void resource_init(){
 		bullet_shoot_r_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_r_ogg, bullet_shoot_r_ogg_len));
 		bullet_shoot_g_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_g_ogg, bullet_shoot_g_ogg_len));
 		bullet_shoot_b_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_b_ogg, bullet_shoot_b_ogg_len));
-        SetSoundVolume(bullet_shoot_r_snd, .05);
-        SetSoundVolume(bullet_shoot_g_snd, .05);
-        SetSoundVolume(bullet_shoot_b_snd, .05);
+        SetSoundVolume(bullet_shoot_r_snd, .1);
+        SetSoundVolume(bullet_shoot_g_snd, .1);
+        SetSoundVolume(bullet_shoot_b_snd, .1);
 		player_hit_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", player_hit_ogg, player_hit_ogg_len));
         SetSoundVolume(player_hit_snd, .5);
     }

@@ -34,6 +34,26 @@ typedef struct {
 
 typedef struct {
     bool draw_fps;
+    int keyboard_key_mv_up;
+    int keyboard_key_mv_dn;
+    int keyboard_key_mv_lt;
+    int keyboard_key_mv_rt;
+    int keyboard_key_fr_up;
+    int keyboard_key_fr_dn;
+    int keyboard_key_fr_lt;
+    int keyboard_key_fr_rt;
+    int keyboard_key_wp_lt;
+    int keyboard_key_wp_rt;
+    char keyboard_char_mv_up[2];
+    char keyboard_char_mv_dn[2];
+    char keyboard_char_mv_lt[2];
+    char keyboard_char_mv_rt[2];
+    char keyboard_char_fr_up[2];
+    char keyboard_char_fr_dn[2];
+    char keyboard_char_fr_lt[2];
+    char keyboard_char_fr_rt[2];
+    char keyboard_char_wp_lt[2];
+    char keyboard_char_wp_rt[2];
 } GameOptions;
 
 typedef struct {
@@ -50,6 +70,8 @@ typedef struct {
     size_t wave;
     float game_start_time;
     float level_start_time;
+    float next_infinite_spawn;
+    float infinite_spawn_timer;
 } GameLevelState;
 
 typedef struct {
@@ -83,7 +105,6 @@ float game_get_delta();
 void game_update();
 void game_set_should_quit();
 bool game_get_should_quit();
-void game_reset();
 void game_init_game_over();
 
 void game_set_menu_state(GameMenuState new_gs);

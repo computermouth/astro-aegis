@@ -35,6 +35,38 @@ static Game game = {
     .game_play_state = GAME_PLAY_STATE_INIT,
     .game_entities = { 0 },
     .game_camera = { 0 },
+    .menu_data.options = {
+        .keyboard_key_mv_up = KEY_W,
+        .keyboard_key_mv_dn = KEY_S,
+        .keyboard_key_mv_lt = KEY_A,
+        .keyboard_key_mv_rt = KEY_D,
+        .keyboard_key_fr_up = KEY_UP,
+        .keyboard_key_fr_dn = KEY_DOWN,
+        .keyboard_key_fr_lt = KEY_LEFT,
+        .keyboard_key_fr_rt = KEY_RIGHT,
+        .keyboard_key_wp_lt = KEY_Q,
+        .keyboard_key_wp_rt = KEY_E,
+		.keyboard_char_mv_up[0] = 'W' ,
+		.keyboard_char_mv_dn[0] = 'S' ,
+		.keyboard_char_mv_lt[0] = 'A' ,
+		.keyboard_char_mv_rt[0] = 'D' ,
+		.keyboard_char_fr_up[0] = '^' ,
+		.keyboard_char_fr_dn[0] = 'v' ,
+		.keyboard_char_fr_lt[0] = '<' ,
+		.keyboard_char_fr_rt[0] = '>' ,
+		.keyboard_char_wp_lt[0] = 'Q' ,
+		.keyboard_char_wp_rt[0] = 'E' ,
+		.keyboard_char_mv_up[1] = '\0',
+		.keyboard_char_mv_dn[1] = '\0',
+		.keyboard_char_mv_lt[1] = '\0',
+		.keyboard_char_mv_rt[1] = '\0',
+		.keyboard_char_fr_up[1] = '\0',
+		.keyboard_char_fr_dn[1] = '\0',
+		.keyboard_char_fr_lt[1] = '\0',
+		.keyboard_char_fr_rt[1] = '\0',
+		.keyboard_char_wp_lt[1] = '\0',
+		.keyboard_char_wp_rt[1] = '\0',
+    }
 };
 
 static bool game_should_quit = false;
@@ -59,18 +91,6 @@ void game_set_should_quit(){
 // main loop bool check for native build quit
 bool game_get_should_quit(){
     return game_should_quit;
-}
-
-void game_reset(){
-    vector_free(game.game_entities.others);
-    game = (Game){
-        .game_time = 0.0f,
-        .game_delta = 0.0f,
-        .game_menu_state = GAME_MENU_STATE_INIT,
-        .game_play_state = GAME_PLAY_STATE_INIT,
-        .game_entities = { 0 },
-        .game_camera = { 0 },
-    };
 }
 
 void game_update_menu_state_menu_draw_2d(){
@@ -105,14 +125,69 @@ void game_update_menu_state_menu_draw_2d(){
 
 void game_update_menu_state_options_draw_2d(){
     
-    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
 
     DrawText("OPTIONS", 32, 32, 64, RAYWHITE);
     DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
-    
-    GuiDrawRectangle((Rectangle){.x = 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
-    GuiCheckBox((Rectangle){.x = 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 - 100, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
 
+    DrawText("keys", 40, 128, 32, RAYWHITE);
+    DrawLineEx((Vector2){.x = 32, .y = 164}, (Vector2){.x = 128, .y = 164}, 2.0f, RAYWHITE);
+
+    DrawText("movement:", 40, 196, 20, RAYWHITE);
+
+    GuiSetState(STATE_DISABLED);
+    if (GuiButton((Rectangle){.x = 96, .y = 228, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_mv_up)){
+        // todo
+        // I can't figure out how to do this,
+        // the KeyPress buffer and CharPress buffer update at different times,
+        // and there doesn't seem to be a way to get a char from the KeyPress
+
+        // EndDrawing();
+        // int last_key = KEY_NULL;
+        // int last_char = 0;
+
+        // for(;;){
+        //     BeginDrawing();
+        //         ClearBackground(BLACK);
+        //         DrawText("PRESS A KEY...", GAME_SCREEN_WIDTH / 2 - MeasureText("PRESS A KEY...", 64) / 2, 200, 64, RAYWHITE);
+        //     EndDrawing();
+        //     last_char = GetCharPressed();
+        //     last_key = GetKeyPressed();
+        //     fprintf(stderr, "lk: %d, lc: %d\n", last_key, last_char);
+        //     if(last_key || last_char)
+        //         break;
+        // }
+        // fprintf(stderr, "lk: %d, lc: %d\n", last_key, last_char);
+    }
+    DrawText("up", 40, 228 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 96, .y = 228 + 50 * 1, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_mv_dn);
+    DrawText("down", 40,       228 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 96, .y = 228 + 50 * 2, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_mv_lt);
+    DrawText("left", 40,       228 + 50 * 2 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 96, .y = 228 + 50 * 3, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_mv_rt);
+    DrawText("right", 40,       228 + 50 * 3 + 20 - 10, 20, RAYWHITE);
+
+    DrawText("shooting: (arrow keys)", 240, 196, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 296, .y = 228, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_fr_up);
+    DrawText("up", 240, 228 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 296, .y = 228 + 50 * 1, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_fr_dn);
+    DrawText("down", 240,       228 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 296, .y = 228 + 50 * 2, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_fr_lt);
+    DrawText("left", 240,       228 + 50 * 2 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 296, .y = 228 + 50 * 3, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_fr_rt);
+    DrawText("right", 240,       228 + 50 * 3 + 20 - 10, 20, RAYWHITE);
+
+    DrawText("switch weapon:", 40, 464, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 96, .y = 496, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_wp_lt);
+    DrawText("left", 40, 496 + 20 - 10, 20, RAYWHITE);
+    GuiButton((Rectangle){.x = 96, .y = 496 + 50 * 1, .width = 50, .height = 40}, game.menu_data.options.keyboard_char_wp_rt);
+    DrawText("right", 40,       496 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+    GuiSetState(STATE_NORMAL);
+    
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    GuiCheckBox((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 - 100, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
+
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
     if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 100 - 32, .width = 200, .height = 64}, "menu")){
         game.menu_data.state = MENU_STATE_IDLE;
     }
@@ -219,8 +294,8 @@ void game_update_menu(){
         game.game_entities.player.player_storage.menu_input_x = 0;
         game.game_entities.player.player_storage.menu_input_z = 1;
 
-        game.game_music_desired_volume = 0.3;
-        game.game_music_current_volume = 0.1;
+        game.game_music_desired_volume = 0.08;
+        game.game_music_current_volume = 0.02;
 
         // here because it gets lowered in GAME_OVER
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
@@ -237,7 +312,6 @@ void game_update_menu(){
 
     if(game.game_music_current_volume < game.game_music_desired_volume){
         game.game_music_current_volume += .2 * game_get_delta();
-        fprintf(stderr, "gmcv: %f\n", game.game_music_current_volume);
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
     }
@@ -379,15 +453,17 @@ void game_update_play_play(){
     // cleanup dead entities
     e_len = vector_size(game.game_entities.others);
     entities = vector_begin(game.game_entities.others);
+    vector * new_vec = vector_init(sizeof(Entity));
     for(size_t i = 0; i < e_len; i++){
         // might be more efficient to copy all living
         // to a new vector, hard to say
-        if (entities[i].dead){
-            vector_erase(game.game_entities.others, i);
-            e_len--;
-            i--;
+        if (!entities[i].dead){
+            Entity e = entities[i];
+            vector_push(new_vec, &e);
         }
     }
+    vector_free(game.game_entities.others);
+    game.game_entities.others = new_vec;
 
     BeginDrawing();
         ClearBackground(BLACK);
@@ -600,8 +676,8 @@ GamePlayState game_get_play_state(){
 
 void game_init_game_over(){
     game.game_play_state = GAME_PLAY_STATE_OVER;
-    game.game_music_desired_volume = 0.1;
-    game.game_music_current_volume = 0.3;
+    game.game_music_desired_volume = 0.02;
+    game.game_music_current_volume = 0.08;
     SetMusicVolume(accel_music, 0);
 
     sprintf(final_score, "score: %d", (int)game.game_entities.player.player_storage.score);

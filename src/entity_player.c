@@ -61,35 +61,35 @@ void entity_player_update(Entity * player){
 
     // only read input if we're not on the menu
     if (game_get_menu_state() == GAME_MENU_STATE_PLAY) {
-        if (IsKeyDown(KEY_D)) {
+        if (IsKeyDown(game_get_game_options().keyboard_key_mv_rt)) {
             xdir = 1;
-        } else if (IsKeyDown(KEY_A)) {
+        } else if (IsKeyDown(game_get_game_options().keyboard_key_mv_lt)) {
             xdir = -1;
         }
 
-        if (IsKeyDown(KEY_W)) {
+        if (IsKeyDown(game_get_game_options().keyboard_key_mv_up)) {
             zdir = 1;
-        } else if (IsKeyDown(KEY_S)) {
+        } else if (IsKeyDown(game_get_game_options().keyboard_key_mv_dn)) {
             zdir = -1;
         }
 
         ps->shoot_dir.x = 0;
-        if (IsKeyDown(KEY_LEFT)) {
+        if (IsKeyDown(game_get_game_options().keyboard_key_fr_lt)) {
             ps->shoot_dir.x = -1;
-        } else if (IsKeyDown(KEY_RIGHT)) {
+        } else if (IsKeyDown(game_get_game_options().keyboard_key_fr_rt)) {
             ps->shoot_dir.x = 1;
         }
         ps->shoot_dir.y = 0;
-        if (IsKeyDown(KEY_UP)) {
+        if (IsKeyDown(game_get_game_options().keyboard_key_fr_up)) {
             ps->shoot_dir.y = -1;
-        } else if (IsKeyDown(KEY_DOWN)) {
+        } else if (IsKeyDown(game_get_game_options().keyboard_key_fr_dn)) {
             ps->shoot_dir.y = 1;
         }
 
         // weapon switch
-        if (IsKeyReleased(KEY_Q)){
+        if (IsKeyReleased(game_get_game_options().keyboard_key_wp_lt)){
             ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
-        } else if (IsKeyReleased(KEY_E)){
+        } else if (IsKeyReleased(game_get_game_options().keyboard_key_wp_rt)){
             ps->weapon_index = (ps->weapon_index + 1) % __WEAPON_END;
         }
 
@@ -274,9 +274,18 @@ void entity_player_draw_2d(Entity * player){
     DrawText(score, 32, GAME_SCREEN_HEIGHT - 32 * 3, 32, RAYWHITE);
 
     sprintf(health, "shields: %d", player->player_storage.health);
-    sprintf(w_r   , "phaser: %.3f", Clamp( player->player_storage.weapons[WEAPON_RED].power + 1, 0, 5));
-    sprintf(w_g   , "spread: %.3f", Clamp( player->player_storage.weapons[WEAPON_GRN].power + 1, 0, 5));
-    sprintf(w_b   , "ngwave: %.3f", Clamp( player->player_storage.weapons[WEAPON_BLU].power + 1, 0, 5));
+    if (player->player_storage.weapons[WEAPON_RED].power < 4)
+        sprintf(w_r   , "phaser: %.3f", player->player_storage.weapons[WEAPON_RED].power + 1);
+    else
+        sprintf(w_r   , "phaser: MAX");
+    if (player->player_storage.weapons[WEAPON_GRN].power < 4)
+        sprintf(w_g   , "spread: %.3f", player->player_storage.weapons[WEAPON_GRN].power + 1);
+    else
+        sprintf(w_g   , "spread: MAX");
+    if (player->player_storage.weapons[WEAPON_BLU].power < 4)
+        sprintf(w_b   , "ngwave: %.3f", player->player_storage.weapons[WEAPON_BLU].power + 1);
+    else
+        sprintf(w_b   , "ngwave: MAX");
 
     DrawText(health,   GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",  32), GAME_SCREEN_HEIGHT - 32 * 6, 32, ORANGE);
     DrawText(w_r,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 4, 32, RED);
@@ -306,16 +315,23 @@ void entity_player_inc_streak(){
     Entity * p = game_get_player_entity();
     p->player_storage.streak++;
     // increase multi
-    if (p->player_storage.streak % 20 == 0){
+    if (p->player_storage.streak % 23 == 0){
         PlaySound(powerup_snd);
         PlaySound(multiplier_pu_snd);
         p->player_storage.multi++;
     }
     // gain health
-    if (p->player_storage.streak % 100 == 0){
+    if (p->player_storage.streak % 97 == 0){
         PlaySound(powerup_snd);
         PlaySound(sheild_pu_snd);
         p->player_storage.health++;
+    }
+    // other gain health
+    if (p->player_storage.score - p->player_storage.last_health_reward >= 251){
+        PlaySound(powerup_snd);
+        PlaySound(sheild_pu_snd);
+        p->player_storage.health++;
+        p->player_storage.last_health_reward += 251;
     }
 }
 

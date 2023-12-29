@@ -46,6 +46,7 @@ typedef struct {
     float      menu_input_x;
     float      menu_input_z;
     float      score;
+    float      last_health_reward;
     int        multi;
     int        streak;
     int        health;
