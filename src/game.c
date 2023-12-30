@@ -294,7 +294,7 @@ void game_update_menu(){
         game.game_entities.player.player_storage.menu_input_x = 0;
         game.game_entities.player.player_storage.menu_input_z = 1;
 
-        game.game_music_desired_volume = 0.08;
+        game.game_music_desired_volume = 0.09;
         game.game_music_current_volume = 0.02;
 
         // here because it gets lowered in GAME_OVER
@@ -677,7 +677,7 @@ GamePlayState game_get_play_state(){
 void game_init_game_over(){
     game.game_play_state = GAME_PLAY_STATE_OVER;
     game.game_music_desired_volume = 0.02;
-    game.game_music_current_volume = 0.08;
+    game.game_music_current_volume = 0.09;
     SetMusicVolume(accel_music, 0);
 
     sprintf(final_score, "score: %d", (int)game.game_entities.player.player_storage.score);
