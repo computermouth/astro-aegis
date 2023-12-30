@@ -294,8 +294,8 @@ void game_update_menu(){
         game.game_entities.player.player_storage.menu_input_x = 0;
         game.game_entities.player.player_storage.menu_input_z = 1;
 
-        game.game_music_desired_volume = 0.08;
-        game.game_music_current_volume = 0.02;
+        game.game_music_desired_volume = 0.16;
+        game.game_music_current_volume = 0.04;
 
         // here because it gets lowered in GAME_OVER
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
@@ -311,7 +311,7 @@ void game_update_menu(){
     }
 
     if(game.game_music_current_volume < game.game_music_desired_volume){
-        game.game_music_current_volume += .2 * game_get_delta();
+        game.game_music_current_volume += .02 * game_get_delta();
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
     }
@@ -508,7 +508,7 @@ char final_time[100];
 void game_update_play_over(){
 
     if(game.game_music_current_volume > game.game_music_desired_volume){
-        game.game_music_current_volume -= .2 * game_get_delta();
+        game.game_music_current_volume -= .02 * game_get_delta();
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
     }
@@ -676,8 +676,8 @@ GamePlayState game_get_play_state(){
 
 void game_init_game_over(){
     game.game_play_state = GAME_PLAY_STATE_OVER;
-    game.game_music_desired_volume = 0.02;
-    game.game_music_current_volume = 0.08;
+    game.game_music_desired_volume = 0.04;
+    game.game_music_current_volume = 0.16;
     SetMusicVolume(accel_music, 0);
 
     sprintf(final_score, "score: %d", (int)game.game_entities.player.player_storage.score);
