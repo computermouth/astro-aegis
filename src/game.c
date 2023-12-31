@@ -311,7 +311,7 @@ void game_update_menu(){
     }
 
     if(game.game_music_current_volume < game.game_music_desired_volume){
-        game.game_music_current_volume += .2 * game_get_delta();
+        game.game_music_current_volume += .02 * game_get_delta();
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
     }
@@ -508,7 +508,7 @@ char final_time[100];
 void game_update_play_over(){
 
     if(game.game_music_current_volume > game.game_music_desired_volume){
-        game.game_music_current_volume -= .2 * game_get_delta();
+        game.game_music_current_volume -= .02 * game_get_delta();
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
     }
