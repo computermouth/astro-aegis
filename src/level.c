@@ -134,7 +134,7 @@ void level_update(vector * entities, GameLevelState * gls){
             PlaySound(*level_announcements[5]);
             gls->wave = 0;
             gls->level_start_time = game_get_time();
-            gls->infinite_spawn_timer = 8;
+            gls->infinite_spawn_timer = 4;
             gls->next_infinite_spawn = game_get_time() + 3;
         }
         return;
@@ -157,7 +157,7 @@ void level_update(vector * entities, GameLevelState * gls){
 
     // infinite mode
     if (gls->level == 5 && game_get_time() > gls->next_infinite_spawn){
-        gls->infinite_spawn_timer *= 0.95;
+        gls->infinite_spawn_timer *= 0.99;
         gls->next_infinite_spawn += gls->infinite_spawn_timer;
 
         Entity e;
