@@ -24,6 +24,7 @@ typedef struct {
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
 void resource_init();
+void resource_set_sound_volumes();
 void resource_quit();
 
 extern Mesh globe_mesh;
@@ -169,6 +170,6 @@ extern Sound bullet_shoot_g_snd;
 extern Sound bullet_shoot_b_snd;
 extern Sound player_hit_snd;
 
-extern License licenses[6];
+extern License licenses[7];
 
 #endif

@@ -263,3 +263,6 @@ extern const uint32_t libdsa_license_len;
 
 extern const uint8_t * raylib_zlib_license;
 extern const uint32_t raylib_zlib_license_len;
+
+extern const uint8_t * mehrasaur_license;
+extern const uint32_t mehrasaur_license_len;

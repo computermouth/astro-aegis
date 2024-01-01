@@ -23,7 +23,7 @@ void entity_player_check_collision(Entity * player);
 
 Entity entity_player_spawn(){
 
-    Matrix scale = MatrixScale(0.1f, 0.1f, 0.1f);
+    Matrix scale = MatrixScale(0.05f, 0.05f, 0.05f);
     Matrix rotate_y = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,1,0}, PI / 2 ));
     Matrix rotate_x = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,0,-1}, PI / 2 ));
     // player pos + rot
@@ -164,7 +164,7 @@ void entity_player_update(Entity * player){
     }
 
     // fmod is to make sure the accel fades in at game start
-    SetMusicVolume(accel_music, 10 * (fabsf(ps->dir_x) + fabs(ps->dir_z)));
+    SetMusicVolume(accel_music, game_get_game_options().sound_volume / 10 * 10 * (fabsf(ps->dir_x) + fabs(ps->dir_z)));
 
     ps->frame_rotation = QuaternionMultiply(
         QuaternionFromAxisAngle((Vector3){0,1,0}, ps->dir_x),
@@ -179,7 +179,7 @@ void entity_player_update(Entity * player){
         Quaternion qxz = QuaternionFromAxisAngle((Vector3){.x = 1, .y = 0, .z = 0}, rads);
         Matrix m_rot = QuaternionToMatrix(qxz);
 
-        Matrix scale = MatrixScale(0.1f, 0.1f, 0.1f);
+        Matrix scale = MatrixScale(0.05f, 0.05f, 0.05f);
         Matrix rotate_y = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,1,0}, PI / 2 ));
         Matrix rotate_x = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,0,-1}, PI / 2 ));
         // player pos + rot

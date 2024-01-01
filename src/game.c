@@ -36,6 +36,9 @@ static Game game = {
     .game_entities = { 0 },
     .game_camera = { 0 },
     .menu_data.options = {
+        .master_volume = 7,
+        .music_volume = 10,
+        .sound_volume = 10,
         .keyboard_key_mv_up = KEY_W,
         .keyboard_key_mv_dn = KEY_S,
         .keyboard_key_mv_lt = KEY_A,
@@ -184,8 +187,31 @@ void game_update_menu_state_options_draw_2d(){
     DrawText("right", 40,       496 + 50 * 1 + 20 - 10, 20, RAYWHITE);
     GuiSetState(STATE_NORMAL);
     
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
-    GuiCheckBox((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 - 100, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
+    DrawText("master volume", GAME_SCREEN_WIDTH / 2. + 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 200, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 200, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    float old_master = game.menu_data.options.master_volume;
+    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 200, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.master_volume, 0, 10);
+    if (old_master != game.menu_data.options.master_volume)
+        SetMasterVolume(game.menu_data.options.master_volume / 10);
+
+    DrawText("music volume", GAME_SCREEN_WIDTH / 2. + 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    float old_music = game.menu_data.options.music_volume;
+    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 100, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.music_volume, 0, 10);
+    if (old_music != game.menu_data.options.music_volume){
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
+    }
+
+    DrawText("sound volume", GAME_SCREEN_WIDTH / 2. + 32, GAME_SCREEN_HEIGHT / 2.0 - 32, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    float old_sound = game.menu_data.options.sound_volume;
+    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.sound_volume, 0, 10);
+    if (old_sound != game.menu_data.options.sound_volume)
+        resource_set_sound_volumes();
+
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 + 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    GuiCheckBox((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 0 + 100, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
 
     GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
     if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 100 - 32, .width = 200, .height = 64}, "menu")){
@@ -203,7 +229,7 @@ void game_update_menu_state_licenses_draw_2d(){
     DrawText("LICENSES", 32, 32, 64, RAYWHITE);
     DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
 
-    for(int i = 0; i < 6; i++){
+    for(int i = 0; i < 7; i++){
         if (GuiButton((Rectangle){.x = 32, .y = 140 + i * 50, .width = 200, .height = 40}, licenses[i].product_name)){
             game.menu_data.license_shown = i;
         }
@@ -294,12 +320,12 @@ void game_update_menu(){
         game.game_entities.player.player_storage.menu_input_x = 0;
         game.game_entities.player.player_storage.menu_input_z = 1;
 
-        game.game_music_desired_volume = 0.09;
-        game.game_music_current_volume = 0.02;
+        game.game_music_desired_volume = 0.16;
+        game.game_music_current_volume = 0.04;
 
         // here because it gets lowered in GAME_OVER
-        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
-        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
 
         // don't restart the music if the player
         // is resuming from the last game
@@ -311,9 +337,9 @@ void game_update_menu(){
     }
 
     if(game.game_music_current_volume < game.game_music_desired_volume){
-        game.game_music_current_volume += .02 * game_get_delta();
-        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
-        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
+        game.game_music_current_volume += .03 * game_get_delta();
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
     }
 
     UpdateMusicStream(game.game_music);
@@ -509,8 +535,8 @@ void game_update_play_over(){
 
     if(game.game_music_current_volume > game.game_music_desired_volume){
         game.game_music_current_volume -= .02 * game_get_delta();
-        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume);
-        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume);
+        SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
+        SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
     }
 
     // music
@@ -676,8 +702,8 @@ GamePlayState game_get_play_state(){
 
 void game_init_game_over(){
     game.game_play_state = GAME_PLAY_STATE_OVER;
-    game.game_music_desired_volume = 0.02;
-    game.game_music_current_volume = 0.09;
+    game.game_music_desired_volume = 0.04;
+    game.game_music_current_volume = 0.16;
     SetMusicVolume(accel_music, 0);
 
     sprintf(final_score, "score: %d", (int)game.game_entities.player.player_storage.score);

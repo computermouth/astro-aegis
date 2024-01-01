@@ -34,6 +34,9 @@ typedef struct {
 
 typedef struct {
     bool draw_fps;
+    float master_volume;
+    float music_volume;
+    float sound_volume;
     int keyboard_key_mv_up;
     int keyboard_key_mv_dn;
     int keyboard_key_mv_lt;

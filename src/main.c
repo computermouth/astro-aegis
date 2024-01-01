@@ -127,6 +127,7 @@ void load_start(){
 
 void load_finish(){
     resource_init();
+    resource_set_sound_volumes();
     float new_t = GetTime();
     WaitTime(2 - (new_t - old_t));
     SetRandomSeed(GetTime() * 5417 + GetFrameTime() * 7919);
@@ -155,6 +156,6 @@ void UpdateDrawFrame(void) {
         fade_t = GetTime();
 
     if ((GetTime() - fade_t) / 2 < 1)
-        SetMasterVolume(fmodf((GetTime() - fade_t) / 2, 1) * 0.7);
+        SetMasterVolume(fmodf((GetTime() - fade_t) / 2, 1) * game_get_game_options().sound_volume / 10);
     game_update();
 }

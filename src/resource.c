@@ -2,6 +2,7 @@
 #include "resource.h"
 #include "assets.h"
 
+#include "game.h"
 #include "raylib.h"
 #include "raymath.h"
 #include <stddef.h>
@@ -150,9 +151,37 @@ Sound bullet_shoot_g_snd = { 0 };
 Sound bullet_shoot_b_snd = { 0 };
 Sound player_hit_snd = { 0 };
 
-License licenses[6] = { 0 };
+License licenses[7] = { 0 };
 
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
+
+void resource_set_sound_volumes(){
+    float sv = game_get_game_options().sound_volume / 10;
+
+	SetSoundVolume(level_1_snd             , sv * 1.0);
+	SetSoundVolume(level_2_snd             , sv * 1.0);
+	SetSoundVolume(level_3_snd             , sv * 1.0);
+	SetSoundVolume(level_4_snd             , sv * 1.0);
+	SetSoundVolume(level_5_snd             , sv * 1.0);
+	SetSoundVolume(level_engage_snd        , sv * 1.0);
+	SetSoundVolume(level_infinite_mode_snd , sv * 1.0);
+	SetSoundVolume(multiplier_pu_snd       , sv * 1.0);
+	SetSoundVolume(sheild_pu_snd           , sv * 1.0);
+	SetSoundVolume(weapon_pu_snd           , sv * 1.0);
+    SetSoundVolume(asteroid_explosion1_snd , sv * 0.6);
+    SetSoundVolume(asteroid_explosion2_snd , sv * 0.6);
+    SetSoundVolume(asteroid_explosion3_snd , sv * 0.6);
+    SetSoundVolume(asteroid_explosion4_snd , sv * 0.6);
+    SetSoundVolume(asteroid_explosion5_snd , sv * 0.6);
+    SetSoundVolume(bullet_hit_r_snd        , sv * 0.3);
+    SetSoundVolume(bullet_hit_g_snd        , sv * 0.3);
+    SetSoundVolume(bullet_hit_b_snd        , sv * 0.3);
+    SetSoundVolume(powerup_snd             , sv * 0.4);
+    SetSoundVolume(bullet_shoot_r_snd      , sv * 0.2);
+    SetSoundVolume(bullet_shoot_g_snd      , sv * 0.2);
+    SetSoundVolume(bullet_shoot_b_snd      , sv * 0.2);
+    SetSoundVolume(player_hit_snd          , sv * 0.6);
+}
 
 void resource_init(){
 
@@ -653,35 +682,23 @@ void resource_init(){
     {
         cyber_spider_open_music = LoadMusicStreamFromMemory(".xm", cyber_spider_open_xm, cyber_spider_open_xm_len);
         cyber_spider_rest_music = LoadMusicStreamFromMemory(".xm", cyber_spider_rest_xm, cyber_spider_rest_xm_len);
-        // SetMusicVolume(cyber_spider_open_music, 0.3);
-        // SetMusicVolume(cyber_spider_rest_music, 0.3);
         
-        // .075 max
 		accel_music = LoadMusicStreamFromMemory(".ogg", accel_ogg, accel_ogg_len);
         SetMusicVolume(accel_music, 0);
     }
 
     // snd
     {
-
         asteroid_explosion1_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion1_ogg, asteroid_explosion1_ogg_len));
         asteroid_explosion2_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion2_ogg, asteroid_explosion2_ogg_len));
         asteroid_explosion3_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion3_ogg, asteroid_explosion3_ogg_len));
         asteroid_explosion4_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion4_ogg, asteroid_explosion4_ogg_len));
         asteroid_explosion5_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", asteroid_explosion5_ogg, asteroid_explosion5_ogg_len));
-        SetSoundVolume(asteroid_explosion1_snd, .45);
-        SetSoundVolume(asteroid_explosion2_snd, .45);
-        SetSoundVolume(asteroid_explosion3_snd, .45);
-        SetSoundVolume(asteroid_explosion4_snd, .45);
-        SetSoundVolume(asteroid_explosion5_snd, .45);
 
         // done
         bullet_hit_r_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_r_ogg, bullet_hit_r_ogg_len));
         bullet_hit_g_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_g_ogg, bullet_hit_g_ogg_len));
         bullet_hit_b_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_hit_b_ogg, bullet_hit_b_ogg_len));
-        SetSoundVolume(bullet_hit_r_snd, .2);
-        SetSoundVolume(bullet_hit_g_snd, .2);
-        SetSoundVolume(bullet_hit_b_snd, .2);
 
         // done-ish (todo: infinite)
         level_1_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_1_ogg, level_1_ogg_len));
@@ -694,18 +711,13 @@ void resource_init(){
 
         multiplier_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", multiplier_pu_ogg, multiplier_pu_ogg_len));
         powerup_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", powerup_ogg, powerup_ogg_len));
-        SetSoundVolume(powerup_snd, .25);
         sheild_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", sheild_pu_ogg, sheild_pu_ogg_len));
         weapon_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", weapon_pu_ogg, weapon_pu_ogg_len));
         
 		bullet_shoot_r_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_r_ogg, bullet_shoot_r_ogg_len));
 		bullet_shoot_g_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_g_ogg, bullet_shoot_g_ogg_len));
 		bullet_shoot_b_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", bullet_shoot_b_ogg, bullet_shoot_b_ogg_len));
-        SetSoundVolume(bullet_shoot_r_snd, .1);
-        SetSoundVolume(bullet_shoot_g_snd, .1);
-        SetSoundVolume(bullet_shoot_b_snd, .1);
 		player_hit_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", player_hit_ogg, player_hit_ogg_len));
-        SetSoundVolume(player_hit_snd, .5);
     }
 
     { // licenses
@@ -762,6 +774,15 @@ void resource_init(){
             .license = "zlib",
             .payload = (char *)raylib_zlib_license,
             .payload_len = raylib_zlib_license_len,
+        };
+        licenses[6] = (License){
+            .product_name = "Spaceship Pack",
+            .copyright_holder = "mehrasaur",
+            .description = "Low Poly 3D Spaceship Assets.",
+            .link = "https://mehrasaur.itch.io/3d-spaceships-pack",
+            .license = "CC0",
+            .payload = (char *)mehrasaur_license,
+            .payload_len = mehrasaur_license_len,
         };
     }
 

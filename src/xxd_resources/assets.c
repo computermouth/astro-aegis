@@ -338,3 +338,6 @@ const uint32_t libdsa_license_len = xxd_resources_lic_libdsa_txt_len;
 const uint8_t * raylib_zlib_license = xxd_resources_lic_raylib_zlib_txt;
 const uint32_t raylib_zlib_license_len = xxd_resources_lic_raylib_zlib_txt_len;
 
+#include "mehrasaur.h"
+const uint8_t * mehrasaur_license = xxd_resources_lic_mehrasaur_txt;
+const uint32_t mehrasaur_license_len = xxd_resources_lic_mehrasaur_txt_len;
