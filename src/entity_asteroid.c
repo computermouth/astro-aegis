@@ -231,29 +231,27 @@ void entity_asteroid_kill(Entity * asteroid){
             for(int i = 0; i < count1; i++){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_MD, asteroid->asteroid_storage.color, origin);
                 // give children similar direction in 90degree fork
-                // todo, doesn't quite work right
-                // Vector3 td = asteroid->asteroid_storage.traversal_direction;
-                // float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
-                // e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(td, (Vector3){1,1,1}, rot);
+                float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
                 AsteroidStorage ps = asteroid->asteroid_storage;
-                e.asteroid_storage.traversal_direction = ps.traversal_direction;
-                e.asteroid_storage.traversal_speed = ps.traversal_speed;
+                e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(ps.traversal_direction, (Vector3){1,1,1}, rot);
                 vector_push(eo, &e);
             }
             for(int i = 0; i < count2; i++){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_SM, asteroid->asteroid_storage.color, origin);
+                // give children similar direction in 90degree fork
+                float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
                 AsteroidStorage ps = asteroid->asteroid_storage;
-                e.asteroid_storage.traversal_direction = ps.traversal_direction;
-                e.asteroid_storage.traversal_speed = ps.traversal_speed;
+                e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(ps.traversal_direction, (Vector3){1,1,1}, rot);
                 vector_push(eo, &e);
             }
             break;
         case ASTEROID_SIZE_MD:
             for(int i = 0; i < count1; i++){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_SM, asteroid->asteroid_storage.color, origin);
+                // give children similar direction in 90degree fork
+                float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
                 AsteroidStorage ps = asteroid->asteroid_storage;
-                e.asteroid_storage.traversal_direction = ps.traversal_direction;
-                e.asteroid_storage.traversal_speed = ps.traversal_speed;
+                e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(ps.traversal_direction, (Vector3){1,1,1}, rot);
                 vector_push(eo, &e);
             }
             break;
