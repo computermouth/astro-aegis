@@ -97,7 +97,8 @@ Entity entity_asteroid_spawn(AsteroidSize size, AsteroidColor color, Vector3 ori
     Matrix offset = MatrixTranslate(offset_in.x, offset_in.y, offset_in.z);
     Quaternion q_globe = game_get_globe_entity()->globe_storage.net_rotation;
     Vector3 traversal_axis = Vector3Normalize(Vector3CrossProduct(s.traversal_direction, Vector3Normalize(offset_in)));
-    Matrix traversal_rot = MatrixRotate(traversal_axis, fmodf(s.traversal_speed * (game_get_time() - s.origin_time), PI * 2) );
+    s.traversal_direction = traversal_axis;
+    Matrix traversal_rot = MatrixRotate(traversal_axis, fmodf(s.traversal_speed * (game_get_time() + game_get_delta() - s.origin_time), PI * 2) );
     Matrix globe_rot = QuaternionToMatrix(q_globe);
     Vector3 center = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
     Matrix trans = MatrixTranslate(center.x, center.y, center.z);
@@ -126,7 +127,7 @@ Matrix entity_asteroid_next_transform(Entity * asteroid){
     Vector3 offset_in = Vector3Transform(s.origin_position, QuaternionToMatrix(QuaternionInvert(s.origin_rotation)));
     Matrix offset = MatrixTranslate(offset_in.x, offset_in.y, offset_in.z);
     Quaternion q_globe = game_get_globe_entity()->globe_storage.net_rotation;
-    Vector3 traversal_axis = Vector3Normalize(Vector3CrossProduct(s.traversal_direction, Vector3Normalize(offset_in)));
+    Vector3 traversal_axis = s.traversal_direction; // Vector3Normalize(Vector3CrossProduct(s.traversal_direction, Vector3Normalize(offset_in)));
     Matrix traversal_rot = MatrixRotate(traversal_axis, fmodf(s.traversal_speed * (game_get_time() + game_get_delta() - s.origin_time), PI * 2) );
     Matrix globe_rot = QuaternionToMatrix(q_globe);
     Vector3 center = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
@@ -152,7 +153,7 @@ void entity_asteroid_update(Entity * asteroid){
     Vector3 offset_in = Vector3Transform(s.origin_position, QuaternionToMatrix(QuaternionInvert(s.origin_rotation)));
     Matrix offset = MatrixTranslate(offset_in.x, offset_in.y, offset_in.z);
     Quaternion q_globe = game_get_globe_entity()->globe_storage.net_rotation;
-    Vector3 traversal_axis = Vector3Normalize(Vector3CrossProduct(s.traversal_direction, Vector3Normalize(offset_in)));
+    Vector3 traversal_axis = s.traversal_direction; // Vector3Normalize(Vector3CrossProduct(s.traversal_direction, Vector3Normalize(offset_in)));
     Matrix traversal_rot = MatrixRotate(traversal_axis, fmodf(s.traversal_speed * (game_get_time() - s.origin_time), PI * 2) );
     Matrix globe_rot = QuaternionToMatrix(q_globe);
     Vector3 center = tool_vec3_world_pos((Vector3){0.0f, 0.0f, 0.0f});
@@ -231,25 +232,28 @@ void entity_asteroid_kill(Entity * asteroid){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_MD, asteroid->asteroid_storage.color, origin);
                 // give children similar direction in 90degree fork
                 // todo, doesn't quite work right
-                Vector3 td = asteroid->asteroid_storage.traversal_direction;
-                float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
-                e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(td, (Vector3){1,1,1}, rot);
+                // Vector3 td = asteroid->asteroid_storage.traversal_direction;
+                // float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
+                // e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(td, (Vector3){1,1,1}, rot);
+                AsteroidStorage ps = asteroid->asteroid_storage;
+                e.asteroid_storage.traversal_direction = ps.traversal_direction;
+                e.asteroid_storage.traversal_speed = ps.traversal_speed;
                 vector_push(eo, &e);
             }
             for(int i = 0; i < count2; i++){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_SM, asteroid->asteroid_storage.color, origin);
-                Vector3 td = asteroid->asteroid_storage.traversal_direction;
-                float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
-                e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(td, (Vector3){1,1,1}, rot);
+                AsteroidStorage ps = asteroid->asteroid_storage;
+                e.asteroid_storage.traversal_direction = ps.traversal_direction;
+                e.asteroid_storage.traversal_speed = ps.traversal_speed;
                 vector_push(eo, &e);
             }
             break;
         case ASTEROID_SIZE_MD:
             for(int i = 0; i < count1; i++){
                 Entity e = entity_asteroid_spawn(ASTEROID_SIZE_SM, asteroid->asteroid_storage.color, origin);
-                Vector3 td = asteroid->asteroid_storage.traversal_direction;
-                float rot = (float)(GetRandomValue(-45, 45)) * PI / 180;
-                e.asteroid_storage.traversal_direction = Vector3RotateByAxisAngle(td, (Vector3){1,1,1}, rot);
+                AsteroidStorage ps = asteroid->asteroid_storage;
+                e.asteroid_storage.traversal_direction = ps.traversal_direction;
+                e.asteroid_storage.traversal_speed = ps.traversal_speed;
                 vector_push(eo, &e);
             }
             break;
