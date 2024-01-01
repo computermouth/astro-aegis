@@ -118,6 +118,8 @@ extern Model asteroid_s009_model;
 extern Model asteroid_models[30];
 extern Material asteroid_materials[9];
 
+extern Model ship_model;
+
 extern Image    red_bullet_img;
 extern Texture  red_bullet_tex;
 extern Material red_bullet_mat;

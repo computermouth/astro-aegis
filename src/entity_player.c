@@ -23,18 +23,32 @@ void entity_player_check_collision(Entity * player);
 
 Entity entity_player_spawn(){
 
+    Matrix scale = MatrixScale(0.1f, 0.1f, 0.1f);
+    Matrix rotate_y = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,1,0}, PI / 2 ));
+    Matrix rotate_x = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,0,-1}, PI / 2 ));
     // player pos + rot
-    Vector3 pp = tool_vec3_world_pos((Vector3){3.5f, 0.0f, 0.0f});
-    Matrix pp_matrix = MatrixTranslate(pp.x, pp.y, pp.z);
+    Vector3 pp = tool_vec3_world_pos((Vector3){4.5f, 0.0f, 0.0f});
+    Matrix trans = MatrixTranslate(pp.x, pp.y, pp.z);
+
+    Matrix player_transform = MatrixIdentity();
+    player_transform = MatrixMultiply(player_transform, scale);
+    player_transform = MatrixMultiply(player_transform, rotate_y);
+    player_transform = MatrixMultiply(player_transform, rotate_x);
+    player_transform = MatrixMultiply(player_transform, trans);
 
     Entity p = {
         .type = ENTITY_TYPE_PLAYER,
         .mesh = player_mesh,
         .material = player_mat,
-        .transform = pp_matrix,
+        .transform = player_transform,
         .draw_2d_fn = entity_player_draw_2d,
         .draw_3d_fn = entity_player_draw_3d
     };
+
+    p.mesh = ship_model.meshes[0];
+    p.material = ship_model.materials[1];
+
+    fprintf(stderr, "p.m: %d\n", ship_model.materialCount);
 
     p.player_storage = (PlayerStorage){ 0 };
     p.player_storage.multi = 1;
@@ -163,17 +177,23 @@ void entity_player_update(Entity * player){
         float rads = atan2f(-dir_norm.x, dir_norm.y);
 
         Quaternion qxz = QuaternionFromAxisAngle((Vector3){.x = 1, .y = 0, .z = 0}, rads);
-
         Matrix m_rot = QuaternionToMatrix(qxz);
 
-        // player pos
+        Matrix scale = MatrixScale(0.1f, 0.1f, 0.1f);
+        Matrix rotate_y = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,1,0}, PI / 2 ));
+        Matrix rotate_x = QuaternionToMatrix(QuaternionFromAxisAngle((Vector3){0,0,-1}, PI / 2 ));
+        // player pos + rot
         Vector3 pp = tool_vec3_world_pos((Vector3){4.5f, 0.0f, 0.0f});
-        Matrix pp_matrix = MatrixTranslate(pp.x, pp.y, pp.z);
+        Matrix trans = MatrixTranslate(pp.x, pp.y, pp.z);
 
-        // final transform
-        Matrix pp_transform = MatrixMultiply(m_rot, pp_matrix);
+        Matrix player_transform = MatrixIdentity();
+        player_transform = MatrixMultiply(player_transform, scale);
+        player_transform = MatrixMultiply(player_transform, rotate_y);
+        player_transform = MatrixMultiply(player_transform, rotate_x);
+        player_transform = MatrixMultiply(player_transform, m_rot);
+        player_transform = MatrixMultiply(player_transform, trans);
 
-        player->transform = pp_transform;
+        player->transform = player_transform;
     }
 
     if (ps->shoot_dir.x || ps->shoot_dir.y){

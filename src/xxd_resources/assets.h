@@ -161,6 +161,10 @@ extern const char * asteroid_s009_filename;
 extern const uint8_t * asteroid_s009_glb;
 extern const uint32_t asteroid_s009_glb_len;
 
+extern const char * ship_filename;
+extern const uint8_t * ship_glb;
+extern const uint32_t ship_glb_len;
+
 // music
 extern const uint8_t * cyber_spider_open_xm;
 extern const uint32_t cyber_spider_open_xm_len;

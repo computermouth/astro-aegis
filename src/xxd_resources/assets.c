@@ -199,6 +199,11 @@ const char * asteroid_s009_filename = "asteroid_s009.glb";
 const uint8_t * asteroid_s009_glb = xxd_resources_mdl_asteroid_s009_glb;
 const uint32_t asteroid_s009_glb_len = xxd_resources_mdl_asteroid_s009_glb_len;
 
+#include "ship.h"
+const char * ship_filename = "ship.glb";
+const uint8_t * ship_glb = xxd_resources_mdl_ship_glb;
+const uint32_t ship_glb_len = xxd_resources_mdl_ship_glb_len;
+
 // MUSIC
 
 #include "cyber_spider_open.h"

@@ -99,6 +99,8 @@ Model asteroid_s009_model = { 0 };
 Model asteroid_models[30] = {0};
 Material asteroid_materials[9] = {0};
 
+Model ship_model = { 0 };
+
 Music cyber_spider_open_music = { 0 };
 Music cyber_spider_rest_music = { 0 };
 
@@ -552,6 +554,16 @@ void resource_init(){
         };
         strcpy(r.filename, asteroid_s009_filename);
         asteroid_s009_model = LoadModel(r.filename);
+    }
+
+    { // ship
+        resource_load_stats r = {
+            // .filename = char[100]{0},
+            .data = ship_glb,
+            .len = ship_glb_len,
+        };
+        strcpy(r.filename, ship_filename);
+        ship_model = LoadModel(r.filename);
     }
 
     { // collection
