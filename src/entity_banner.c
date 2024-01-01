@@ -6,8 +6,8 @@
 #include "game.h"
 #include "raylib.h"
 
-void entity_banner_draw_2d();
-void entity_banner_draw_3d();
+void entity_banner_draw_2d(Entity * b);
+void entity_banner_draw_3d(Entity * b);
 
 Entity entity_banner_spawn(BannerType bt, Vector2 screen_pos){
 

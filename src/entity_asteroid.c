@@ -191,7 +191,7 @@ void entity_asteroid_take_damage(Entity * asteroid, WeaponType wt){
         weapon_powerup(wt, critical);
 
         // spawn banner on crit
-        if (critical){
+        if (critical && game_get_player_entity()->player_storage.weapons[wt].power < 5){
             Vector3 a_pos = entity_asteroid_get_pos(asteroid);
             Vector2 screen_a_pos = GetWorldToScreen(a_pos, game_get_camera());
             Entity e = entity_banner_spawn((BannerType)wt, screen_a_pos);
