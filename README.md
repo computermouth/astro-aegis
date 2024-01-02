@@ -29,6 +29,7 @@ _TODO: Show your game to the world, animated GIFs recommended!._
  - emcc (web)
  - make
  - xxd and sed (resource embedding)
+ - the included fork of raylib, to allow loading glb's from memory without the free
 
 ### Building
 
