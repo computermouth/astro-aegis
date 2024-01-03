@@ -16,5 +16,5 @@ asteroid_explosion4.wav https://sfxr.me/#7Nn2dzedGdZz4uAbGzhQGhXqbFhq3prmbyv1QYQ
 asteroid_explosion5.wav https://sfxr.me/#7Nn2dzedGdZz4uAbGzhQGhXqbFhq3prmbyv3oMHgMdPiXRLr6hzSjE91dKJkynZFuCtYUsWKWRkkR1KeZ5wfVSsBoWcZAnbZD5Yc5PZZWXTYZ7DKJrnvq7Cq2
 
 (voice packs here: http://festvox.org/packed/festival/2.5/voices/)
-echo 'ship health increased' | text2wave -o ship_health_increased.wav -eval '(voice_cmu_us_slp_cg)'
-echo 'weapon power up'       | text2wave -o weapon_power_up.wav       -eval '(voice_cmu_us_slp_cg)'
+echo 'ship health increased' | text2wave -o ship_health_increased.wav -eval '(voice_cmu_us_eey_cg)'
+echo 'weapon power up'       | text2wave -o weapon_power_up.wav       -eval '(voice_cmu_us_eey_cg)'
