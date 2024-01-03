@@ -218,6 +218,9 @@ extern const uint32_t level_engage_ogg_len;
 extern const uint8_t * level_infinite_mode_ogg;
 extern const uint32_t level_infinite_mode_ogg_len;
 
+extern const uint8_t * fast_clear_bonus_ogg;
+extern const uint32_t fast_clear_bonus_ogg_len;
+
 extern const uint8_t * multiplier_pu_ogg;
 extern const uint32_t multiplier_pu_ogg_len;
 

@@ -73,6 +73,7 @@ typedef struct {
     size_t wave;
     float game_start_time;
     float level_start_time;
+    float total_clear_offset;
     float next_infinite_spawn;
     float infinite_spawn_timer;
 } GameLevelState;

@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 
+#include "entity_player.h"
 #include "level.h"
 #include "entity.h"
 #include "entity_asteroid.h"
@@ -9,6 +10,7 @@
 #include "resource.h"
 #include "vector.h"
 
+// todo, option-ize
 typedef struct {
     float time;
     size_t count;
@@ -74,7 +76,7 @@ level_spawnset levels[5][10] = {
         // wave 3
         { .time = 43.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_GREEN },
         { .time = 43.0, .count = 2, ASTEROID_SIZE_MD, ASTEROID_COLOR_BLUE },
-        // wave 3
+        // wave 4
         { .time = 63.0, .count = 1, ASTEROID_SIZE_LG, ASTEROID_COLOR_GREEN },
         { .time = 63.0, .count = 2, ASTEROID_SIZE_LG, ASTEROID_COLOR_RED },
         { 0 },
@@ -109,22 +111,34 @@ Sound * level_announcements[] = {
 
 void level_update(vector * entities, GameLevelState * gls){
     
-    // watch for level change
-    if (gls->wave == 6) {
-        bool no_asteroids = true;
-        size_t elen = vector_size(entities);
-        Entity * es = vector_begin(entities);
-        for(size_t i = 0; i < elen; i++){
-            if (es[i].type == ENTITY_TYPE_ASTEROID)
-                no_asteroids = false;
-        }
+    bool no_asteroids = true;
+    size_t elen = vector_size(entities);
+    Entity * es = vector_begin(entities);
+    for(size_t i = 0; i < elen; i++){
+        if (es[i].type == ENTITY_TYPE_ASTEROID)
+            no_asteroids = false;
+    }
 
+    // set vars for fast clear
+    float next = levels[gls->level][gls->wave].time;
+    if (next == 0.0)
+        next = 30;
+    if (no_asteroids && gls->wave != 0 && gls->level_start_time + levels[gls->level][gls->wave].time - gls->total_clear_offset > game_get_time()){
+        float diff = (gls->level_start_time + gls->total_clear_offset + levels[gls->level][gls->wave].time) - game_get_time();
+        gls->total_clear_offset += diff;
+        PlaySound(fast_clear_bonus_snd);
+        entity_player_add_score(diff * 5);
+    }
+
+    // watch for level change
+    if (gls->wave == 9) {
         // if level > levels
         // either finish
         // or engage infinite mode
 
         if (no_asteroids && gls->level != 4) {
             gls->level++;
+            gls->total_clear_offset = 0;
             PlaySound(*level_announcements[gls->level]);
             gls->wave = 0;
             gls->level_start_time = game_get_time();
@@ -141,7 +155,7 @@ void level_update(vector * entities, GameLevelState * gls){
     }
 
     // wave spawns
-    while (gls->level <=4 && gls->level_start_time + levels[gls->level][gls->wave].time < game_get_time()){
+    while (gls->level <=4 && gls->level_start_time + levels[gls->level][gls->wave].time - gls->total_clear_offset < game_get_time()){
         if (gls->wave == 0)
             PlaySound(level_engage_snd);
 
@@ -151,7 +165,7 @@ void level_update(vector * entities, GameLevelState * gls){
             vector_push(entities, &e);
         }
         gls->wave++;
-        if (gls->wave == 6)
+        if (gls->wave == 9)
             return;
     }
 

@@ -138,6 +138,7 @@ Sound level_5_snd = { 0 };
 Sound level_engage_snd = { 0 };
 Sound level_infinite_mode_snd = { 0 };
 
+Sound fast_clear_bonus_snd = { 0 };
 Sound multiplier_pu_snd = { 0 };
 Sound powerup_snd = { 0 };
 Sound sheild_pu_snd = { 0 };
@@ -165,6 +166,7 @@ void resource_set_sound_volumes(){
 	SetSoundVolume(level_5_snd             , sv * 1.0);
 	SetSoundVolume(level_engage_snd        , sv * 1.0);
 	SetSoundVolume(level_infinite_mode_snd , sv * 1.0);
+    SetSoundVolume(fast_clear_bonus_snd    , sv * 1.0);
 	SetSoundVolume(multiplier_pu_snd       , sv * 1.0);
 	SetSoundVolume(sheild_pu_snd           , sv * 1.0);
 	SetSoundVolume(weapon_pu_snd           , sv * 1.0);
@@ -709,6 +711,7 @@ void resource_init(){
         level_engage_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_engage_ogg, level_engage_ogg_len));
         level_infinite_mode_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", level_infinite_mode_ogg, level_infinite_mode_ogg_len));
 
+        fast_clear_bonus_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", fast_clear_bonus_ogg, fast_clear_bonus_ogg_len));
         multiplier_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", multiplier_pu_ogg, multiplier_pu_ogg_len));
         powerup_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", powerup_ogg, powerup_ogg_len));
         sheild_pu_snd = LoadSoundFromWave(LoadWaveFromMemory(".ogg", sheild_pu_ogg, sheild_pu_ogg_len));

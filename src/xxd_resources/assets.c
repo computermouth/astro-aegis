@@ -276,6 +276,10 @@ const uint32_t level_engage_ogg_len = xxd_resources_snd_level_engage_ogg_len;
 const uint8_t * level_infinite_mode_ogg = xxd_resources_snd_level_infinite_mode_ogg;
 const uint32_t level_infinite_mode_ogg_len = xxd_resources_snd_level_infinite_mode_ogg_len;
 
+#include "fast_clear_bonus.h"
+const uint8_t * fast_clear_bonus_ogg = xxd_resources_snd_fast_clear_bonus_ogg;
+const uint32_t fast_clear_bonus_ogg_len = xxd_resources_snd_fast_clear_bonus_ogg_len;
+
 #include "multiplier_pu.h"
 const uint8_t * multiplier_pu_ogg = xxd_resources_snd_multiplier_pu_ogg;
 const uint32_t multiplier_pu_ogg_len = xxd_resources_snd_multiplier_pu_ogg_len;

@@ -48,8 +48,6 @@ Entity entity_player_spawn(){
     p.mesh = ship_model.meshes[0];
     p.material = ship_model.materials[1];
 
-    fprintf(stderr, "p.m: %d\n", ship_model.materialCount);
-
     p.player_storage = (PlayerStorage){ 0 };
     p.player_storage.multi = 1;
     p.player_storage.health = 3;

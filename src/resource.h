@@ -157,6 +157,7 @@ extern Sound level_5_snd;
 extern Sound level_engage_snd;
 extern Sound level_infinite_mode_snd;
 
+extern Sound fast_clear_bonus_snd;
 extern Sound multiplier_pu_snd;
 extern Sound powerup_snd;
 extern Sound sheild_pu_snd;
