@@ -9,6 +9,7 @@
 #include "entity_player.h"
 #include "entity.h"
 #include "weapon.h"
+#include "entity_banner.h"
 
 #include <stddef.h>
 #include <stdio.h>
@@ -336,18 +337,27 @@ void entity_player_inc_streak(){
     if (p->player_storage.streak % 23 == 0){
         PlaySound(powerup_snd);
         PlaySound(multiplier_pu_snd);
+        Entity e = entity_banner_spawn(BANNER_TTS_MULTI, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        vector *oe = game_get_other_entities();
+        vector_push(oe, &e);
         p->player_storage.multi++;
     }
     // gain health
     if (p->player_storage.streak % 97 == 0){
         PlaySound(powerup_snd);
         PlaySound(sheild_pu_snd);
+        Entity e = entity_banner_spawn(BANNER_TTS_SHD_PU, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        vector *oe = game_get_other_entities();
+        vector_push(oe, &e);
         p->player_storage.health++;
     }
     // other gain health
     if (p->player_storage.score - p->player_storage.last_health_reward >= 251){
         PlaySound(powerup_snd);
         PlaySound(sheild_pu_snd);
+        Entity e = entity_banner_spawn(BANNER_TTS_SHD_PU, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        vector *oe = game_get_other_entities();
+        vector_push(oe, &e);
         p->player_storage.health++;
         p->player_storage.last_health_reward += 251;
     }

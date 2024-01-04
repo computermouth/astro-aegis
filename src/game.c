@@ -424,6 +424,9 @@ void game_update_play_init(){
     };
 
     PlaySound(level_1_snd);
+    Entity e = entity_banner_spawn(BANNER_TTS_LVL_ONE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+    vector *oe = game_get_other_entities();
+    vector_push(oe, &e);
 }
 
 void game_update_play_play(){

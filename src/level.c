@@ -9,6 +9,7 @@
 #include "raylib.h"
 #include "resource.h"
 #include "vector.h"
+#include "entity_banner.h"
 
 // todo, option-ize
 typedef struct {
@@ -120,13 +121,16 @@ void level_update(vector * entities, GameLevelState * gls){
     }
 
     // set vars for fast clear
-    float next = levels[gls->level][gls->wave].time;
-    if (next == 0.0)
-        next = 30;
-    if (no_asteroids && gls->wave != 0 && gls->level_start_time + levels[gls->level][gls->wave].time - gls->total_clear_offset > game_get_time()){
-        float diff = (gls->level_start_time + gls->total_clear_offset + levels[gls->level][gls->wave].time) - game_get_time();
+    float next = 30;
+    if (gls->level < 5 && levels[gls->level][gls->wave].time != 0)
+        next = levels[gls->level][gls->wave].time;
+    if (no_asteroids && gls->wave != 0 && gls->level_start_time + next - gls->total_clear_offset > game_get_time()){
+        float diff = (gls->level_start_time + gls->total_clear_offset + next) - game_get_time();
         gls->total_clear_offset += diff;
         PlaySound(fast_clear_bonus_snd);
+        Entity e = entity_banner_spawn(BANNER_TTS_FAST_CLEAR, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        vector *oe = game_get_other_entities();
+        vector_push(oe, &e);
         entity_player_add_score(diff * 5);
     }
 
@@ -140,12 +144,18 @@ void level_update(vector * entities, GameLevelState * gls){
             gls->level++;
             gls->total_clear_offset = 0;
             PlaySound(*level_announcements[gls->level]);
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ONE + gls->level, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            vector *oe = game_get_other_entities();
+            vector_push(oe, &e);
             gls->wave = 0;
             gls->level_start_time = game_get_time();
         } else if (no_asteroids && gls->level == 4) {
             // infinite mode
             gls->level++;
             PlaySound(*level_announcements[5]);
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_INFINITE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            vector *oe = game_get_other_entities();
+            vector_push(oe, &e);
             gls->wave = 0;
             gls->level_start_time = game_get_time();
             gls->infinite_spawn_timer = 4;
@@ -156,8 +166,12 @@ void level_update(vector * entities, GameLevelState * gls){
 
     // wave spawns
     while (gls->level <=4 && gls->level_start_time + levels[gls->level][gls->wave].time - gls->total_clear_offset < game_get_time()){
-        if (gls->wave == 0)
+        if (gls->wave == 0){
             PlaySound(level_engage_snd);
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ENGAGE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            vector *oe = game_get_other_entities();
+            vector_push(oe, &e);
+        }
 
         level_spawnset ls = levels[gls->level][gls->wave];
         for(size_t i = 0; i < ls.count; i++){
@@ -173,6 +187,13 @@ void level_update(vector * entities, GameLevelState * gls){
     if (gls->level == 5 && game_get_time() > gls->next_infinite_spawn){
         gls->infinite_spawn_timer *= 0.99;
         gls->next_infinite_spawn += gls->infinite_spawn_timer;
+
+        if (gls->infinite_spawn_timer == 4){
+            PlaySound(level_engage_snd);
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ENGAGE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            vector *oe = game_get_other_entities();
+            vector_push(oe, &e);
+        }
 
         Entity e;
         switch (GetRandomValue(1, 5)){

@@ -1,6 +1,8 @@
 
 #include <stdio.h>
 
+#include "entity.h"
+#include "entity_banner.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -132,5 +134,8 @@ void weapon_powerup(WeaponType wt, bool critical){
     if (w->power < 5 && (int)old_power != (int)w->power){
         PlaySound(powerup_snd);
         PlaySound(weapon_pu_snd);
+        Entity e = entity_banner_spawn(BANNER_TTS_WPN_PU, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        vector *oe = game_get_other_entities();
+        vector_push(oe, &e);
     }
 }
