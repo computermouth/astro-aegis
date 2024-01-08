@@ -388,8 +388,8 @@ void game_update_menu(){
     entity_globe_update(&game.game_entities.globe);
 
     // dynamic camera
-    float dirx = game.game_entities.player.player_storage.dir_x;
-    float dirz = game.game_entities.player.player_storage.dir_z;
+    float dirx = game.game_entities.player.player_storage.speed.x;
+    float dirz = game.game_entities.player.player_storage.speed.y;
     game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     
@@ -469,8 +469,8 @@ void game_update_play_play(){
     level_update(game.game_entities.others, &game.game_level_state);
 
     // dynamic camera
-    float dirx = game.game_entities.player.player_storage.dir_x;
-    float dirz = game.game_entities.player.player_storage.dir_z;
+    float dirx = game.game_entities.player.player_storage.speed.x;
+    float dirz = game.game_entities.player.player_storage.speed.y;
     game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
 
@@ -574,12 +574,12 @@ void game_update_play_over(){
     entity_globe_update(&game.game_entities.globe);
 
     // float camera back to center
-    game.game_entities.player.player_storage.dir_x += -game.game_entities.player.player_storage.dir_x / 10 * game_get_delta();
-    game.game_entities.player.player_storage.dir_z += -game.game_entities.player.player_storage.dir_z / 10 * game_get_delta();
+    game.game_entities.player.player_storage.speed.x += -game.game_entities.player.player_storage.speed.x / 10 * game_get_delta();
+    game.game_entities.player.player_storage.speed.y += -game.game_entities.player.player_storage.speed.y / 10 * game_get_delta();
 
     // dynamic camera
-    float dirx = game.game_entities.player.player_storage.dir_x;
-    float dirz = game.game_entities.player.player_storage.dir_z;
+    float dirx = game.game_entities.player.player_storage.speed.x;
+    float dirz = game.game_entities.player.player_storage.speed.y;
     game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
 

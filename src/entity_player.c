@@ -69,8 +69,10 @@ void entity_player_update(Entity * player){
     if (max_xy_speed == 0)
         max_xy_speed = Vector2Length((Vector2){max_speed, max_speed});
 
-    float xdir = 0;
-    float zdir = 0;
+    float mv_x = 0;
+    float mv_y = 0;
+    float fr_x = 0;
+    float fr_y = 0;
 
     GameOptions go = game_get_game_options();
 
@@ -81,63 +83,66 @@ void entity_player_update(Entity * player){
             IsKeyDown(go.keyboard_key_mv_rt) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_rt)
         ) {
-            xdir = 1;
+            mv_x = 1;
         } else if (
             IsKeyDown(game_get_game_options().keyboard_key_mv_lt) || 
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_lt)
         ) {
-            xdir = -1;
+            mv_x = -1;
         }
 
         if (
             IsKeyDown(game_get_game_options().keyboard_key_mv_up) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_up)
         ) {
-            zdir = 1;
+            mv_y = 1;
         } else if (
             IsKeyDown(game_get_game_options().keyboard_key_mv_dn) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_dn)
         ) {
-            zdir = -1;
+            mv_y = -1;
         }
 
         float gp_axis_mv_x = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_mv_xx);
-        if ( xdir == 0 && gp_axis_mv_x != 0)
-            xdir = gp_axis_mv_x;
+        if ( mv_x == 0 && gp_axis_mv_x != 0)
+            mv_x = gp_axis_mv_x;
         float gp_axis_mv_y = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_mv_yy);
-        if ( zdir == 0 && gp_axis_mv_y != 0)
-            zdir = -1.0 * gp_axis_mv_y;
+        if ( mv_y == 0 && gp_axis_mv_y != 0)
+            mv_y = -1.0 * gp_axis_mv_y;
 
-        ps->shoot_dir.x = 0;
+        fr_x = 0;
         if (
             IsKeyDown(game_get_game_options().keyboard_key_fr_lt) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_lt)
         ) {
-            ps->shoot_dir.x = -1;
+            fr_x = -1;
         } else if (
             IsKeyDown(game_get_game_options().keyboard_key_fr_rt) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_rt)
         ) {
-            ps->shoot_dir.x = 1;
+            fr_x = 1;
         }
-        ps->shoot_dir.y = 0;
+        fr_y = 0;
         if (
             IsKeyDown(game_get_game_options().keyboard_key_fr_up) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_up)
         ) {
-            ps->shoot_dir.y = -1;
+            fr_y = -1;
         } else if (
             IsKeyDown(game_get_game_options().keyboard_key_fr_dn) ||
             IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_dn)) {
-            ps->shoot_dir.y = 1;
+            fr_y = 1;
         }
 
         float gp_axis_fr_x = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_fr_xx);
-        if ( ps->shoot_dir.x == 0 && gp_axis_fr_x != 0)
-            ps->shoot_dir.x = gp_axis_fr_x;
+        if ( fr_x == 0 && gp_axis_fr_x != 0)
+            fr_x = gp_axis_fr_x;
         float gp_axis_fr_y = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_fr_yy);
-        if ( ps->shoot_dir.y == 0 && gp_axis_fr_y != 0)
-            ps->shoot_dir.y = gp_axis_fr_y;
+        if ( fr_y == 0 && gp_axis_fr_y != 0)
+            fr_y = gp_axis_fr_y;
+
+        ps->shoot_dir.x = fr_x;
+        ps->shoot_dir.y = fr_y;
 
         // weapon switch
         if (
@@ -160,64 +165,35 @@ void entity_player_update(Entity * player){
         // }
 
     } else {
-        xdir = ps->menu_input_x;
-        zdir = ps->menu_input_z;
+        mv_x = ps->menu_input_x;
+        mv_y = ps->menu_input_z;
     }
 
-    // apply x friction
-    if (ps->dir_x < 0  && xdir == 0)
-        ps->dir_x = fmin(ps->dir_x + frame_friction_decrease, 0);
-    else if (ps->dir_x > 0 && xdir == 0)
-        ps->dir_x = fmax(ps->dir_x - frame_friction_decrease, 0);
+    ps->direction.x = mv_x;
+    ps->direction.y = mv_y;
 
-    // apply z friction
-    if (ps->dir_z < 0 && zdir == 0)
-        ps->dir_z = fmin(ps->dir_z + frame_friction_decrease, 0);
-    else if (ps->dir_z > 0 && zdir == 0)
-        ps->dir_z = fmax(ps->dir_z - frame_friction_decrease, 0);
-
-    // calculate velocity
-    ps->dir_x = Clamp(ps->dir_x + xdir * frame_speed_increase, -max_speed, max_speed);
-    ps->dir_z = Clamp(ps->dir_z + zdir * frame_speed_increase, -max_speed, max_speed);
-
-    // dead stop turn (spend 2 frames turning around)
-    // if ( xdir == -1 && old_x >= 0 && player->player_storage.dir_x <=0 && player->player_storage.dir_z == 0 ){
-    //     player->player_storage.dir_z = frame_friction_decrease * 2 ;
-    // } else if ( xdir == 1 && old_x <= 0 && player->player_storage.dir_x >=0 && player->player_storage.dir_z == 0 ){
-    //     player->player_storage.dir_z = frame_friction_decrease * -2 ;
-    // } else if ( zdir == -1 && old_z >= 0 && player->player_storage.dir_z <=0 && player->player_storage.dir_x == 0){
-    //     player->player_storage.dir_x = frame_friction_decrease * 2 ;
-    // } else if ( zdir == 1 && old_z <= 0 && player->player_storage.dir_z >=0 && player->player_storage.dir_x == 0){
-    //     player->player_storage.dir_x = frame_friction_decrease * -2 ;
-    // }
-
-    // clamp diagonal speed
-    if ( (fabs(ps->dir_x) + fabs(ps->dir_z)) > max_xy_speed ){
-
-        // stick on diagonal
-        if (fabs(fabs(ps->dir_x) - fabs(ps->dir_z)) < frame_speed_increase){
-            ps->dir_x = xdir * max_xy_speed / 2;
-            ps->dir_z = zdir * max_xy_speed / 2;
-        // steal speed from the other axis
-        } else {
-            if (fabs(ps->dir_x) > max_xy_speed / 2) {
-                ps->dir_x -= xdir * frame_speed_increase * 2;
-            } else if (fabs(ps->dir_z) > max_xy_speed / 2) {
-                ps->dir_z -= zdir * frame_speed_increase * 2;
-            }
-        }
-    }
+    // clamped speed
+    Vector2 target = Vector2MoveTowards(
+        ps->speed,
+        Vector2Multiply(
+            Vector2Normalize(ps->direction), 
+            (Vector2){max_xy_speed, max_xy_speed}
+        ), 
+        frame_speed_increase
+    );
+    ps->speed.x = target.x;
+    ps->speed.y = target.y;
 
     // fmod is to make sure the accel fades in at game start
-    SetMusicVolume(accel_music, game_get_game_options().sound_volume / 10 * 10 * (fabsf(ps->dir_x) + fabs(ps->dir_z)));
+    SetMusicVolume(accel_music, game_get_game_options().sound_volume / 10 * 10 * (fabsf(ps->speed.x) + fabs(ps->speed.y)));
 
     ps->frame_rotation = QuaternionMultiply(
-        QuaternionFromAxisAngle((Vector3){0,1,0}, ps->dir_x),
-        QuaternionFromAxisAngle((Vector3){0,0,1}, ps->dir_z)
+        QuaternionFromAxisAngle((Vector3){0,1,0}, ps->speed.x),
+        QuaternionFromAxisAngle((Vector3){0,0,1}, ps->speed.y)
     );
 
-    Vector2 dir_norm = Vector2Normalize((Vector2){ps->dir_x, ps->dir_z});
-    if (xdir != 0 || zdir != 0){
+    Vector2 dir_norm = Vector2Normalize((Vector2){ps->direction.x, ps->direction.y});
+    if (mv_x != 0 || mv_y != 0){
         // player rot
         float rads = atan2f(-dir_norm.x, dir_norm.y);
 

@@ -52,8 +52,8 @@ typedef struct {
 } GlobeStorage;
 
 typedef struct {
-    float      dir_x;
-    float      dir_z;
+    Vector2    direction;
+    Vector2    speed;
     float      menu_input_x;
     float      menu_input_z;
     float      score;
