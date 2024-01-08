@@ -72,37 +72,83 @@ void entity_player_update(Entity * player){
     float xdir = 0;
     float zdir = 0;
 
+    GameOptions go = game_get_game_options();
+
     // only read input if we're not on the menu
     if (game_get_menu_state() == GAME_MENU_STATE_PLAY) {
-        if (IsKeyDown(game_get_game_options().keyboard_key_mv_rt)) {
+
+        if (
+            IsKeyDown(go.keyboard_key_mv_rt) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_rt)
+        ) {
             xdir = 1;
-        } else if (IsKeyDown(game_get_game_options().keyboard_key_mv_lt)) {
+        } else if (
+            IsKeyDown(game_get_game_options().keyboard_key_mv_lt) || 
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_lt)
+        ) {
             xdir = -1;
         }
 
-        if (IsKeyDown(game_get_game_options().keyboard_key_mv_up)) {
+        if (
+            IsKeyDown(game_get_game_options().keyboard_key_mv_up) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_up)
+        ) {
             zdir = 1;
-        } else if (IsKeyDown(game_get_game_options().keyboard_key_mv_dn)) {
+        } else if (
+            IsKeyDown(game_get_game_options().keyboard_key_mv_dn) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_mv_dn)
+        ) {
             zdir = -1;
         }
 
+        float gp_axis_mv_x = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_mv_xx);
+        if ( xdir == 0 && gp_axis_mv_x != 0)
+            xdir = gp_axis_mv_x;
+        float gp_axis_mv_y = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_mv_yy);
+        if ( zdir == 0 && gp_axis_mv_y != 0)
+            zdir = -1.0 * gp_axis_mv_y;
+
         ps->shoot_dir.x = 0;
-        if (IsKeyDown(game_get_game_options().keyboard_key_fr_lt)) {
+        if (
+            IsKeyDown(game_get_game_options().keyboard_key_fr_lt) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_lt)
+        ) {
             ps->shoot_dir.x = -1;
-        } else if (IsKeyDown(game_get_game_options().keyboard_key_fr_rt)) {
+        } else if (
+            IsKeyDown(game_get_game_options().keyboard_key_fr_rt) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_rt)
+        ) {
             ps->shoot_dir.x = 1;
         }
         ps->shoot_dir.y = 0;
-        if (IsKeyDown(game_get_game_options().keyboard_key_fr_up)) {
+        if (
+            IsKeyDown(game_get_game_options().keyboard_key_fr_up) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_up)
+        ) {
             ps->shoot_dir.y = -1;
-        } else if (IsKeyDown(game_get_game_options().keyboard_key_fr_dn)) {
+        } else if (
+            IsKeyDown(game_get_game_options().keyboard_key_fr_dn) ||
+            IsGamepadButtonDown(go.gamepad, go.gamepad_btn_fr_dn)) {
             ps->shoot_dir.y = 1;
         }
 
+        float gp_axis_fr_x = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_fr_xx);
+        if ( ps->shoot_dir.x == 0 && gp_axis_fr_x != 0)
+            ps->shoot_dir.x = gp_axis_fr_x;
+        float gp_axis_fr_y = GetGamepadAxisMovement(go.gamepad, go.gamepad_joy_fr_yy);
+        if ( ps->shoot_dir.y == 0 && gp_axis_fr_y != 0)
+            ps->shoot_dir.y = gp_axis_fr_y;
+
         // weapon switch
-        if (IsKeyReleased(game_get_game_options().keyboard_key_wp_lt)){
+        if (
+            IsKeyReleased(game_get_game_options().keyboard_key_wp_lt) ||
+            IsGamepadButtonReleased(go.gamepad, go.gamepad_btn_wp_lt)
+        ){
             ps->weapon_index = (ps->weapon_index + __WEAPON_END - 1) % __WEAPON_END;
-        } else if (IsKeyReleased(game_get_game_options().keyboard_key_wp_rt)){
+        } else if (
+            IsKeyReleased(game_get_game_options().keyboard_key_wp_rt) ||
+            IsGamepadButtonReleased(go.gamepad, go.gamepad_btn_wp_rt)
+        ){
             ps->weapon_index = (ps->weapon_index + 1) % __WEAPON_END;
         }
 

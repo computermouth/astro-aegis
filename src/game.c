@@ -69,6 +69,21 @@ static Game game = {
 		.keyboard_char_fr_rt[1] = '\0',
 		.keyboard_char_wp_lt[1] = '\0',
 		.keyboard_char_wp_rt[1] = '\0',
+		.gamepad           = 0,
+		.gamepad_btn_mv_up = GAMEPAD_BUTTON_LEFT_FACE_UP,
+		.gamepad_btn_mv_dn = GAMEPAD_BUTTON_LEFT_FACE_DOWN,
+		.gamepad_btn_mv_lt = GAMEPAD_BUTTON_LEFT_FACE_LEFT,
+		.gamepad_btn_mv_rt = GAMEPAD_BUTTON_LEFT_FACE_RIGHT,
+		.gamepad_btn_fr_up = GAMEPAD_BUTTON_RIGHT_FACE_UP,
+		.gamepad_btn_fr_dn = GAMEPAD_BUTTON_RIGHT_FACE_DOWN,
+		.gamepad_btn_fr_lt = GAMEPAD_BUTTON_RIGHT_FACE_LEFT,
+		.gamepad_btn_fr_rt = GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,
+		.gamepad_btn_wp_lt = GAMEPAD_BUTTON_LEFT_TRIGGER_1,
+		.gamepad_btn_wp_rt = GAMEPAD_BUTTON_RIGHT_TRIGGER_1,
+        .gamepad_joy_mv_xx = GAMEPAD_AXIS_LEFT_X,
+        .gamepad_joy_mv_yy = GAMEPAD_AXIS_LEFT_Y,
+        .gamepad_joy_fr_xx = GAMEPAD_AXIS_RIGHT_X,
+        .gamepad_joy_fr_yy = GAMEPAD_AXIS_RIGHT_Y,
     }
 };
 

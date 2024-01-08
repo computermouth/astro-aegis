@@ -57,6 +57,21 @@ typedef struct {
     char keyboard_char_fr_rt[2];
     char keyboard_char_wp_lt[2];
     char keyboard_char_wp_rt[2];
+    int gamepad;
+    int gamepad_btn_mv_up;
+    int gamepad_btn_mv_dn;
+    int gamepad_btn_mv_lt;
+    int gamepad_btn_mv_rt;
+    int gamepad_btn_fr_up;
+    int gamepad_btn_fr_dn;
+    int gamepad_btn_fr_lt;
+    int gamepad_btn_fr_rt;
+    int gamepad_btn_wp_lt;
+    int gamepad_btn_wp_rt;
+    int gamepad_joy_mv_xx;
+    int gamepad_joy_mv_yy;
+    int gamepad_joy_fr_xx;
+    int gamepad_joy_fr_yy;
 } GameOptions;
 
 typedef struct {
