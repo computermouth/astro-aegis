@@ -77,6 +77,7 @@ jobs:
         # Join x86_64 and arm64 static
         lipo -create -output libraylib.a libraylib_x86_64.a libraylib_arm64.a
         lipo libraylib.a -detailed_info
+        mv libraylib.a ../../src/libraylib_PLATFORM_DESKTOP.a
         cd ../..
 
     - name: Build Product
