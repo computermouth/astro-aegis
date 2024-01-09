@@ -31,13 +31,6 @@ jobs:
       uses: actions/checkout@master
       with:
         path: ${{ env.PROJECT_NAME_T }}
-      
-    - name: Checkout raylib repo
-      uses: actions/checkout@v3
-      with:
-        repository: raysan5/raylib
-        path: raylib
-        ref: "5.0"
         
     - name: Setup Release Paths
       run: |
@@ -63,7 +56,7 @@ jobs:
     # Defining GL_SILENCE_DEPRECATION because OpenGL is deprecated on macOS
     - name: Build raylib Library
       run: |
-        cd raylib/src
+        cd astro-aegis/raylib/src
         clang --version
         
         # Extract version numbers from Makefile
