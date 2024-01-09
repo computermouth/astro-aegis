@@ -41,7 +41,7 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: mingw-w64-x86_64-gcc sed vim
+        install: mingw-w64-x86_64-gcc sed vim make
     
     - name: Build Product + Generate Artifacts
       run: |
