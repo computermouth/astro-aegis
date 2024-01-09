@@ -43,11 +43,13 @@ jobs:
         update: true
         install: mingw-w64-x86_64-gcc sed vim make
     
-    - name: Build Product + Generate Artifacts
+    - name: Build Product
       run: |
         cd ${{ env.PROJECT_NAME }}/src
         make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=.
-        cd ..
+    
+    - name: Generate Artifacts
+      run: |
         ls ${{ env.PROJECT_BUILD_PATH }}
         cp ${{ env.PROJECT_BUILD_PATH }}/${{ env.PROJECT_NAME }} ${{ env.PROJECT_RELEASE_PATH }}
         cp ${{ env.PROJECT_NAME }}/README.md ${{ env.PROJECT_RELEASE_PATH }}
