@@ -83,6 +83,7 @@ jobs:
     - name: Build Product
       run: |
         cd ${{ env.PROJECT_NAME_T }}/src
+        ls -lsah libraylib_PLATFORM_DESKTOP.a
         
         # Build project x86_64 binary
         # TODO: Link with x86_64 raylib library: libraylib_x86_64.a
