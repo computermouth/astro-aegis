@@ -16,7 +16,7 @@
 #
 #     2. Altered source versions must be plainly marked as such, and must not be misrepresented
 #     as being the original software.
-#
+#$(RAYLIB_LIB_PATH)/libraylib.a
 #     3. This notice may not be removed or altered from any source distribution.
 #
 #**************************************************************************************************
@@ -33,7 +33,7 @@ PROJECT_NAME          ?= astro-aegis
 PROJECT_VERSION       ?= 1.0
 PROJECT_BUILD_PATH    ?= .
 
-RAYLIB_PATH           ?= ../../raylib
+RAYLIB_PATH           ?= ../raylib
 RAYLIB_INCLUDE_PATH   ?= $(RAYLIB_PATH)/src
 RAYLIB_LIB_PATH       ?= $(RAYLIB_PATH)/src
 
@@ -250,14 +250,14 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
         # Libraries for Windows desktop compilation
         # NOTE: WinMM library required to set high-res timer resolution
-        LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm -lcomdlg32 -lole32
+        LDLIBS = -lraylib_$(PLATFORM) -lopengl32 -lgdi32 -lwinmm -lcomdlg32 -lole32
         # Required for physac examples
         LDLIBS += -static -lpthread
     endif
     ifeq ($(PLATFORM_OS),LINUX)
         # Libraries for Debian GNU/Linux desktop compiling
         # NOTE: Required packages: libegl1-mesa-dev
-        LDLIBS = -lraylib -lGL -lm -lpthread -ldl -lrt
+        LDLIBS = -lraylib_$(PLATFORM) -lGL -lm -lpthread -ldl -lrt
 
         # On Wayland windowing system, additional libraries requires
         ifeq ($(USE_WAYLAND_DISPLAY),TRUE)
@@ -276,12 +276,12 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),OSX)
         # Libraries for OSX 10.9 desktop compiling
         # NOTE: Required packages: libopenal-dev libegl1-mesa-dev
-        LDLIBS = -L../../raylib/src -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
+        LDLIBS = -lraylib_$(PLATFORM) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework CoreVideo
     endif
     ifeq ($(PLATFORM_OS),BSD)
         # Libraries for FreeBSD, OpenBSD, NetBSD, DragonFly desktop compiling
         # NOTE: Required packages: mesa-libs
-        LDLIBS = -lraylib -lGL -lpthread -lm
+        LDLIBS = -lraylib_$(PLATFORM) -lGL -lpthread -lm
 
         # On XWindow requires also below libraries
         LDLIBS += -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor
@@ -289,12 +289,12 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
 endif
 ifeq ($(PLATFORM),PLATFORM_WEB)
     # Libraries for web (HTML5) compiling
-    LDLIBS = $(RAYLIB_LIB_PATH)/libraylib.a
+    LDLIBS = -lraylib_$(PLATFORM)
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     # Libraries for DRM compiling
     # NOTE: Required packages: libasound2-dev (ALSA)
-    LDLIBS = -lraylib -lGLESv2 -lEGL -lpthread -lrt -lm -lgbm -ldrm -ldl
+    LDLIBS = -lraylib_$(PLATFORM) -lGLESv2 -lEGL -lpthread -lrt -lm -lgbm -ldrm -ldl
 endif
 
 
@@ -333,7 +333,12 @@ XXD_RES = $(IMG_SRC) $(MDL_SRC) $(MUS_SRC) $(SND_SRC) $(LIC_SRC)
 #------------------------------------------------------------------------------------------------
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target
-all: $(PROJECT_NAME)
+all: libraylib_$(PLATFORM).a $(PROJECT_NAME)
+
+libraylib_$(PLATFORM).a:
+	$(MAKE) PLATFORM=$(PLATFORM) -C ../raylib/src clean
+	$(MAKE) PLATFORM=$(PLATFORM) -C ../raylib/src 
+	mv ../raylib/src/libraylib.a libraylib_$(PLATFORM).a
 
 %.h: %.png
 	xxd -i $< | sed 's|unsigned int|const unsigned int|g' > $@

@@ -24,13 +24,6 @@ jobs:
       uses: actions/checkout@master
       with:
         path: ${{ env.PROJECT_NAME }}
-      
-    - name: Checkout raylib repo
-      uses: actions/checkout@v3
-      with:
-        repository: raysan5/raylib
-        path: raylib
-        ref: "5.0"
         
     - name: Setup Release Paths
       run: |
@@ -45,18 +38,11 @@ jobs:
         mkdir ${{ env.PROJECT_RELEASE_PATH }}
         ls
       shell: bash
-        
-    - name: Build raylib Library
-      run: |
-        cd raylib/src
-        gcc --version
-        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE RAYLIB_LIBTYPE=STATIC RAYLIB_PROJECT_RELEASE_PATH=. -B
-        sudo make install
 
     - name: Build Product
       run: |
         cd ${{ env.PROJECT_NAME }}/src
-        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib
+        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=.
 
     - name: Generate Artifacts
       run: |

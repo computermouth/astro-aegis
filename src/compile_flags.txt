@@ -7,8 +7,8 @@
 -g
 -D_DEBUG
 -I.
--I../../raylib/src
--I../../raylib/src/external
+-I../raylib/src
+-I../raylib/src/external
 -I./xxd_resources
 -I./xxd_resources/img
 -I./xxd_resources/mdl
