@@ -20,7 +20,7 @@ jobs:
     
     env:
       PROJECT_NAME_T: ${{ github.event.repository.name }}
-      PROJECT_FILE_NAME: raylib_game
+      PROJECT_FILE_NAME: astro-aegis
       PROJECT_BUILD_PATH: ${{ github.event.repository.name }}/src
       PROJECT_RELEASE_PATH: ${{ github.event.repository.name }}_dev_macos
       PROJECT_CUSTOM_FLAGS: ""
