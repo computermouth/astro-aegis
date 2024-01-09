@@ -85,13 +85,13 @@ jobs:
         
         # Build project x86_64 binary
         # TODO: Link with x86_64 raylib library: libraylib_x86_64.a
-        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE CUSTOM_CFLAGS="-target x86_64-apple-macos10.12 -DGL_SILENCE_DEPRECATION" PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target x86_64-apple-macos10.12"
+        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE CUSTOM_CFLAGS="-target x86_64-apple-macos10.12 -DGL_SILENCE_DEPRECATION" PROJECT_BUILD_PATH=. PROJECT_CUSTOM_FLAGS="-target x86_64-apple-macos10.12"
         mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_x86_64
         make clean
         
         # Build project arm64 binary
         # TODO: Link with arm64 raylib library: libraylib_arm.a
-        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE CUSTOM_CFLAGS="-target arm64-apple-macos11 -DGL_SILENCE_DEPRECATION" PROJECT_BUILD_PATH=. RAYLIB_PATH=../../raylib PROJECT_CUSTOM_FLAGS="-target arm64-apple-macos11"
+        make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE CUSTOM_CFLAGS="-target arm64-apple-macos11 -DGL_SILENCE_DEPRECATION" PROJECT_BUILD_PATH=. PROJECT_CUSTOM_FLAGS="-target arm64-apple-macos11"
         mv -v -f ${{ env.PROJECT_FILE_NAME }} ${{ env.PROJECT_FILE_NAME }}_arm64
         make clean
         
