@@ -372,22 +372,22 @@ xxd_resources/assets.o: $(XXD_RES) xxd_resources/assets.c
 clean:
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
-		del *.o *.exe /s
+		del *.o xxd_resources/assets.o *.exe /s
     endif
     ifeq ($(PLATFORM_OS),LINUX)
 		find . -type f -executable -delete
-		rm -fv *.o
+		rm -fv *.o xxd_resources/assets.o
     endif
     ifeq ($(PLATFORM_OS),OSX)
-		rm -f *.o external/*.o $(PROJECT_NAME)
+		rm -f *.o external/*.o xxd_resources/assets.o $(PROJECT_NAME)
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
 	find . -type f -executable -delete
-	rm -fv *.o
+	rm -fv *.o xxd_resources/assets.o
 endif
 ifeq ($(PLATFORM),PLATFORM_WEB)
-	del *.o *.html *.js
+	del *.o xxd_resources/assets.o *.html *.js
 endif
 	@echo Cleaning done
 
