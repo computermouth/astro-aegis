@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
 
     env:
       PROJECT_NAME: ${{ github.event.repository.name }}
@@ -33,12 +36,14 @@ jobs:
       shell: bash
       if: github.event_name == 'release' && github.event.action == 'published'
 
-    - name: Build Product + Generate Artifacts
+    - name: Setup Msys2
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
         update: true
         install: mingw-w64-x86_64-gcc sed vim
+    
+    - name: Build Product + Generate Artifacts
       run: |
         cd ${{ env.PROJECT_NAME }}/src
         make PLATFORM=PLATFORM_DESKTOP BUILD_MODE=RELEASE PROJECT_CUSTOM_FLAGS=${{ env.PROJECT_CUSTOM_FLAGS }} PROJECT_BUILD_PATH=.
