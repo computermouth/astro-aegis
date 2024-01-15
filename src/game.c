@@ -187,32 +187,36 @@ void game_update_menu_state_options_draw_2d(){
     if (GuiButton((Rectangle){.x = 96, .y = 496 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_wp_rt))
         game_update_key(&game.menu_data.options.keyboard_key_wp_rt, &game.menu_data.options.keyboard_char_wp_rt);
     DrawText("right", 40,       496 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+
+
+    DrawText("volume +", GAME_SCREEN_WIDTH - 200 - 40, 128, 32, RAYWHITE);
+    DrawLineEx((Vector2){.x = GAME_SCREEN_WIDTH - 200 - 48, .y = 164}, (Vector2){.x = GAME_SCREEN_WIDTH - 100, .y = 164}, 2.0f, RAYWHITE);
     
-    DrawText("master volume", GAME_SCREEN_WIDTH / 2. + 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 200, 20, RAYWHITE);
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 200, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    DrawText("master volume", GAME_SCREEN_WIDTH - 200 - 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 150, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 150, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
     float old_master = game.menu_data.options.master_volume;
-    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 200, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.master_volume, 0, 10);
+    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 150, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.master_volume, 0, 10);
     if (old_master != game.menu_data.options.master_volume)
         SetMasterVolume(game.menu_data.options.master_volume / 10);
 
-    DrawText("music volume", GAME_SCREEN_WIDTH / 2. + 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 100, 20, RAYWHITE);
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    DrawText("music volume", GAME_SCREEN_WIDTH - 200 - 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 50, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 50, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
     float old_music = game.menu_data.options.music_volume;
-    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 100, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.music_volume, 0, 10);
+    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 50, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.music_volume, 0, 10);
     if (old_music != game.menu_data.options.music_volume){
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
     }
 
-    DrawText("sound volume", GAME_SCREEN_WIDTH / 2. + 32, GAME_SCREEN_HEIGHT / 2.0 - 32, 20, RAYWHITE);
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    DrawText("sound volume", GAME_SCREEN_WIDTH - 200 - 32, GAME_SCREEN_HEIGHT / 2.0 - 32 + 50, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 + 50, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
     float old_sound = game.menu_data.options.sound_volume;
-    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.sound_volume, 0, 10);
+    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 + 50, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.sound_volume, 0, 10);
     if (old_sound != game.menu_data.options.sound_volume)
         resource_set_sound_volumes();
 
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 + 100, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
-    GuiCheckBox((Rectangle){.x = GAME_SCREEN_WIDTH / 2. + 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 0 + 100, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
+    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 + 150, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    GuiCheckBox((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 0 + 150, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
 
     GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
     if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 64 - 32, .width = 200, .height = 64}, "menu")){
