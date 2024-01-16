@@ -188,6 +188,24 @@ void game_update_menu_state_options_draw_2d(){
         game_update_key(&game.menu_data.options.keyboard_key_wp_rt, &game.menu_data.options.keyboard_char_wp_rt);
     DrawText("right", 40,       496 + 50 * 1 + 20 - 10, 20, RAYWHITE);
 
+    DrawText("controller", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, 128, 32, RAYWHITE);
+    DrawLineEx((Vector2){.x = GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 32, .y = 164}, (Vector2){.x = GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 196 + 16, .y = 164}, 2.0f, RAYWHITE);
+
+    DrawText("weapon-",      GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, 228 + 10, 20, RAYWHITE);
+    DrawText("move (dpad)",  GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, 228 + 10 + 125, 20, RAYWHITE);
+    DrawText("move (stick)", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, 228 + 10 + 265, 20, RAYWHITE);
+
+    DrawText("weapon+",        GAME_SCREEN_WIDTH * 3.0 / 5 + 100, 228 + 10, 20, RAYWHITE);
+    DrawText("fire (buttons)", GAME_SCREEN_WIDTH * 3.0 / 5 + 100, 228 + 10 + 125, 20, RAYWHITE);
+    DrawText("fire (stick)",   GAME_SCREEN_WIDTH * 3.0 / 5 + 100, 228 + 10 + 265, 20, RAYWHITE);
+
+    DrawTexture(controller_tex, GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 128 + 16, 196, RAYWHITE);
+
+    // DrawText("movement:", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, 196, 20, RAYWHITE);
+
+    // if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 96, .y = 228, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_up))
+    //     game_update_key(&game.menu_data.options.keyboard_key_mv_up, &game.menu_data.options.keyboard_char_mv_up);
+    // DrawText("up", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, 228 + 20 - 10, 20, RAYWHITE);
 
     DrawText("volume +", GAME_SCREEN_WIDTH - 200 - 40, 128, 32, RAYWHITE);
     DrawLineEx((Vector2){.x = GAME_SCREEN_WIDTH - 200 - 48, .y = 164}, (Vector2){.x = GAME_SCREEN_WIDTH - 100, .y = 164}, 2.0f, RAYWHITE);
@@ -234,7 +252,7 @@ void game_update_menu_state_licenses_draw_2d(){
     DrawText("LICENSES", 32, 32, 64, RAYWHITE);
     DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
 
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < 8; i++){
         if (GuiButton((Rectangle){.x = 32, .y = 140 + i * 50, .width = 200, .height = 40}, licenses[i].product_name)){
             game.menu_data.license_shown = i;
         }
@@ -423,6 +441,20 @@ void game_update_menu(){
                 game_update_menu_state_licenses_draw_2d();
                 break;
         }
+
+        // stupid hack because raylib can't detect gamepads after start
+        static bool gamepadfound = true;
+        if(gamepadfound && !IsGamepadAvailable(0))
+            gamepadfound = false;
+
+        if (!gamepadfound && fmodf(game_get_time(), 2.0) < 1.0)
+            DrawText(
+                "GAMEPAD IS RECOMMENDED (restart required)",
+                GAME_SCREEN_WIDTH / 2 - MeasureText("GAMEPAD IS RECOMMENDED (restart required)", 30) / 2,
+                GAME_SCREEN_HEIGHT / 5.0 * 4.0,
+                30,
+                RAYWHITE
+            );
 
         // EndMode2D
 

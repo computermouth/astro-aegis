@@ -75,6 +75,9 @@ extern Image    redtex3_img;
 extern Texture  redtex3_tex;
 extern Material redtex3_mat;
 
+extern Image    controller_img;
+extern Texture  controller_tex;
+
 extern Image black_img;
 extern Texture black_tex;
 
@@ -171,6 +174,6 @@ extern Sound bullet_shoot_g_snd;
 extern Sound bullet_shoot_b_snd;
 extern Sound player_hit_snd;
 
-extern License licenses[7];
+extern License licenses[8];
 
 #endif

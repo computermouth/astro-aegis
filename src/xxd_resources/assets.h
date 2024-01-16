@@ -35,6 +35,9 @@ extern const uint32_t redtex2_png_len;
 extern const uint8_t * redtex3_png;
 extern const uint32_t redtex3_png_len;
 
+extern const uint8_t * controller_png;
+extern const uint32_t controller_png_len;
+
 // Asteroids by craftpix
 // https://free-game-assets.itch.io/free-stone-3d-low-poly-pack
 

@@ -56,6 +56,9 @@ Image    redtex3_img = { 0 };
 Texture  redtex3_tex = { 0 };
 Material redtex3_mat = { 0 };
 
+Image    controller_img = { 0 };
+Texture  controller_tex = { 0 };
+
 Image black_img = { 0 };
 Texture black_tex = { 0 };
 
@@ -152,7 +155,7 @@ Sound bullet_shoot_g_snd = { 0 };
 Sound bullet_shoot_b_snd = { 0 };
 Sound player_hit_snd = { 0 };
 
-License licenses[7] = { 0 };
+License licenses[8] = { 0 };
 
 unsigned char * resource_load_file_callback(const char *actually_a_resource_load_stats, int *len);
 
@@ -285,6 +288,11 @@ void resource_init(){
         redtex3_tex = LoadTextureFromImage(redtex3_img);
         redtex3_mat = LoadMaterialDefault();
         redtex3_mat.maps[MATERIAL_MAP_DIFFUSE].texture = redtex3_tex;
+    }
+
+    { // controller
+        controller_img = LoadImageFromMemory(".png", controller_png, controller_png_len);
+        controller_tex = LoadTextureFromImage(controller_img);
     }
 
     { // asteroid_b000
@@ -786,6 +794,13 @@ void resource_init(){
             .license = "CC0",
             .payload = (char *)mehrasaur_license,
             .payload_len = mehrasaur_license_len,
+        };
+        licenses[7] = (License){
+            .product_name = "1-Bit Input Prompts",
+            .copyright_holder = "Kenney",
+            .description = "Icons for input prompts",
+            .link = "https://kenney-assets.itch.io/1-bit-pixel-input-prompts-16",
+            .license = "CC0",
         };
     }
 
