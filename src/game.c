@@ -475,9 +475,11 @@ void game_update_play_init(){
         .game_start_time = game.game_time,
         .level_start_time = game.game_time
     };
-
+    
+    int xpad = (GetScreenWidth() - GAME_SCREEN_WIDTH) / 2;
+    
     PlaySound(level_1_snd);
-    Entity e = entity_banner_spawn(BANNER_TTS_LVL_ONE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+    Entity e = entity_banner_spawn(BANNER_TTS_LVL_ONE, (Vector2){xpad + GAME_SCREEN_WIDTH - 32, 100});
     vector *oe = game_get_other_entities();
     vector_push(oe, &e);
 }
