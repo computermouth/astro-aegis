@@ -68,6 +68,7 @@ int main(void) {
 
     // Initialization
     //--------------------------------------------------------------------------------------
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, "raylib gamejam template");
     SetExitKey(KEY_NULL);
 
