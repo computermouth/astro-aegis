@@ -419,6 +419,9 @@ void game_update_menu(){
     game.game_camera.position = tool_vec3_world_pos((Vector3){8.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     game.game_camera.target   = tool_vec3_world_pos((Vector3){0.0f, 0.0f + dirz * 50, 0.0f - dirx * 50});
     
+    int xpad = (GetScreenWidth() - GAME_SCREEN_WIDTH) / 2;
+    int ypad = (GetScreenHeight() - GAME_SCREEN_HEIGHT) / 2;
+    
     BeginDrawing();
         ClearBackground(BLACK);
 
@@ -446,8 +449,8 @@ void game_update_menu(){
         if (!IsGamepadAvailable(0) && fmodf(game_get_time(), 2.0) < 1.0)
             DrawText(
                 "(gamepad recommended)",
-                GAME_SCREEN_WIDTH / 2 - MeasureText("(gamepad recommended)", 30) / 2,
-                GAME_SCREEN_HEIGHT / 5.0 * 4.0,
+                xpad + GAME_SCREEN_WIDTH / 2 - MeasureText("(gamepad recommended)", 30) / 2,
+                ypad + GAME_SCREEN_HEIGHT / 5.0 * 4.0,
                 30,
                 RAYWHITE
             );
