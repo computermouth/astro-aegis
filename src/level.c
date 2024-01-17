@@ -128,7 +128,7 @@ void level_update(vector * entities, GameLevelState * gls){
         float diff = (gls->level_start_time + gls->total_clear_offset + next) - game_get_time();
         gls->total_clear_offset += diff;
         PlaySound(fast_clear_bonus_snd);
-        Entity e = entity_banner_spawn(BANNER_TTS_FAST_CLEAR, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        Entity e = entity_banner_spawn(BANNER_TTS_FAST_CLEAR, (Vector2){GetScreenWidth() - 32, 100});
         vector *oe = game_get_other_entities();
         vector_push(oe, &e);
         entity_player_add_score(diff * 5);
@@ -144,7 +144,7 @@ void level_update(vector * entities, GameLevelState * gls){
             gls->level++;
             gls->total_clear_offset = 0;
             PlaySound(*level_announcements[gls->level]);
-            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ONE + gls->level, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ONE + gls->level, (Vector2){GetScreenWidth() - 32, 100});
             vector *oe = game_get_other_entities();
             vector_push(oe, &e);
             gls->wave = 0;
@@ -153,7 +153,7 @@ void level_update(vector * entities, GameLevelState * gls){
             // infinite mode
             gls->level++;
             PlaySound(*level_announcements[5]);
-            Entity e = entity_banner_spawn(BANNER_TTS_LVL_INFINITE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_INFINITE, (Vector2){GetScreenWidth() - 32, 100});
             vector *oe = game_get_other_entities();
             vector_push(oe, &e);
             gls->wave = 0;
@@ -168,7 +168,7 @@ void level_update(vector * entities, GameLevelState * gls){
     while (gls->level <=4 && gls->level_start_time + levels[gls->level][gls->wave].time - gls->total_clear_offset < game_get_time()){
         if (gls->wave == 0){
             PlaySound(level_engage_snd);
-            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ENGAGE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ENGAGE, (Vector2){GetScreenWidth() - 32, 100});
             vector *oe = game_get_other_entities();
             vector_push(oe, &e);
         }
@@ -190,7 +190,7 @@ void level_update(vector * entities, GameLevelState * gls){
 
         if (gls->infinite_spawn_timer == 4){
             PlaySound(level_engage_snd);
-            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ENGAGE, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+            Entity e = entity_banner_spawn(BANNER_TTS_LVL_ENGAGE, (Vector2){GetScreenWidth() - 32, 100});
             vector *oe = game_get_other_entities();
             vector_push(oe, &e);
         }

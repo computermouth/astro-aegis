@@ -44,16 +44,6 @@
 #endif
 
 //----------------------------------------------------------------------------------
-// Types and Structures Definition
-//----------------------------------------------------------------------------------
-typedef enum { 
-    SCREEN_LOGO = 0, 
-    SCREEN_TITLE, 
-    SCREEN_GAMEPLAY, 
-    SCREEN_ENDING
-} GameScreen;
-
-//----------------------------------------------------------------------------------
 // Module Functions Declaration
 //----------------------------------------------------------------------------------
 static void UpdateDrawFrame(void);      // Update and Draw one frame
@@ -118,9 +108,9 @@ void load_start(){
 
     BeginDrawing();
         ClearBackground(BLACK);
-        DrawText(welcome,       GAME_SCREEN_WIDTH / 2 - tw_welcome       / 2, GAME_SCREEN_HEIGHT * 1 / 5,   font_size, RAYWHITE);
-        DrawText(by,            GAME_SCREEN_WIDTH / 2 - tw_by            / 2, GAME_SCREEN_HEIGHT * 2.2 / 5, font_size, RAYWHITE);
-        DrawText(computermouth, GAME_SCREEN_WIDTH / 2 - tw_computermouth / 2, GAME_SCREEN_HEIGHT * 3.7 / 5, font_size, RAYWHITE);
+        DrawText(welcome,       GetScreenWidth() / 2 - tw_welcome       / 2, GetScreenHeight() * 1 / 5,   font_size, RAYWHITE);
+        DrawText(by,            GetScreenWidth() / 2 - tw_by            / 2, GetScreenHeight() * 2.2 / 5, font_size, RAYWHITE);
+        DrawText(computermouth, GetScreenWidth() / 2 - tw_computermouth / 2, GetScreenHeight() * 3.7 / 5, font_size, RAYWHITE);
     EndDrawing();
 
     load_started = true;

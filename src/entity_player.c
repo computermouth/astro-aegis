@@ -61,7 +61,6 @@ void entity_player_update(Entity * player){
     PlayerStorage * ps = &player->player_storage;
 
     float frame_speed_increase = ENTITY_PLAYER_FRAME_SPEED * game_get_delta();
-    float frame_friction_decrease = ENTITY_PLAYER_FRICTION * game_get_delta();
     float max_speed = ENTITY_PLAYER_MAX_SPEED;
 
     // dumb hack to calculate once
@@ -311,8 +310,8 @@ void entity_player_draw_2d(Entity * player){
     // sprintf(streak, "streak: %d",  player->player_storage.streak);
     sprintf(multi, "multi: %dx", player->player_storage.multi);
     sprintf(score, "score: %d",  (int)player->player_storage.score);
-    DrawText(multi, 32, GAME_SCREEN_HEIGHT - 32 * 2, 32, RAYWHITE);
-    DrawText(score, 32, GAME_SCREEN_HEIGHT - 32 * 3, 32, RAYWHITE);
+    DrawText(multi, 32, GetScreenHeight() - 32 * 2, 32, RAYWHITE);
+    DrawText(score, 32, GetScreenHeight() - 32 * 3, 32, RAYWHITE);
 
     sprintf(health, "shields: %d", player->player_storage.health);
     if (player->player_storage.weapons[WEAPON_RED].power < 4)
@@ -328,13 +327,13 @@ void entity_player_draw_2d(Entity * player){
     else
         sprintf(w_b   , "ngwave: MAX");
 
-    DrawText(health,   GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",  32), GAME_SCREEN_HEIGHT - 32 * 6, 32, ORANGE);
-    DrawText(w_r,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 4, 32, RED);
-    DrawText(w_g,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 3, 32, GREEN);
-    DrawText(w_b,      GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32), GAME_SCREEN_HEIGHT - 32 * 2, 32, BLUE);
+    DrawText(health,   GetScreenWidth() - 32 - MeasureText("phaser: 5.555",  32), GetScreenHeight() - 32 * 6, 32, ORANGE);
+    DrawText(w_r,      GetScreenWidth() - 32 - MeasureText("phaser: 5.555",     32), GetScreenHeight() - 32 * 4, 32, RED);
+    DrawText(w_g,      GetScreenWidth() - 32 - MeasureText("phaser: 5.555",     32), GetScreenHeight() - 32 * 3, 32, GREEN);
+    DrawText(w_b,      GetScreenWidth() - 32 - MeasureText("phaser: 5.555",     32), GetScreenHeight() - 32 * 2, 32, BLUE);
 
     char * selector = ">";
-    DrawText(selector, GAME_SCREEN_WIDTH - 32 - MeasureText("phaser: 5.555",     32) - MeasureText(selector, 32) * 2, GAME_SCREEN_HEIGHT - 32 * 4 + (32 * player->player_storage.weapon_index), 32, RAYWHITE);
+    DrawText(selector, GetScreenWidth() - 32 - MeasureText("phaser: 5.555",     32) - MeasureText(selector, 32) * 2, GetScreenHeight() - 32 * 4 + (32 * player->player_storage.weapon_index), 32, RAYWHITE);
 
     if (game_get_game_options().draw_fps)
         DrawFPS(10, 10);
@@ -359,7 +358,7 @@ void entity_player_inc_streak(){
     if (p->player_storage.streak % 23 == 0){
         PlaySound(powerup_snd);
         PlaySound(multiplier_pu_snd);
-        Entity e = entity_banner_spawn(BANNER_TTS_MULTI, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        Entity e = entity_banner_spawn(BANNER_TTS_MULTI, (Vector2){GetScreenWidth() - 32, 100});
         vector *oe = game_get_other_entities();
         vector_push(oe, &e);
         p->player_storage.multi++;
@@ -368,7 +367,7 @@ void entity_player_inc_streak(){
     if (p->player_storage.streak % 97 == 0){
         PlaySound(powerup_snd);
         PlaySound(sheild_pu_snd);
-        Entity e = entity_banner_spawn(BANNER_TTS_SHD_PU, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        Entity e = entity_banner_spawn(BANNER_TTS_SHD_PU, (Vector2){GetScreenWidth() - 32, 100});
         vector *oe = game_get_other_entities();
         vector_push(oe, &e);
         p->player_storage.health++;
@@ -377,7 +376,7 @@ void entity_player_inc_streak(){
     if (p->player_storage.score - p->player_storage.last_health_reward >= 251){
         PlaySound(powerup_snd);
         PlaySound(sheild_pu_snd);
-        Entity e = entity_banner_spawn(BANNER_TTS_SHD_PU, (Vector2){GAME_SCREEN_WIDTH - 32, 100});
+        Entity e = entity_banner_spawn(BANNER_TTS_SHD_PU, (Vector2){GetScreenWidth() - 32, 100});
         vector *oe = game_get_other_entities();
         vector_push(oe, &e);
         p->player_storage.health++;

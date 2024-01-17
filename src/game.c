@@ -93,7 +93,7 @@ bool game_get_should_quit(){
 }
 
 void game_update_menu_state_menu_draw_2d(){
-    
+
     GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
 
     DrawText("ASTRO AEGIS", 32, 32, 64, RAYWHITE);
@@ -123,13 +123,18 @@ void game_update_menu_state_menu_draw_2d(){
 }
 
 void game_update_key(int * old_key, char ** old_char){
+
         EndDrawing();
         int last_key = KEY_NULL;
         for(;;){
+    
+            int xpad = GetScreenWidth() - GAME_SCREEN_WIDTH;
+            int ypad = GetScreenHeight() - GAME_SCREEN_HEIGHT;
+            
             UpdateMusicStream(game.game_music);
             BeginDrawing();
                 ClearBackground(BLACK);
-                DrawText("PRESS A KEY...", GAME_SCREEN_WIDTH / 2 - MeasureText("PRESS A KEY...", 64) / 2, 200, 64, RAYWHITE);
+                DrawText("PRESS A KEY...", (xpad + GAME_SCREEN_WIDTH) / 2 - MeasureText("PRESS A KEY...", 64) / 2, ypad / 2 + 200, 64, RAYWHITE);
             EndDrawing();
             last_key = GetKeyPressed();
             if(last_key){
@@ -142,64 +147,67 @@ void game_update_key(int * old_key, char ** old_char){
 
 void game_update_menu_state_options_draw_2d(){
     
+    int xpad = (GetScreenWidth() - GAME_SCREEN_WIDTH) / 2;
+    int ypad = (GetScreenHeight() - GAME_SCREEN_HEIGHT) / 2;
+    
     GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
 
     DrawText("OPTIONS", 32, 32, 64, RAYWHITE);
     DrawLineEx((Vector2){.x = 24, .y = 100}, (Vector2){.x = 490, .y = 100}, 8.0f, RAYWHITE);
 
-    DrawText("keys", 40, 128, 32, RAYWHITE);
-    DrawLineEx((Vector2){.x = 32, .y = 164}, (Vector2){.x = 128, .y = 164}, 2.0f, RAYWHITE);
+    DrawText("keys", xpad + 40, ypad + 128, 32, RAYWHITE);
+    DrawLineEx((Vector2){.x = xpad + 32, .y = ypad + 164}, (Vector2){.x = xpad + 128, .y = ypad + 164}, 2.0f, RAYWHITE);
 
-    DrawText("movement:", 40, 196, 20, RAYWHITE);
+    DrawText("movement:", xpad + 40, ypad + 196, 20, RAYWHITE);
 
-    if (GuiButton((Rectangle){.x = 96, .y = 228, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_up))
+    if (GuiButton((Rectangle){.x = xpad + 96, .y = ypad + 228, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_up))
         game_update_key(&game.menu_data.options.keyboard_key_mv_up, &game.menu_data.options.keyboard_char_mv_up);
-    DrawText("up", 40, 228 + 20 - 10, 20, RAYWHITE);
-    if (GuiButton((Rectangle){.x = 96, .y = 228 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_dn))
+    DrawText("up", xpad + 40, ypad + 228 + 20 - 10, 20, RAYWHITE);
+    if (GuiButton((Rectangle){.x = xpad + 96, .y = ypad + 228 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_dn))
         game_update_key(&game.menu_data.options.keyboard_key_mv_dn, &game.menu_data.options.keyboard_char_mv_dn);
-    DrawText("down", 40,       228 + 50 * 1 + 20 - 10, 20, RAYWHITE);
-    if(GuiButton((Rectangle){.x = 96, .y = 228 + 50 * 2, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_lt))
+    DrawText("down", xpad + 40,       ypad + 228 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+    if(GuiButton((Rectangle){.x = xpad + 96, .y = ypad + 228 + 50 * 2, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_lt))
         game_update_key(&game.menu_data.options.keyboard_key_mv_lt, &game.menu_data.options.keyboard_char_mv_lt);
-    DrawText("left", 40,       228 + 50 * 2 + 20 - 10, 20, RAYWHITE);
-    if(GuiButton((Rectangle){.x = 96, .y = 228 + 50 * 3, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_rt))
+    DrawText("left", xpad + 40,       ypad + 228 + 50 * 2 + 20 - 10, 20, RAYWHITE);
+    if(GuiButton((Rectangle){.x = xpad + 96, .y = ypad + 228 + 50 * 3, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_mv_rt))
         game_update_key(&game.menu_data.options.keyboard_key_mv_rt, &game.menu_data.options.keyboard_char_mv_rt);
-    DrawText("right", 40,       228 + 50 * 3 + 20 - 10, 20, RAYWHITE);
+    DrawText("right", xpad + 40,       ypad + 228 + 50 * 3 + 20 - 10, 20, RAYWHITE);
 
-    DrawText("fire weapon:", 240, 196, 20, RAYWHITE);
+    DrawText("fire weapon:", xpad + 240, ypad + 196, 20, RAYWHITE);
 
-    if (GuiButton((Rectangle){.x = 296, .y = 228, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_up))
+    if (GuiButton((Rectangle){.x = xpad + 296, .y = ypad + 228, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_up))
         game_update_key(&game.menu_data.options.keyboard_key_fr_up, &game.menu_data.options.keyboard_char_fr_up);
-    DrawText("up", 240, 228 + 20 - 10, 20, RAYWHITE);
-    if (GuiButton((Rectangle){.x = 296, .y = 228 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_dn))
+    DrawText("up", xpad + 240, ypad + 228 + 20 - 10, 20, RAYWHITE);
+    if (GuiButton((Rectangle){.x = xpad + 296, .y = ypad + 228 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_dn))
         game_update_key(&game.menu_data.options.keyboard_key_fr_dn, &game.menu_data.options.keyboard_char_fr_dn);
-    DrawText("down", 240,       228 + 50 * 1 + 20 - 10, 20, RAYWHITE);
-    if (GuiButton((Rectangle){.x = 296, .y = 228 + 50 * 2, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_lt))
+    DrawText("down", xpad + 240,       ypad + 228 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+    if (GuiButton((Rectangle){.x = xpad + 296, .y = ypad + 228 + 50 * 2, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_lt))
         game_update_key(&game.menu_data.options.keyboard_key_fr_lt, &game.menu_data.options.keyboard_char_fr_lt);
-    DrawText("left", 240,       228 + 50 * 2 + 20 - 10, 20, RAYWHITE);
-    if (GuiButton((Rectangle){.x = 296, .y = 228 + 50 * 3, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_rt))
+    DrawText("left", xpad + 240,       ypad + 228 + 50 * 2 + 20 - 10, 20, RAYWHITE);
+    if (GuiButton((Rectangle){.x = xpad + 296, .y = ypad + 228 + 50 * 3, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_fr_rt))
         game_update_key(&game.menu_data.options.keyboard_key_fr_rt, &game.menu_data.options.keyboard_char_fr_rt);
-    DrawText("right", 240,       228 + 50 * 3 + 20 - 10, 20, RAYWHITE);
+    DrawText("right", xpad + 240,       ypad + 228 + 50 * 3 + 20 - 10, 20, RAYWHITE);
 
-    DrawText("switch weapon:", 40, 464, 20, RAYWHITE);
-    if (GuiButton((Rectangle){.x = 96, .y = 496, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_wp_lt))
+    DrawText("switch weapon:", xpad + 40, ypad + 464, 20, RAYWHITE);
+    if (GuiButton((Rectangle){.x = xpad + 96, .y = ypad + 496, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_wp_lt))
         game_update_key(&game.menu_data.options.keyboard_key_wp_lt, &game.menu_data.options.keyboard_char_wp_lt);
-    DrawText("left", 40, 496 + 20 - 10, 20, RAYWHITE);
-    if (GuiButton((Rectangle){.x = 96, .y = 496 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_wp_rt))
+    DrawText("left", xpad + 40, ypad + 496 + 20 - 10, 20, RAYWHITE);
+    if (GuiButton((Rectangle){.x = xpad + 96, .y = ypad + 496 + 50 * 1, .width = 120, .height = 40}, game.menu_data.options.keyboard_char_wp_rt))
         game_update_key(&game.menu_data.options.keyboard_key_wp_rt, &game.menu_data.options.keyboard_char_wp_rt);
-    DrawText("right", 40,       496 + 50 * 1 + 20 - 10, 20, RAYWHITE);
+    DrawText("right", xpad + 40,       ypad + 496 + 50 * 1 + 20 - 10, 20, RAYWHITE);
 
-    DrawText("controller", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, 128, 32, RAYWHITE);
-    DrawLineEx((Vector2){.x = GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 32, .y = 164}, (Vector2){.x = GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 196 + 16, .y = 164}, 2.0f, RAYWHITE);
+    DrawText("controller", xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, ypad + 128, 32, RAYWHITE);
+    DrawLineEx((Vector2){.x = xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 32, .y = ypad + 164}, (Vector2){.x = xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 196 + 16, .y = ypad + 164}, 2.0f, RAYWHITE);
 
-    DrawText("weapon-",      GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, 228 + 10, 20, RAYWHITE);
-    DrawText("move (dpad)",  GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, 228 + 10 + 125, 20, RAYWHITE);
-    DrawText("move (stick)", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, 228 + 10 + 265, 20, RAYWHITE);
+    DrawText("weapon-",      xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, ypad + 228 + 10, 20, RAYWHITE);
+    DrawText("move (dpad)",  xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, ypad + 228 + 10 + 125, 20, RAYWHITE);
+    DrawText("move (stick)", xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 20, ypad + 228 + 10 + 265, 20, RAYWHITE);
 
-    DrawText("weapon+",        GAME_SCREEN_WIDTH * 3.0 / 5 + 100, 228 + 10, 20, RAYWHITE);
-    DrawText("fire (buttons)", GAME_SCREEN_WIDTH * 3.0 / 5 + 100, 228 + 10 + 125, 20, RAYWHITE);
-    DrawText("fire (stick)",   GAME_SCREEN_WIDTH * 3.0 / 5 + 100, 228 + 10 + 265, 20, RAYWHITE);
+    DrawText("weapon+",        xpad + GAME_SCREEN_WIDTH * 3.0 / 5 + 100, ypad + 228 + 10, 20, RAYWHITE);
+    DrawText("fire (buttons)", xpad + GAME_SCREEN_WIDTH * 3.0 / 5 + 100, ypad + 228 + 10 + 125, 20, RAYWHITE);
+    DrawText("fire (stick)",   xpad + GAME_SCREEN_WIDTH * 3.0 / 5 + 100, ypad + 228 + 10 + 265, 20, RAYWHITE);
 
-    DrawTexture(controller_tex, GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 128 + 16, 196, RAYWHITE);
+    DrawTexture(controller_tex, xpad + GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 128 + 16, ypad + 196, RAYWHITE);
 
     // DrawText("movement:", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, 196, 20, RAYWHITE);
 
@@ -207,37 +215,37 @@ void game_update_menu_state_options_draw_2d(){
     //     game_update_key(&game.menu_data.options.keyboard_key_mv_up, &game.menu_data.options.keyboard_char_mv_up);
     // DrawText("up", GAME_SCREEN_WIDTH * 2.0 / 5  - 64 + 40, 228 + 20 - 10, 20, RAYWHITE);
 
-    DrawText("volume +", GAME_SCREEN_WIDTH - 200 - 40, 128, 32, RAYWHITE);
-    DrawLineEx((Vector2){.x = GAME_SCREEN_WIDTH - 200 - 48, .y = 164}, (Vector2){.x = GAME_SCREEN_WIDTH - 100, .y = 164}, 2.0f, RAYWHITE);
+    DrawText("volume +", xpad + GAME_SCREEN_WIDTH - 200 - 40, ypad + 128, 32, RAYWHITE);
+    DrawLineEx((Vector2){.x = xpad + GAME_SCREEN_WIDTH - 200 - 48, .y = ypad + 164}, (Vector2){.x = xpad + GAME_SCREEN_WIDTH - 100, .y = ypad + 164}, 2.0f, RAYWHITE);
     
-    DrawText("master volume", GAME_SCREEN_WIDTH - 200 - 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 150, 20, RAYWHITE);
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 150, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    DrawText("master volume", xpad + GAME_SCREEN_WIDTH - 200 - 32, ypad + GAME_SCREEN_HEIGHT / 2.0 - 32 - 150, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 - 8 - 150, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
     float old_master = game.menu_data.options.master_volume;
-    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 150, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.master_volume, 0, 10);
+    GuiSlider((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 + 8 - 150, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.master_volume, 0, 10);
     if (old_master != game.menu_data.options.master_volume)
         SetMasterVolume(game.menu_data.options.master_volume / 10);
 
-    DrawText("music volume", GAME_SCREEN_WIDTH - 200 - 32, GAME_SCREEN_HEIGHT / 2.0 - 32 - 50, 20, RAYWHITE);
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 - 50, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    DrawText("music volume", xpad + GAME_SCREEN_WIDTH - 200 - 32, ypad + GAME_SCREEN_HEIGHT / 2.0 - 32 - 50, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 - 8 - 50, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
     float old_music = game.menu_data.options.music_volume;
-    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 - 50, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.music_volume, 0, 10);
+    GuiSlider((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 + 8 - 50, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.music_volume, 0, 10);
     if (old_music != game.menu_data.options.music_volume){
         SetMusicVolume(cyber_spider_open_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
         SetMusicVolume(cyber_spider_rest_music, game.game_music_current_volume * game.menu_data.options.music_volume / 10);
     }
 
-    DrawText("sound volume", GAME_SCREEN_WIDTH - 200 - 32, GAME_SCREEN_HEIGHT / 2.0 - 32 + 50, 20, RAYWHITE);
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 8 + 50, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    DrawText("sound volume", xpad + GAME_SCREEN_WIDTH - 200 - 32, ypad + GAME_SCREEN_HEIGHT / 2.0 - 32 + 50, 20, RAYWHITE);
+    GuiDrawRectangle((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 - 8 + 50, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
     float old_sound = game.menu_data.options.sound_volume;
-    GuiSlider((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = GAME_SCREEN_HEIGHT / 2.0 + 8 + 50, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.sound_volume, 0, 10);
+    GuiSlider((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32 + 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 + 8 + 50, .width = 200 - 64, .height = 32}, "0", "10", &game.menu_data.options.sound_volume, 0, 10);
     if (old_sound != game.menu_data.options.sound_volume)
         resource_set_sound_volumes();
 
-    GuiDrawRectangle((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32, .y = GAME_SCREEN_HEIGHT / 2.0 - 16 + 150, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
-    GuiCheckBox((Rectangle){.x = GAME_SCREEN_WIDTH - 200 - 32 + 16, .y = GAME_SCREEN_HEIGHT / 2.0 - 0 + 150, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
+    GuiDrawRectangle((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 - 16 + 150, .width = 200, .height = 64}, 2, (Color){131, 131, 131, 255}, (Color){201, 201, 201, 255});
+    GuiCheckBox((Rectangle){.x = xpad + GAME_SCREEN_WIDTH - 200 - 32 + 16, .y = ypad + GAME_SCREEN_HEIGHT / 2.0 - 0 + 150, .width = 32, .height = 32}, "draw fps", &game.menu_data.options.draw_fps);
 
     GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
-    if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 64 - 32, .width = 200, .height = 64}, "menu")){
+    if (GuiButton((Rectangle){.x = xpad + GAME_SCREEN_WIDTH / 2. - 100, .y = ypad + GAME_SCREEN_HEIGHT - 64 - 32, .width = 200, .height = 64}, "menu")){
         game.menu_data.state = MENU_STATE_IDLE;
     }
 
@@ -294,19 +302,12 @@ void game_update_menu_state_licenses_draw_2d(){
         RAYWHITE
     );
 
-    // char lic[1000] = { 0 };
-    // snprintf(lic, licenses[game.menu_data.license_shown].payload_len, "%s", licenses[game.menu_data.license_shown].payload);
-
-    // GuiTextBox(
-    //     (Rectangle){.x = 32 + 200 + 32, .y = 140 + 130, .width = GAME_SCREEN_WIDTH - (32 + 200 + 32) - 32, .height = GAME_SCREEN_HEIGHT - (140 + 60) - (100 + 32) - 96 },
-    //     lic,
-    //     10,
-    //     false
-    // );
-
     GuiSetStyle(DEFAULT, TEXT_SIZE, 30);
+    
+    int xpad = (GetScreenWidth() - GAME_SCREEN_WIDTH) / 2;
+    int ypad = (GetScreenHeight() - GAME_SCREEN_HEIGHT) / 2;
 
-    if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2. - 100, .y = GAME_SCREEN_HEIGHT - 100 - 32, .width = 200, .height = 64}, "menu")){
+    if (GuiButton((Rectangle){.x = xpad + GAME_SCREEN_WIDTH / 2. - 100, .y = ypad + GAME_SCREEN_HEIGHT - 100 - 32, .width = 200, .height = 64}, "menu")){
         game.menu_data.state = MENU_STATE_IDLE;
     }
 
@@ -651,6 +652,9 @@ void game_update_play_over(){
             }
         }
     }
+    
+    int xpad = (GetScreenWidth() - GAME_SCREEN_WIDTH) / 2;
+    int ypad = (GetScreenHeight() - GAME_SCREEN_HEIGHT) / 2;
 
     BeginDrawing();
         ClearBackground(BLACK);
@@ -677,20 +681,20 @@ void game_update_play_over(){
         DrawTexturePro(
             black_tex,
             (Rectangle){0,0,1,1},
-            (Rectangle){0,0,GAME_SCREEN_WIDTH,GAME_SCREEN_HEIGHT},
+            (Rectangle){0,0,GetScreenWidth(),GetScreenHeight()},
             (Vector2){0,0},
             0,
             (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255}
         );
 
         char * go_text = "GAME OVER";
-        DrawText(go_text, GAME_SCREEN_WIDTH / 2 - MeasureText(go_text, 64) / 2, 100, 64, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
+        DrawText(go_text, xpad + GAME_SCREEN_WIDTH / 2 - MeasureText(go_text, 64) / 2, ypad + 100, 64, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
 
-        DrawText(final_score, GAME_SCREEN_WIDTH / 2 - MeasureText(final_score, 32) / 2, 250, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
-        DrawText(final_time,  GAME_SCREEN_WIDTH / 2 - MeasureText(final_time,  32) / 2, 350, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
+        DrawText(final_score, xpad + GAME_SCREEN_WIDTH / 2 - MeasureText(final_score, 32) / 2, ypad + 250, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
+        DrawText(final_time,  xpad + GAME_SCREEN_WIDTH / 2 - MeasureText(final_time,  32) / 2, ypad + 350, 32, (Color){255, 255, 255, Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 5) / 5 * 255});
 
         if ( Clamp(game_get_time() - game.game_over_state.game_over_start_time, 0, 7) == 7 ){
-            if (GuiButton((Rectangle){.x = GAME_SCREEN_WIDTH / 2.0 - 100, .y = 450, .width = 200, .height = 64}, "menu")){
+            if (GuiButton((Rectangle){.x = xpad + GAME_SCREEN_WIDTH / 2.0 - 100, .y = ypad + 450, .width = 200, .height = 64}, "menu")){
                 game_set_menu_state(GAME_MENU_STATE_INIT);
                 if (game.game_entities.others != NULL){
                     vector_free(game.game_entities.others);
