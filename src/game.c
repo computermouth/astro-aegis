@@ -442,15 +442,10 @@ void game_update_menu(){
                 break;
         }
 
-        // stupid hack because raylib can't detect gamepads after start
-        static bool gamepadfound = true;
-        if(gamepadfound && !IsGamepadAvailable(0))
-            gamepadfound = false;
-
-        if (!gamepadfound && fmodf(game_get_time(), 2.0) < 1.0)
+        if (!IsGamepadAvailable(0) && fmodf(game_get_time(), 2.0) < 1.0)
             DrawText(
-                "GAMEPAD IS RECOMMENDED (restart required)",
-                GAME_SCREEN_WIDTH / 2 - MeasureText("GAMEPAD IS RECOMMENDED (restart required)", 30) / 2,
+                "(gamepad recommended)",
+                GAME_SCREEN_WIDTH / 2 - MeasureText("(gamepad recommended)", 30) / 2,
                 GAME_SCREEN_HEIGHT / 5.0 * 4.0,
                 30,
                 RAYWHITE
